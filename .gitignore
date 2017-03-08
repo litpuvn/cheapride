@@ -1,0 +1,8 @@
+.metadata/
+RemoteSystemsTempFiles/
+.classpath
+.project
+.settings/
+pom.xml.bak
+target/
+.gitignore.bak
