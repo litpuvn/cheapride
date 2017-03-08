@@ -41,7 +41,7 @@ public class LoginController {
            return "401";
         }
     }
-    @RequestMapping("/register")
+    @RequestMapping("/delete")
     public String delete(@RequestParam(value="user") String username, @RequestParam(value = "password") String password) {
         try {
             return loginService.removeAccount(username,password);
