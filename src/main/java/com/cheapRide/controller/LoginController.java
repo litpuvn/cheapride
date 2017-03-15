@@ -51,6 +51,10 @@ public class LoginController {
             return "401";
         }
     }
+    @RequestMapping("/test")
+    public String test(){
+        return "66666666666666";
+    }
 
 
 }
