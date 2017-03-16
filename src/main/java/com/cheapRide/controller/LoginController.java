@@ -7,6 +7,7 @@ import com.cheapRide.service.exception.UserNameAlreadyExist;
 import com.cheapRide.service.exception.UsernameOrPasswordWrongException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,7 +20,7 @@ public class LoginController {
     public LoginService loginService;
 
 
-    @RequestMapping("/login")
+    @RequestMapping(value = "/login" , method = RequestMethod.GET)
     public User login(@RequestParam(value="user") String username, @RequestParam(value = "password") String password) {
         User user= null;
         try {
@@ -29,6 +30,7 @@ public class LoginController {
         } catch (UsernameOrPasswordWrongException e) {
             e.printStackTrace();
         }
+
         return user;
     }
     @RequestMapping("/register")
