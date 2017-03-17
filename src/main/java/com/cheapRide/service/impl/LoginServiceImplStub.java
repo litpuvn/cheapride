@@ -19,11 +19,11 @@ public class LoginServiceImplStub implements LoginService{
 
     @Override
     public String createNewUsernameAndPassword(String firstName, String lastName, String username, String password) throws DbException, UserNameAlreadyExist {
-        return "successful";
+        return "done";
     }
 
     @Override
     public String removeAccount(String username, String password) throws DbException, UsernameOrPasswordWrongException {
-        return "done";
+        return "deleted";
     }
 }
