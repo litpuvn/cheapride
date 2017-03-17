@@ -20,6 +20,7 @@ public class LoginController {
     public LoginService loginService;
 
 
+
     @RequestMapping(value = "/login" , method = RequestMethod.GET)
     public User login(@RequestParam(value="user") String username, @RequestParam(value = "password") String password) {
         User user= null;
@@ -33,7 +34,7 @@ public class LoginController {
 
         return user;
     }
-    @RequestMapping("/register")
+    @RequestMapping(value="/register" , method = RequestMethod.GET)
     public String register(@RequestParam(value="firstName") String firstName,@RequestParam(value="lastName") String lastName,@RequestParam(value="user") String username, @RequestParam(value = "password") String password) {
         try {
             return loginService.createNewUsernameAndPassword(firstName,lastName,username,password);
@@ -43,7 +44,7 @@ public class LoginController {
            return "401";
         }
     }
-    @RequestMapping("/delete")
+    @RequestMapping(value="/delete" , method = RequestMethod.GET)
     public String delete(@RequestParam(value="user") String username, @RequestParam(value = "password") String password) {
         try {
             return loginService.removeAccount(username,password);
@@ -53,10 +54,14 @@ public class LoginController {
             return "401";
         }
     }
-    @RequestMapping("/test")
-    public String test(){
-        return "66666666666666";
+    @RequestMapping(value="/test" , method = RequestMethod.GET)
+    public String test() {
+        return "555";
     }
+
+
+
+
 
 
 }
