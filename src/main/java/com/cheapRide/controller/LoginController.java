@@ -18,7 +18,6 @@ public class LoginController {
     public LoginService loginService;
 
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
 //    public String login(@RequestParam(value = "user") String username, @RequestParam(value = "password") String password) {
 //        try {
 //            return loginService.loginUsingUsernameAndPassword(username, password);
@@ -26,6 +25,7 @@ public class LoginController {
 //            return "failedConnectionToDb";
 //        }
 //    }
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(@RequestBody User user) {
         try {
             return loginService.loginUsingUsernameAndPassword(user.getUsername(), user.getPassword());

@@ -38,7 +38,10 @@ public class LoginDaoImpl implements LoginDao {
     public String registerNewUser(String name,String username, String password) {
         ApplicationContext ctx = new AnnotationConfigApplicationContext(SpringMongoConfig.class);
         MongoOperations mongoOperation = (MongoOperations) ctx.getBean("mongoTemplate");
-        User user = new User(name, username,password);
+        User user = new User();
+        user.setName("test_name");
+        user.setUsername("test_usernmae");
+        user.setPassword("test_pass");
         // save
         mongoOperation.save(user);
 
