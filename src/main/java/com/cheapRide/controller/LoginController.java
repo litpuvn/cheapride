@@ -2,14 +2,12 @@ package com.cheapRide.controller;
 
 import com.cheapRide.model.User;
 import com.cheapRide.service.LoginService;
-import com.cheapRide.service.exception.DbException;
-import com.cheapRide.service.exception.UserNameAlreadyExist;
-import com.cheapRide.service.exception.UsernameOrPasswordWrongException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.UnsupportedEncodingException;
+import java.net.UnknownHostException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by pshayegh on 3/8/2017.
@@ -20,43 +18,49 @@ public class LoginController {
     public LoginService loginService;
 
 
-    @RequestMapping(value = "/login" , method = RequestMethod.GET)
-    public User login(@RequestParam(value="user") String username, @RequestParam(value = "password") String password) {
-        User user= null;
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+//    public String login(@RequestParam(value = "user") String username, @RequestParam(value = "password") String password) {
+//        try {
+//            return loginService.loginUsingUsernameAndPassword(username, password);
+//        } catch (UnknownHostException e) {
+//            return "failedConnectionToDb";
+//        }
+//    }
+    public String login(@RequestBody User user) {
         try {
-            user = loginService.loginUsingUsernameAndPassword(username,password);
-        } catch (DbException e) {
-            e.printStackTrace();
-        } catch (UsernameOrPasswordWrongException e) {
-            e.printStackTrace();
-        }
-
-        return user;
-    }
-    @RequestMapping("/register")
-    public String register(@RequestParam(value="firstName") String firstName,@RequestParam(value="lastName") String lastName,@RequestParam(value="user") String username, @RequestParam(value = "password") String password) {
-        try {
-            return loginService.createNewUsernameAndPassword(firstName,lastName,username,password);
-        } catch (DbException e) {
-            return "400";
-        } catch (UserNameAlreadyExist userNameAlreadyExist) {
-           return "401";
+            return loginService.loginUsingUsernameAndPassword(user.getUsername(), user.getPassword());
+        } catch (UnknownHostException e) {
+            return "failedConnectionToDb";
         }
     }
-    @RequestMapping("/delete")
-    public String delete(@RequestParam(value="user") String username, @RequestParam(value = "password") String password) {
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public String register(@RequestBody User user) {
         try {
-            return loginService.removeAccount(username,password);
-        } catch (DbException e) {
-            return "400";
-        } catch (UsernameOrPasswordWrongException e) {
-            return "401";
+            return loginService.createNewUsernameAndPassword(user.getName(), user.getUsername(), user.getPassword());
+        } catch (UnknownHostException e) {
+            return "failedConnectionToDb";
+        } catch (UnsupportedEncodingException e) {
+            return "failedHashingCode";
+        } catch (NoSuchAlgorithmException e) {
+            return "failedHashingCode";
         }
-    }
-    @RequestMapping("/test")
-    public String test(){
-        return "66666666666666";
+
     }
 
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public String delete(@RequestBody User user) {
+        try {
+            return loginService.removeAccount(user.getUsername(), user.getPassword());
+        } catch (UnknownHostException e) {
+            return "failedConnectionToDb";
+        }
 
+    }
+    @ResponseBody
+    @RequestMapping(value = "/test", method = RequestMethod.POST)
+    public String test(@RequestBody User user) {
+        return "555";
+    }
+    
 }

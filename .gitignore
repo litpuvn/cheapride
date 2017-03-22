@@ -2,6 +2,7 @@
 RemoteSystemsTempFiles/
 .classpath
 .project
+.idea
 .settings/
 pom.xml.bak
 target/

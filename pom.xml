@@ -111,41 +111,41 @@
 		    <scope>provided</scope>
 		</dependency>
 		
-		<!-- UBER API  -->
+		 <!--UBER API-->
 		
-		<!--<dependency>-->
-  			<!--<groupId>com.uber.sdk</groupId>-->
-  			<!--<artifactId>rides</artifactId>-->
-  			<!--<version>0.6.0</version>-->
-		<!--</dependency>-->
-		<!---->
- 		<!--&lt;!&ndash; UBER API  &ndash;&gt;-->
- 		<!---->
- 		<!--&lt;!&ndash; WIRE MOCK &ndash;&gt;-->
- 		<!--<dependency>-->
-		    <!--<groupId>com.github.tomakehurst</groupId>-->
-		    <!--<artifactId>wiremock</artifactId>-->
-		    <!--<version>2.5.1</version>-->
-		<!--</dependency>-->
-		<!--&lt;!&ndash; WIRE MOCK &ndash;&gt;-->
-		<!---->
-		<!--&lt;!&ndash;  Retrofit &ndash;&gt;-->
-		<!---->
-		<!--<dependency>-->
-		  <!--<groupId>com.squareup.retrofit2</groupId>-->
-		  <!--<artifactId>retrofit</artifactId>-->
-		  <!--<version>2.2.0</version>-->
-		<!--</dependency>-->
-		<!---->
-		<!--&lt;!&ndash; Retrofit &ndash;&gt;-->
-		<!---->
-		<!--&lt;!&ndash; okHTTP &ndash;&gt;-->
-		<!--<dependency>-->
-		    <!--<groupId>com.squareup.okhttp</groupId>-->
-		    <!--<artifactId>okhttp</artifactId>-->
-		    <!--<version>2.7.5</version>-->
-		<!--</dependency>-->
+		<dependency>
+  			<groupId>com.uber.sdk</groupId>
+  			<artifactId>rides</artifactId>
+  			<version>0.6.0</version>
+		</dependency>
+
+ 		<!-- UBER API  -->
+
+ 		<!-- WIRE MOCK -->
+ 		<dependency>
+		    <groupId>com.github.tomakehurst</groupId>
+		    <artifactId>wiremock</artifactId>
+		    <version>2.5.1</version>
+		</dependency>
+		<!-- WIRE MOCK -->
+
+		<!--  Retrofit -->
+
+		<dependency>
+		  <groupId>com.squareup.retrofit2</groupId>
+		  <artifactId>retrofit</artifactId>
+		  <version>2.2.0</version>
+		</dependency>
+
+		<!-- Retrofit -->
+
 		<!-- okHTTP -->
+		<dependency>
+		    <groupId>com.squareup.okhttp</groupId>
+		    <artifactId>okhttp</artifactId>
+		    <version>2.7.5</version>
+		</dependency>
+		 <!--okHTTP-->
 
 
 	</dependencies>
@@ -189,29 +189,29 @@
 				</configuration>
 			</plugin>
 			
-			<!--<plugin>-->
-    			<!--<artifactId>maven-antrun-plugin</artifactId>-->
-			    <!--<version>1.3</version>-->
-			    <!--<executions>-->
-			        <!--<execution>-->
-			            <!--<phase>install</phase>-->
-			            <!--<configuration>-->
-			                <!--<tasks name="Deploy to Tomcat">-->
-			                    <!---->
-			                    <!--&lt;!&ndash; delete the web application folder &ndash;&gt;-->
-			                    <!--<delete dir="C:\ApacheSoftwareFoundation\Tomcat 7.0\webapps\cheapRide" />-->
-			                    <!--&lt;!&ndash; copy the new war file to Tomcat and overwrite an existing file &ndash;&gt;-->
-			                    <!--<copy file="D:\TTU\Dr.Dang\workspace\cheapRide\target\cheapRide.war" todir="C:\ApacheSoftwareFoundation\Tomcat 7.0\webapps" overwrite="true"-->
-			                        <!--failonerror="true" />-->
-			                    <!---->
-			                <!--</tasks>-->
-			            <!--</configuration>-->
-			            <!--<goals>-->
-			                <!--<goal>run</goal>-->
-			            <!--</goals>-->
-			        <!--</execution>-->
-			    <!--</executions>-->
-			<!--</plugin>-->
+			<plugin>
+    			<artifactId>maven-antrun-plugin</artifactId>
+			    <version>1.3</version>
+			    <executions>
+			        <execution>
+			            <phase>install</phase>
+			            <configuration>
+			                <tasks name="Deploy to Tomcat">
+
+			                    <!-- delete the web application folder -->
+			                    <delete dir="C:\ApacheSoftwareFoundation\Tomcat 7.0\webapps\cheapRide" />
+			                    <!-- copy the new war file to Tomcat and overwrite an existing file -->
+			                    <copy file="D:\TTU\Dr.Dang\workspace\cheapRide\target\cheapRide.war" todir="C:\ApacheSoftwareFoundation\Tomcat 7.0\webapps" overwrite="true"
+			                        failonerror="true" />
+
+			                </tasks>
+			            </configuration>
+			            <goals>
+			                <goal>run</goal>
+			            </goals>
+			        </execution>
+			    </executions>
+			</plugin>
 
 		</plugins>
 

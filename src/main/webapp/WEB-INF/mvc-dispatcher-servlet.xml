@@ -37,7 +37,11 @@
 	  <beans:bean id="mongo" class="org.springframework.data.mongodb.core.MongoFactoryBean">
 	    <beans:property name="host" value="localhost"/>
 	  </beans:bean>
-	<beans:bean id="loginService" class="com.cheapRide.service.impl.LoginServiceImpl">
-	  </beans:bean>
+	<!--uncomment this:-->
+	<!--<beans:bean id="loginService" class="com.cheapRide.service.impl.LoginServiceImpl">-->
+	  <!--</beans:bean>-->
+	<beans:bean id="loginService" class="com.cheapRide.service.impl.LoginServiceImplStub">
+	</beans:bean>
+
 
 </beans>

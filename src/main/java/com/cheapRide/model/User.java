@@ -1,15 +1,37 @@
 package com.cheapRide.model;
 
+import org.springframework.data.annotation.Id;
+
 /**
  * Created by pshayegh on 3/8/2017.
  */
 public class User {
-    private String name;
-    private String tempValidCode;
 
-    public User(String name, String tempValidCode) {
+    private String name;
+    private String username;
+    private String password;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
+    public User(String name, String username,String password) {
         this.name = name;
-        this.tempValidCode = tempValidCode;
+        this.username=username;
+        this.password=password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getName() {
@@ -20,11 +42,5 @@ public class User {
         this.name = name;
     }
 
-    public String getTempValidCode() {
-        return tempValidCode;
-    }
 
-    public void setTempValidCode(String tempValidCode) {
-        this.tempValidCode = tempValidCode;
-    }
 }
