@@ -1,5 +1,8 @@
-package junit.com.cheapRide.dao;
 
+package junit.com.cheapRide.dao;
+/**
+ * @author Agnes Priyadharshini
+ */
 import static org.junit.Assert.fail;
 
 import javax.servlet.jsp.jstl.core.Config;
