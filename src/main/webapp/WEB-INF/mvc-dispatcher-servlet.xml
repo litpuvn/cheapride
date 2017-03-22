@@ -40,7 +40,9 @@
 	<!--uncomment this:-->
 	<!--<beans:bean id="loginService" class="com.cheapRide.service.impl.LoginServiceImpl">-->
 	  <!--</beans:bean>-->
-	<beans:bean id="loginService" class="com.cheapRide.service.impl.LoginServiceImplStub">
+	<beans:bean id="loginService" class="com.cheapRide.service.impl.LoginServiceImpl">
+	</beans:bean>
+	<beans:bean id="loginDao" class="com.cheapRide.dao.impl.LoginDaoImpl">
 	</beans:bean>
 
 
