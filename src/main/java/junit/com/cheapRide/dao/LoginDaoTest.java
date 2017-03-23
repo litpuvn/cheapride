@@ -39,7 +39,6 @@ public class LoginDaoTest {
 	public void setUserDetails() {
 		try {
 			User user = new User();
-			user.setName(name);
 			user.setUsername(username);
 			user.setPassword(password);
 

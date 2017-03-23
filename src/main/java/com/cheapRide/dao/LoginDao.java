@@ -9,6 +9,6 @@ import java.net.UnknownHostException;
  */
 public interface LoginDao {
     User getUserByUserAndPass(String username, String password) throws UnknownHostException;
-    String registerNewUser(String name,String username, String password);
+    String registerNewUser(String username, String password);
     String deleteUser(String username, String password);
 }

@@ -21,8 +21,8 @@ public class LoginServiceImpl implements LoginService {
     private LoginDao loginDao;
 
     @Override
-    public String loginUsingUsernameAndPassword(String username, String password) throws UnknownHostException {
-        if(loginDao.getUserByUserAndPass(username,password)!=null)
+    public String loginUsingUsernameAndPassword(String username, String password) throws UnknownHostException, UnsupportedEncodingException, NoSuchAlgorithmException {
+        if(loginDao.getUserByUserAndPass(username, Security.SHA1(password))!=null)
             return "found";
         else
             return "UserNotFound";
@@ -30,19 +30,19 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public String createNewUsernameAndPassword(String firstName, String username, String password) throws  UnknownHostException, UnsupportedEncodingException, NoSuchAlgorithmException {
+    public String createNewUsernameAndPassword(String username, String password) throws  UnknownHostException, UnsupportedEncodingException, NoSuchAlgorithmException {
         if (loginDao.getUserByUserAndPass(username,  Security.SHA1(password)) != null)
             return "alreadyRegistered";
         else {
-            loginDao.registerNewUser(firstName,username, Security.SHA1(password));
+            loginDao.registerNewUser(username, Security.SHA1(password));
             return "done";
         }
 
     }
 
     @Override
-    public String removeAccount(String username, String password) throws UnknownHostException {
-        if(loginDao.getUserByUserAndPass(username,password)==null)
+    public String removeAccount(String username, String password) throws UnknownHostException, UnsupportedEncodingException, NoSuchAlgorithmException {
+        if(loginDao.getUserByUserAndPass(username, Security.SHA1(password))==null)
             return "UserNotFound";
         else{
             loginDao.deleteUser(username,password);

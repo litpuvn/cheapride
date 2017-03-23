@@ -1,13 +1,14 @@
 package com.cheapRide.controller;
 
+import com.cheapRide.model.LoginResponse;
 import com.cheapRide.model.User;
 import com.cheapRide.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.UnsupportedEncodingException;
-import java.net.UnknownHostException;
-import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 
 /**
  * Created by pshayegh on 3/8/2017.
@@ -17,50 +18,64 @@ public class LoginController {
     @Autowired
     public LoginService loginService;
 
-
-//    public String login(@RequestParam(value = "user") String username, @RequestParam(value = "password") String password) {
-//        try {
-//            return loginService.loginUsingUsernameAndPassword(username, password);
-//        } catch (UnknownHostException e) {
-//            return "failedConnectionToDb";
-//        }
-//    }
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(@RequestBody User user) {
+    public ResponseEntity<LoginResponse> login(@RequestBody User user) {
+        LoginResponse loginResponse = new LoginResponse();
         try {
-            return loginService.loginUsingUsernameAndPassword(user.getUsername(), user.getPassword());
-        } catch (UnknownHostException e) {
-            return "failedConnectionToDb";
+            if (loginService.loginUsingUsernameAndPassword(user.getUsername(), user.getPassword()) == "found") {
+                loginResponse.setMessage("You are authorized to access");
+                loginResponse.setToken(getRandomToken());
+                return ResponseEntity.status(HttpStatus.OK).body(loginResponse);
+            } else {
+                loginResponse.setMessage("You are not authorized to access");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(loginResponse);
+            }
+        } catch (Exception e) {
+            loginResponse.setMessage("You are not authorized to access");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(loginResponse);
         }
+    }
+
+    private String getRandomToken() {
+        UUID tmepUUID = UUID.randomUUID();
+        String tempValidId = tmepUUID.toString();
+        return tempValidId;
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(@RequestBody User user) {
+    public ResponseEntity<LoginResponse> register(@RequestBody User user) {
+        LoginResponse loginResponse = new LoginResponse();
         try {
-            return loginService.createNewUsernameAndPassword(user.getName(), user.getUsername(), user.getPassword());
-        } catch (UnknownHostException e) {
-            return "failedConnectionToDb";
-        } catch (UnsupportedEncodingException e) {
-            return "failedHashingCode";
-        } catch (NoSuchAlgorithmException e) {
-            return "failedHashingCode";
+            if (loginService.createNewUsernameAndPassword(user.getUsername(), user.getPassword()) == "done") {
+                loginResponse.setMessage("You are authorized to access");
+                loginResponse.setToken(getRandomToken());
+                return ResponseEntity.status(HttpStatus.OK).body(loginResponse);
+            } else {
+                loginResponse.setMessage("You are not authorized to access");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(loginResponse);
+            }
+        } catch (Exception e) {
+            loginResponse.setMessage("You are not authorized to access");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(loginResponse);
         }
-
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public String delete(@RequestBody User user) {
+    public ResponseEntity<LoginResponse> delete(@RequestBody User user) {
+        LoginResponse loginResponse = new LoginResponse();
         try {
-            return loginService.removeAccount(user.getUsername(), user.getPassword());
-        } catch (UnknownHostException e) {
-            return "failedConnectionToDb";
+            if (loginService.removeAccount(user.getUsername(), user.getPassword())== "done") {
+                loginResponse.setMessage("You are authorized to access");
+                return ResponseEntity.status(HttpStatus.OK).body(loginResponse);
+            } else {
+                loginResponse.setMessage("You are not authorized to access");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(loginResponse);
+            }
+        } catch (Exception e) {
+            loginResponse.setMessage("You are not authorized to access");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(loginResponse);
         }
 
     }
-    @ResponseBody
-    @RequestMapping(value = "/test", method = RequestMethod.POST)
-    public String test(@RequestBody User user) {
-        return "555";
-    }
-    
+
 }

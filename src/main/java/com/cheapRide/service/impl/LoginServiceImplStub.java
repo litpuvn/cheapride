@@ -21,7 +21,7 @@ public class LoginServiceImplStub implements LoginService {
     }
 
     @Override
-    public String createNewUsernameAndPassword(String name, String username, String password) throws  UnknownHostException {
+    public String createNewUsernameAndPassword( String username, String password) throws  UnknownHostException {
         return null;
     }
 

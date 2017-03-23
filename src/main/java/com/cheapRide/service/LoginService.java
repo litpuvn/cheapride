@@ -11,9 +11,9 @@ import java.security.NoSuchAlgorithmException;
  */
 @Service
 public interface LoginService {
-    String loginUsingUsernameAndPassword(String username, String password) throws UnknownHostException;
+    String loginUsingUsernameAndPassword(String username, String password) throws UnknownHostException, UnsupportedEncodingException, NoSuchAlgorithmException;
 
-    String createNewUsernameAndPassword(String name, String username, String password) throws UnknownHostException, UnsupportedEncodingException, NoSuchAlgorithmException;
+    String createNewUsernameAndPassword( String username, String password) throws UnknownHostException, UnsupportedEncodingException, NoSuchAlgorithmException;
 
-    String removeAccount(String username, String password) throws UnknownHostException;
+    String removeAccount(String username, String password) throws UnknownHostException, UnsupportedEncodingException, NoSuchAlgorithmException;
 }
