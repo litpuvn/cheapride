@@ -16,4 +16,6 @@ public interface LoginService {
     String createNewUsernameAndPassword( String username, String password) throws UnknownHostException, UnsupportedEncodingException, NoSuchAlgorithmException;
 
     String removeAccount(String username, String password) throws UnknownHostException, UnsupportedEncodingException, NoSuchAlgorithmException;
+    
+    String getRandomToken();
 }

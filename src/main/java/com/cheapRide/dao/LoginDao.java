@@ -11,4 +11,5 @@ public interface LoginDao {
     User getUserByUserAndPass(String username, String password) throws UnknownHostException;
     String registerNewUser(String username, String password);
     String deleteUser(String username, String password);
+    public User getUserByUserAndPass(String username);
 }

@@ -29,4 +29,10 @@ public class LoginServiceImplStub implements LoginService {
     public String removeAccount(String username, String password) throws  UnknownHostException {
         return null;
     }
+
+	@Override
+	public String getRandomToken() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
