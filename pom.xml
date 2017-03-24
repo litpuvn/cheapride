@@ -199,10 +199,7 @@
 			                <tasks name="Deploy to Tomcat">
 
 			                    <!-- delete the web application folder -->
-			                    <delete dir="C:\ApacheSoftwareFoundation\Tomcat 7.0\webapps\cheapRide" />
-			                    <!-- copy the new war file to Tomcat and overwrite an existing file -->
-			                    <copy file="D:\TTU\Dr.Dang\workspace\cheapRide\target\cheapRide.war" todir="C:\ApacheSoftwareFoundation\Tomcat 7.0\webapps" overwrite="true"
-			                        failonerror="true" />
+			                   
 
 			                </tasks>
 			            </configuration>

@@ -1,66 +1,94 @@
 package com.cheapRide.dao.impl;
 
-import com.cheapRide.dao.LoginDao;
-import com.cheapRide.dao.SpringMongoConfig;
-import com.cheapRide.model.User;
-import com.mongodb.*;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.data.mongodb.core.MongoOperations;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-import java.net.UnknownHostException;
+import com.cheapRide.dao.LoginDao;
+import com.cheapRide.model.User;
 
 /**
  * Created by pshayegh on 3/22/2017.
  */
 public class LoginDaoImpl implements LoginDao {
 
-    @Override
-    public User getUserByUserAndPass(String username, String password) {
+	private final static org.slf4j.Logger logger = LoggerFactory
+			.getLogger(LoginDaoImpl.class);
 
-            ApplicationContext ctx = new AnnotationConfigApplicationContext(SpringMongoConfig.class);
-            MongoOperations mongoOperation = (MongoOperations) ctx.getBean("mongoTemplate");
+	@Autowired
+	private MongoTemplate mongoOperation;
 
-            Query searchUserQuery = new Query(Criteria.where("username").is(username));
+	@Override
+	public User getUserByUserAndPass(String username, String password) {
 
-            // find the saved user again.
-        try {
-            User savedUser = mongoOperation.findOne(searchUserQuery, User.class);
-            System.out.println("2. find - savedUser : " + savedUser);
-            return savedUser;
-        }
-        catch (Exception e){
-            User user=new User();
-            user.setUsername("test1");
-            user.setPassword("test2");
-            return user;
-        }
-    }
+		logger.debug("Start => LoginDaoImpl => getUserByUserAndPass  for user "
+				+ username);
+		User savedUser = null;
+		Query searchUserQuery = new Query(Criteria.where("username").is(
+				username).and("password").is(password));
 
-    @Override
-    public String registerNewUser(String username, String password) {
-        ApplicationContext ctx = new AnnotationConfigApplicationContext(SpringMongoConfig.class);
-        MongoOperations mongoOperation = (MongoOperations) ctx.getBean("mongoTemplate");
-        User user = new User();
-        user.setUsername("test_usernmae");
-        user.setPassword("test_pass");
-        // save
-        mongoOperation.save(user);
+		// find the saved user again.
+		try {
+			savedUser = mongoOperation.findOne(searchUserQuery, User.class);
+		} catch (Exception e) {
+			logger.error("ERROR => LoginDaoImpl => getUserByUserAndPass  for user "
+					+ username);
+		}
 
-        // now user object got the created id.
-        System.out.println("1. user : " + user);
-        return "done";
-    }
+		logger.debug("End => LoginDaoImpl => getUserByUserAndPass  for user "
+				+ username);
+		return savedUser;
+	}
 
-    @Override
-    public String deleteUser(String username, String password) {
-        ApplicationContext ctx = new AnnotationConfigApplicationContext(SpringMongoConfig.class);
-        MongoOperations mongoOperation = (MongoOperations) ctx.getBean("mongoTemplate");
-        Query searchUserQuery = new Query(Criteria.where("username").is(username));
-        mongoOperation.remove(searchUserQuery, User.class);
-        return "done";
+	@Override
+	public User getUserByUserAndPass(String username) {
 
-    }
+		logger.debug("Start => LoginDaoImpl => getUserByUserAndPass  for user "
+				+ username);
+		User savedUser = null;
+		Query searchUserQuery = new Query(Criteria.where("username").is(
+				username));
+
+		// find the saved user again.
+		try {
+			savedUser = mongoOperation.findOne(searchUserQuery, User.class);
+		} catch (Exception e) {
+			logger.error("ERROR => LoginDaoImpl => getUserByUserAndPass  for user "
+					+ username);
+		}
+
+		logger.debug("End => LoginDaoImpl => getUserByUserAndPass  for user "
+				+ username);
+		return savedUser;
+	}
+	
+	@Override
+	public String registerNewUser(String username, String password) {
+		logger.debug("Start => LoginDaoImpl => registerNewUser  for user "
+				+ username);
+		String returnString;
+			User user = new User();
+			user.setUsername(username);
+			user.setPassword(password);
+			// save
+			mongoOperation.save(user);
+			returnString = "done";
+		logger.debug("End => LoginDaoImpl => registerNewUser  for user "
+				+ username);
+		return returnString;
+	}
+
+	@Override
+	public String deleteUser(String username, String password) {
+		logger.debug("Start => LoginDaoImpl => deleteUser  for user "
+				+ username);
+		Query searchUserQuery = new Query(Criteria.where("username").is(
+				username));
+		mongoOperation.remove(searchUserQuery, User.class);
+		logger.debug("End => LoginDaoImpl => deleteUser  for user " + username);
+		return "done";
+
+	}
 }
