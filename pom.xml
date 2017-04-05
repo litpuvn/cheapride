@@ -28,11 +28,11 @@
 		</dependency>
 
 		<!-- Unit Test -->
-		<!--<dependency>-->
-			<!--<groupId>junit</groupId>-->
-			<!--<artifactId>junit</artifactId>-->
-			<!--<version>${junit.version}</version>-->
-		<!--</dependency>-->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+		</dependency>
 
 		<!-- Spring Core -->
 		<dependency>
