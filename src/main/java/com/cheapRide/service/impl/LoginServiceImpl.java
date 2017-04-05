@@ -24,19 +24,17 @@ public class LoginServiceImpl implements LoginService {
     private LoginDao loginDao;
 
     @Override
-    public String loginUsingUsernameAndPassword(String username, String password) throws UnknownHostException, UnsupportedEncodingException, NoSuchAlgorithmException {
+    public User loginUsingUsernameAndPassword(String username, String password) throws UnknownHostException, UnsupportedEncodingException, NoSuchAlgorithmException {
     	logger.debug("Start => LoginServiceImpl => loginUsingUsernameAndPassword  for user "+ username);
-    	String returnString;
-    	if(loginDao.getUserByUserAndPass(username, Security.SHA1(password))!=null){
-    	    User user=loginDao.getUserByUserAndPass(username, Security.SHA1(password));
-    	    user.setDate(new Date());
-    	    user.setToken(getRandomToken());
-    	    loginDao.refreshTokenAndDate(user);
-    		returnString = "found";}
-        else
-        	returnString = "UserNotFound";
+//    	String returnString;
+    	User foundUser=loginDao.getUserByUserAndPass(username, Security.SHA1(password));
+    	if(foundUser!=null) {
+			foundUser.setDate(new Date());
+			foundUser.setToken(getRandomToken());
+			loginDao.refreshTokenAndDate(foundUser);
+		}
     	logger.debug("end => LoginServiceImpl => loginUsingUsernameAndPassword  for user "+ username);
-    	return returnString;
+    	return foundUser;
     }
 
     @Override
@@ -47,7 +45,7 @@ public class LoginServiceImpl implements LoginService {
 
     		returnString = "alreadyRegistered";}
         else {
-            loginDao.registerNewUser(username, Security.SHA1(password),getRandomToken(),new Date());
+            loginDao.registerNewUser(username, Security.SHA1(password));
             returnString = "done";
         }
     	logger.debug("End => LoginServiceImpl => createNewUsernameAndPassword  for user "+ username);
@@ -75,9 +73,26 @@ public class LoginServiceImpl implements LoginService {
 		logger.debug("Start => LoginServiceImpl => getRandomToken  for token ");
         UUID tmepUUID = UUID.randomUUID();
         String tempValidId = tmepUUID.toString();
+		tempValidId = tempValidId.replace("-", "");
         logger.debug("Start => LoginServiceImpl => getRandomToken  for tokrn "+ tmepUUID);
         return tempValidId;
     }
+
+	@Override
+	public String invalidateTokenBylogout(String token) {
+		logger.debug("Start => Logout => invalidateTokenBylogout  for user "+ token);
+		String returnString;
+		if(loginDao.getUserByToken(token)!=null){
+			User user=loginDao.getUserByToken(token);
+			user.setDate(new Date());
+			user.setToken("INVALID");
+			loginDao.refreshTokenAndDate(user);
+			returnString = "logoutSuccessful";}
+		else
+			returnString = "logoutFailed";
+		logger.debug("end => LoginServiceImpl => invalidateTokenBylogout  for user "+ token);
+		return returnString;
+	}
 
 
 }

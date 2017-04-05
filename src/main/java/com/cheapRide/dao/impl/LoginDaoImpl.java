@@ -82,15 +82,39 @@ public class LoginDaoImpl implements LoginDao {
 	}
 
 	@Override
-	public String registerNewUser(String username, String password, String token, Date date) {
+	public User getUserByToken(String token) {
+		logger.debug("Start => LoginDaoImpl => get User by token for user "
+				+ token);
+		logger.debug("Start => LoginDaoImpl => getUserByToken for user "
+				+ token);
+		User savedUser = null;
+		Query searchUserQuery=null;
+		 searchUserQuery = new Query(Criteria.where("token").is(
+				token));
+
+		// find the saved user again.
+		try {
+			savedUser = mongoOperation.findOne(searchUserQuery, User.class);
+		} catch (Exception e) {
+			logger.error("ERROR => LoginDaoImpl => getUserByToken  for user "
+					+ token);
+		}
+
+		logger.debug("End => LoginDaoImpl => getUserByUserAndPass  for user "
+				+ token);
+		return savedUser;
+	}
+
+	@Override
+	public String registerNewUser(String username, String password) {
 		logger.debug("Start => LoginDaoImpl => registerNewUser  for user "
 				+ username);
 		String returnString;
 			User user = new User();
 			user.setUsername(username);
 			user.setPassword(password);
-			user.setToken(token);
-			user.setDate(date);
+			user.setToken("INVALID");
+			user.setDate(new Date());
 			// save
 			mongoOperation.save(user);
 			returnString = "done";
