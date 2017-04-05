@@ -1,6 +1,6 @@
 package junit.com.cheapRide.service;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -74,6 +74,8 @@ public class TestUberAPI {
 			Response response = client.newCall(request).execute();
 			 String responseString = new String(response.body().bytes());
 			System.out.println(responseString);
+			assert(responseString!=null && response.code()==200);
+
 
 		} catch (Exception exc) {
 			fail(exc.getMessage());
@@ -108,6 +110,7 @@ public class TestUberAPI {
 			Response response = client.newCall(request).execute();
 			 String responseString = new String(response.body().bytes());
 			System.out.println(responseString);
+			assert(responseString!=null && response.code()==200);
 
 		} catch (Exception exc) {
 			fail(exc.getMessage());
@@ -115,30 +118,4 @@ public class TestUberAPI {
 	}
 
 
-	/*private SessionConfiguration createSessionConfig() {
-
-		// Get the server token for your app from the developer dashboard.
-		SessionConfiguration config = new SessionConfiguration.Builder().setClientId(uberClientId)
-				.setServerToken(uberServerToken).build();
-
-		ServerTokenSession session = new ServerTokenSession(config);
-		return config;
-
-	}
-
-	private static RideRequestParameters createRideRequest() {
-		return new RideRequestParameters.Builder()
-				.setPickupCoordinates(PICKUP_LATITUDE, PICKUP_LONGITUDE)
-				.setDropoffCoordinates(DROPOFF_LATITUDE, DROPOFF_LONGITUDE)
-				.setSeatCount(2)
-				.build();
-	}
-
-	private static RideRequestParameters createRideRequestV1Estimate() {
-	     return new RideRequestParameters.Builder()
-	                .setPickupCoordinates(PICKUP_LATITUDE, PICKUP_LONGITUDE)
-	                .setDropoffCoordinates(DROPOFF_LATITUDE, DROPOFF_LONGITUDE)
-	                .setSeatCount(4)
-	                .build();
-	 }*/
 }
