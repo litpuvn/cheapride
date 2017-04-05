@@ -3,8 +3,10 @@ package com.cheapRide.service.impl;
 import java.io.UnsupportedEncodingException;
 import java.net.UnknownHostException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.UUID;
 
+import com.cheapRide.model.User;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,8 +27,12 @@ public class LoginServiceImpl implements LoginService {
     public String loginUsingUsernameAndPassword(String username, String password) throws UnknownHostException, UnsupportedEncodingException, NoSuchAlgorithmException {
     	logger.debug("Start => LoginServiceImpl => loginUsingUsernameAndPassword  for user "+ username);
     	String returnString;
-    	if(loginDao.getUserByUserAndPass(username, Security.SHA1(password))!=null)
-    		returnString = "found";
+    	if(loginDao.getUserByUserAndPass(username, Security.SHA1(password))!=null){
+    	    User user=loginDao.getUserByUserAndPass(username, Security.SHA1(password));
+    	    user.setDate(new Date());
+    	    user.setToken(getRandomToken());
+    	    loginDao.refreshTokenAndDate(user);
+    		returnString = "found";}
         else
         	returnString = "UserNotFound";
     	logger.debug("end => LoginServiceImpl => loginUsingUsernameAndPassword  for user "+ username);
@@ -37,10 +43,11 @@ public class LoginServiceImpl implements LoginService {
     public String createNewUsernameAndPassword(String username, String password) throws  UnknownHostException, UnsupportedEncodingException, NoSuchAlgorithmException {
     	logger.debug("Start => LoginServiceImpl => createNewUsernameAndPassword  for user "+ username);
     	String returnString;
-    	if (loginDao.getUserByUserAndPass(username) != null)
-    		returnString = "alreadyRegistered";
+    	if (loginDao.getUserByUserAndPass(username) != null){
+
+    		returnString = "alreadyRegistered";}
         else {
-            loginDao.registerNewUser(username, Security.SHA1(password));
+            loginDao.registerNewUser(username, Security.SHA1(password),getRandomToken(),new Date());
             returnString = "done";
         }
     	logger.debug("End => LoginServiceImpl => createNewUsernameAndPassword  for user "+ username);

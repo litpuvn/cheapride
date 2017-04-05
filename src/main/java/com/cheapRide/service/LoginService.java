@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import java.io.UnsupportedEncodingException;
 import java.net.UnknownHostException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 
 /**
  * Created by pshayegh on 3/8/2017.

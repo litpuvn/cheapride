@@ -8,6 +8,9 @@ import org.springframework.data.mongodb.core.query.Query;
 
 import com.cheapRide.dao.LoginDao;
 import com.cheapRide.model.User;
+import org.springframework.data.mongodb.core.query.Update;
+
+import java.util.Date;
 
 /**
  * Created by pshayegh on 3/22/2017.
@@ -63,15 +66,31 @@ public class LoginDaoImpl implements LoginDao {
 				+ username);
 		return savedUser;
 	}
-	
+
 	@Override
-	public String registerNewUser(String username, String password) {
+	public String refreshTokenAndDate(User user) {
+		logger.debug("Start => LoginDaoImpl => update token and date for user "
+				+ user.getUsername());
+		String returnString="";
+		Query searchUserQuery = new Query(Criteria.where("username").is(
+				user.getUsername()));
+		mongoOperation.updateFirst(searchUserQuery, Update.update("LoginDate", user.getDate()),User.class);
+		mongoOperation.updateFirst(searchUserQuery, Update.update("Token", user.getToken()),User.class);
+		logger.debug("End => LoginDaoImpl => registerNewUser  for user "
+				+ user.getUsername());
+		return returnString;
+	}
+
+	@Override
+	public String registerNewUser(String username, String password, String token, Date date) {
 		logger.debug("Start => LoginDaoImpl => registerNewUser  for user "
 				+ username);
 		String returnString;
 			User user = new User();
 			user.setUsername(username);
 			user.setPassword(password);
+			user.setToken(token);
+			user.setDate(date);
 			// save
 			mongoOperation.save(user);
 			returnString = "done";
