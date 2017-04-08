@@ -1,13 +1,16 @@
 package junit.com.cheapRide.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.cheapRide.model.uber.ListUberETAModel;
+import com.cheapRide.model.uber.ListUberPriceModel;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -40,7 +43,7 @@ public class TestUberAPI {
 	@Value("${UBER_BASE_URL}")
 	private String uberBaseUrl;
 
-
+	ObjectMapper mapper = new ObjectMapper();
 
 	private RidesService service;
 
@@ -53,15 +56,21 @@ public class TestUberAPI {
 
 
 	//@Test
-	public void getEstimatedPrice() {
+	public void TestGetEstimatedPrice() {
+		String responseString =  getEstimatedPrice(PICKUP_LATITUDE, PICKUP_LONGITUDE, DROPOFF_LATITUDE, DROPOFF_LONGITUDE);
+	}
+	
+	private String getEstimatedPrice(float start_lat, float start_lon, float dropOffLat, float dropOffLon){
+		String returnStr = null;
+		
 		try {
 			OkHttpClient client = new OkHttpClient();
 
 			HttpUrl.Builder urlBuilder = getUberServiceUrl(UBER_PRC_ESMT_URL);
-			urlBuilder.addQueryParameter("start_latitude", ""+PICKUP_LATITUDE);
-			urlBuilder.addQueryParameter("start_longitude", ""+PICKUP_LONGITUDE);
-			urlBuilder.addQueryParameter("end_latitude", ""+DROPOFF_LATITUDE);
-			urlBuilder.addQueryParameter("end_longitude", ""+DROPOFF_LONGITUDE);
+			urlBuilder.addQueryParameter("start_latitude", ""+start_lat);
+			urlBuilder.addQueryParameter("start_longitude", ""+start_lon);
+			urlBuilder.addQueryParameter("end_latitude", ""+dropOffLat);
+			urlBuilder.addQueryParameter("end_longitude", ""+dropOffLon);
 			urlBuilder.addQueryParameter("server_token", uberServerToken);
 			String url = urlBuilder.build().toString();
 
@@ -72,14 +81,13 @@ public class TestUberAPI {
                     .build();
 
 			Response response = client.newCall(request).execute();
-			 String responseString = new String(response.body().bytes());
-			System.out.println(responseString);
-			assert(responseString!=null && response.code()==200);
-
+			returnStr = new String(response.body().bytes());
+			assert(returnStr!=null && response.code()==200);
 
 		} catch (Exception exc) {
 			fail(exc.getMessage());
 		}
+		return returnStr;
 	}
 
 	private HttpUrl.Builder getUberServiceUrl(String offSet){
@@ -87,10 +95,9 @@ public class TestUberAPI {
 		return HttpUrl.parse(uberBaseUrl+offSet+Q_MARK).newBuilder();
 
 	}
-
-
-	@Test
-	public void getEstimatedTime() {
+	
+	private String getEstimatedTime(float start_lat, float start_lon){
+		String returnStr = null;
 		try {
 			OkHttpClient client = new OkHttpClient();
 
@@ -108,10 +115,48 @@ public class TestUberAPI {
                     .build();
 
 			Response response = client.newCall(request).execute();
-			 String responseString = new String(response.body().bytes());
-			System.out.println(responseString);
-			assert(responseString!=null && response.code()==200);
+			returnStr = new String(response.body().bytes());
+			System.out.println(returnStr);
+			assert(returnStr!=null && response.code()==200);
 
+		} catch (Exception exc) {
+			fail(exc.getMessage());
+		}
+		return returnStr;
+		
+	}
+
+
+	//@Test
+	public void testGetEstimatedTime() {
+		
+		getEstimatedPrice(PICKUP_LATITUDE, PICKUP_LONGITUDE, DROPOFF_LATITUDE, DROPOFF_LONGITUDE);
+	}
+	
+	
+	@Test
+	public void uberPriceJsonToObject() {
+		try {
+			
+			String etaEstStr =  getEstimatedTime(PICKUP_LATITUDE, PICKUP_LONGITUDE);
+			
+			ListUberETAModel uberETAEstModel = mapper.readValue(etaEstStr, ListUberETAModel.class);
+			
+			assert(uberETAEstModel.getTimes().get(0).getEstimate() == 60);
+		} catch (Exception exc) {
+			fail(exc.getMessage());
+		}
+	}
+	
+	@Test
+	public void uberETAJsonToObject() {
+		try {
+			
+			String etatStr =  getEstimatedPrice(PICKUP_LATITUDE, PICKUP_LONGITUDE, DROPOFF_LATITUDE, DROPOFF_LONGITUDE);
+			
+			ListUberPriceModel uberPriceEstModel = mapper.readValue(etatStr, ListUberPriceModel.class);
+			
+			assert(uberPriceEstModel.getPrices().get(0).getDistance() == 1.4);
 		} catch (Exception exc) {
 			fail(exc.getMessage());
 		}
