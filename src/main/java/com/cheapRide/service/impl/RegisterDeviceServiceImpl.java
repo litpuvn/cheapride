@@ -1,12 +1,12 @@
 package com.cheapRide.service.impl;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cheapRide.dao.RegisterDeviceDao;
 import com.cheapRide.service.RegisterDeviceService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * 
