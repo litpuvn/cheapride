@@ -30,7 +30,6 @@ public class TestEstimateRequestModel{
 	private static final float DROPOFF_LATITUDE = 37.787654f;
 	private static final float DROPOFF_LONGITUDE = -122.40276f;
 	ObjectMapper mapper = new ObjectMapper();
-	//String estReqStr = "{\\"origin\\":{\\"lat\\":37.7753,\\"lon\\":-122.418},\\"destination\\":{\\"lat\\":37.7753,\\"lon\\":-122.418},\\"options\\":{\\"uber_car_type\\":\\"sedan\\",\\"lyft_car_type\\":\\"lyft_plus\\"}}";
 	@Test
 	public void objectToJson() {
 		try {
