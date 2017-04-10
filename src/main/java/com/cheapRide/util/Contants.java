@@ -7,5 +7,6 @@ package com.cheapRide.util;
  */
 public class Contants {
 	
+	public static String Q_MARK = "?";
 
 }
