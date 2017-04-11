@@ -1,100 +1,83 @@
 package com.cheapRide.service.impl;
 
-import static org.junit.Assert.fail;
+import java.util.Map;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Value;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cheapRide.model.lyft.ListLyftPriceModel;
+import com.cheapRide.model.uber.ListUberPriceModel;
 import com.cheapRide.service.RideEstimateService;
-import com.squareup.okhttp.HttpUrl;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import com.uber.sdk.rides.client.services.RidesService;
+import com.cheapRide.service.UberEstmiateService;
 
 @Service
 public class RideEstimateServiceImpl implements RideEstimateService {
 
+	private final static org.slf4j.Logger logger = LoggerFactory.getLogger(RideEstimateServiceImpl.class);
 
-	@Value("${UBER_CLIENT_ID}")
-	private String uberClientId;
+	private static ObjectMapper mapper = new ObjectMapper();
 
-	@Value("${UBER_SERVER_TOKEN}")
-	private String uberServerToken;
+	@Autowired
+	LyftEstimateService lyftEstimateService;
+	
+	@Autowired
+	UberEstmiateService uberEstimateService;
 
-	@Value("${UBER_CLIENT_SECRET}")
-	private String uberClietSecret;
-
-	@Value("${UBER_BASE_URL}")
-	private String uberBaseUrl;
-
-	private RidesService service;
-
-	private String UBER_PRC_ESMT_URL = "/estimates/price";
-
-	private String UBER_TIME_ESMT_URL = "/estimates/time";
-
-	private String Q_MARK = "?";
-
-	public String getEstimatedPrice(float pickUpLat, float pickUpLong, float dropOffLat, float dropOffLong) {
+	public String getEstimatedPrice(float originLat, float originLong, float destLat, float destLon, Map<String,String> options) {
+		logger.debug("Start : RideEstimateServiceImpl => getPriceEstmiate  for origin lattitude" + originLat
+				+ " origin longitude " + originLong + " destination lattitude " + destLat + " destination longitude "
+				+ destLon);
 		String returnVal = null;
 		try {
-			OkHttpClient client = new OkHttpClient();
-
-			HttpUrl.Builder urlBuilder = getUberServiceUrl(UBER_PRC_ESMT_URL);
-			urlBuilder.addQueryParameter("start_latitude", "" + pickUpLat);
-			urlBuilder.addQueryParameter("start_longitude", "" + pickUpLong);
-			urlBuilder.addQueryParameter("end_latitude", "" + dropOffLat);
-			urlBuilder.addQueryParameter("end_longitude", "" + dropOffLong);
-			urlBuilder.addQueryParameter("server_token", uberServerToken);
-			String url = urlBuilder.build().toString();
-
-			Request request = new Request.Builder().header("Content-Type", "application/json")
-					.header("Accept-Language", "en_EN").url(url).build();
-
-			Response response = client.newCall(request).execute();
-			String responseString = new String(response.body().bytes());
-			System.out.println(responseString);
-			returnVal =  responseString;
-
+			
+			ListUberPriceModel listUberModel = uberEstimateService.getPriceEstmiate(""+originLat, ""+originLong,""+destLat, ""+destLon);
+			ListLyftPriceModel listLyftModel = lyftEstimateService.getPriceEstmiate(""+originLat, ""+originLong,""+destLat, ""+destLon);
+			
+			//getCheapRideEstimate(listUberModel, listLyftModel, options);
+			
 		} catch (Exception exc) {
-			fail(exc.getMessage());
+			logger.error("ERROR : RideEstimateServiceImpl => getPriceEstmiate  for origin lattitude" + originLat
+					+ " origin longitude " + originLong + " destination lattitude " + destLat + " destination longitude "
+					+ destLon);
 		}
+		logger.debug("Start : RideEstimateServiceImpl => getPriceEstmiate  for origin lattitude" + originLat
+				+ " origin longitude " + originLong + " destination lattitude " + destLat + " destination longitude "
+				+ destLon);
 		return returnVal;
 	}
 
-	private HttpUrl.Builder getUberServiceUrl(String offSet) {
 
-		return HttpUrl.parse(uberBaseUrl + offSet + Q_MARK).newBuilder();
 
+
+	private void getCheapMinCostUber(ListUberPriceModel listUberModel,
+			ListLyftPriceModel listLyftModel, Map<String, String> options) {
+
+		
+		
 	}
+
+	
+
+
 
 	@Test
-	public String getEstimatedTime(float pickUpLat, float pickUpLong) {
+	public String getEstimatedTime(float originLat, float originLong, Map<String,String> options) {
+		logger.debug("Start : RideEstimateServiceImpl => getEstimatedTime  for origin lattitude" + originLat
+				+ " origin longitude " + originLong );
 		String returnVal = null;
 		try {
-			OkHttpClient client = new OkHttpClient();
-
-			HttpUrl.Builder urlBuilder = getUberServiceUrl(UBER_TIME_ESMT_URL);
-			urlBuilder.addQueryParameter("start_latitude", "" + pickUpLat);
-			urlBuilder.addQueryParameter("start_longitude", "" + pickUpLong);
-
-			urlBuilder.addQueryParameter("server_token", uberServerToken);
-			String url = urlBuilder.build().toString();
-
-			Request request = new Request.Builder().header("Content-Type", "application/json")
-					.header("Accept-Language", "en_EN").url(url).build();
-
-			Response response = client.newCall(request).execute();
-			String responseString = new String(response.body().bytes());
-			System.out.println(responseString);
-			returnVal =  responseString;
-
+			
 		} catch (Exception exc) {
-			fail(exc.getMessage());
+			logger.error("ERROR : RideEstimateServiceImpl => getEstimatedTime  for origin lattitude" + originLat
+					+ " origin longitude " + originLong);
 		}
+		logger.debug("Start : RideEstimateServiceImpl => getEstimatedTime  for origin lattitude" + originLat
+				+ " origin longitude " + originLong );
 		return returnVal;
 	}
+
 
 }

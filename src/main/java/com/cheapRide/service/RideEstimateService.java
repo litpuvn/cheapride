@@ -1,13 +1,15 @@
 package com.cheapRide.service;
 
+import java.util.Map;
+
 /**
  * Created by Amit
  */
 public interface RideEstimateService {
 	
-	 String getEstimatedPrice(float pickUpLat, float pickUpLong, float dropOffLat, float dropOffLong);
+	 String getEstimatedPrice(float pickUpLat, float pickUpLong, float dropOffLat, float dropOffLong,Map<String,String> options);
 	
-	 String getEstimatedTime(float pickUpLat, float pickUpLong) ;
+	 String getEstimatedTime(float pickUpLat, float pickUpLong, Map<String,String> options) ;
 
 	
 }

@@ -26,7 +26,7 @@ public class RideController {
     		@RequestParam(value="drop_off_longitude") float dropOffLong){
         String resString = null;
         try {
-            resString = rideService.getEstimatedPrice(pickUpLat, pickUpLong, dropOffLat, dropOffLong);
+            resString = rideService.getEstimatedPrice(pickUpLat, pickUpLong, dropOffLat, dropOffLong, null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -38,7 +38,7 @@ public class RideController {
     		@RequestParam(value="pick_up_longitude") float pickUpLong) {
     	String resString = null;
     	try {
-            resString = rideService.getEstimatedTime(pickUpLat, pickUpLong);
+            resString = rideService.getEstimatedTime(pickUpLat, pickUpLong, null);
     	 } catch (Exception e) {
              e.printStackTrace();
          }

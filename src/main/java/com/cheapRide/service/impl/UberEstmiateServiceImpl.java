@@ -7,6 +7,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import com.cheapRide.model.uber.ListUberETAModel;
 import com.cheapRide.model.uber.ListUberPriceModel;
@@ -18,6 +19,7 @@ import com.cheapRide.util.CommonUtil;
  * @author Amit
  *
  */
+@Service
 public class UberEstmiateServiceImpl implements UberEstmiateService {
 
 	private final static org.slf4j.Logger logger = LoggerFactory.getLogger(UberEstmiateServiceImpl.class);
