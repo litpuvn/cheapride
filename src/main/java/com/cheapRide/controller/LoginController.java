@@ -20,22 +20,23 @@ import com.cheapRide.service.LoginService;
  */
 @RestController
 public class LoginController {
-	
-	private final static org.slf4j.Logger logger = LoggerFactory.getLogger(LoginController.class);
+
+    private final static org.slf4j.Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
     public LoginService loginService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<LoginResponse> login(@RequestBody User user) {
-    	logger.debug("Start => LoginController => login  for user "+ user.getUsername());
-    	ResponseEntity<LoginResponse>  loginResponseEntity;
+        logger.debug("Start => LoginController => login  for user " + user.getUsername());
+        ResponseEntity<LoginResponse> loginResponseEntity;
         LoginResponse loginResponse = new LoginResponse();
         try {
-            if ("found".equalsIgnoreCase(loginService.loginUsingUsernameAndPassword(user.getUsername(), user.getPassword()))) {
+            User foundUser = loginService.loginUsingUsernameAndPassword(user.getUsername(), user.getPassword());
+            if (foundUser != null) {
                 loginResponse.setMessage("You are authorized to access");
-                loginResponse.setToken(loginService.getRandomToken());
-                loginResponseEntity=  ResponseEntity.status(HttpStatus.OK).body(loginResponse);
+                loginResponse.setToken(foundUser.getToken());
+                loginResponseEntity = ResponseEntity.status(HttpStatus.OK).body(loginResponse);
             } else {
                 loginResponse.setMessage("You are not authorized to access");
                 loginResponseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(loginResponse);
@@ -43,24 +44,23 @@ public class LoginController {
         } catch (Exception e) {
             loginResponse.setMessage("You are not authorized to access");
             loginResponseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(loginResponse);
-            logger.error("Error => LoginController => login  for user "+ user.getUsername());
+            logger.error("Error => LoginController => login  for user " + user.getUsername());
         }
-        logger.debug("End => LoginController => login  for user "+ user.getUsername());
+        logger.debug("End => LoginController => login  for user " + user.getUsername());
         return loginResponseEntity;
     }
 
- 
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<LoginResponse> register(@RequestBody User user) {
-    	logger.debug("Start => LoginController => register  for user "+ user.getUsername());
-    	ResponseEntity<LoginResponse>  loginResponseEntity;
-    	LoginResponse loginResponse = new LoginResponse();
+        logger.debug("Start => LoginController => register  for user " + user.getUsername());
+        ResponseEntity<LoginResponse> loginResponseEntity;
+        LoginResponse loginResponse = new LoginResponse();
         try {
-        	String serviceReturnMsg = loginService.createNewUsernameAndPassword(user.getUsername(), user.getPassword());
+            String serviceReturnMsg = loginService.createNewUsernameAndPassword(user.getUsername(), user.getPassword());
             if ("done".equalsIgnoreCase(serviceReturnMsg)) {
                 loginResponse.setMessage("User created");
-                loginResponse.setToken(loginService.getRandomToken());
+                loginResponse.setToken("");
                 loginResponseEntity = ResponseEntity.status(HttpStatus.CREATED).body(loginResponse);
             } else {
                 loginResponse.setMessage(serviceReturnMsg);
@@ -69,19 +69,19 @@ public class LoginController {
         } catch (Exception e) {
             loginResponse.setMessage("You are not authorized to access");
             loginResponseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(loginResponse);
-            logger.error("Error => LoginController => register  for user "+ user.getUsername());
+            logger.error("Error => LoginController => register  for user " + user.getUsername());
         }
-        logger.debug("End => LoginController => register  for user "+ user.getUsername());
+        logger.debug("End => LoginController => register  for user " + user.getUsername());
         return loginResponseEntity;
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ResponseEntity<LoginResponse> delete(@RequestBody User user) {
-    	logger.debug("Start => LoginController => delete  for user "+ user.getUsername());
-    	ResponseEntity<LoginResponse>  loginResponseEntity;
+        logger.debug("Start => LoginController => delete  for user " + user.getUsername());
+        ResponseEntity<LoginResponse> loginResponseEntity;
         LoginResponse loginResponse = new LoginResponse();
         try {
-            if ("done".equalsIgnoreCase(loginService.removeAccount(user.getUsername(), user.getPassword())) ){
+            if ("done".equalsIgnoreCase(loginService.removeAccount(user.getUsername(), user.getPassword()))) {
                 loginResponse.setMessage("You are authorized to access");
                 loginResponseEntity = ResponseEntity.status(HttpStatus.OK).body(loginResponse);
             } else {
@@ -91,12 +91,35 @@ public class LoginController {
         } catch (Exception e) {
             loginResponse.setMessage("You are not authorized to access");
             loginResponseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(loginResponse);
-            logger.error("Error => LoginController => delete  for user "+ user.getUsername());
+            logger.error("Error => LoginController => delete  for user " + user.getUsername());
         }
-        
-        logger.debug("End => LoginController => delete  for user "+ user.getUsername());
+
+        logger.debug("End => LoginController => delete  for user " + user.getUsername());
         return loginResponseEntity;
 
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public ResponseEntity<LoginResponse> logout(@RequestBody User user) {
+        logger.debug("Start => LoginController => logout  for user " + user.getToken());
+        ResponseEntity<LoginResponse> loginResponseEntity;
+        LoginResponse loginResponse = new LoginResponse();
+        try {
+            if ("logoutSuccessful".equalsIgnoreCase(loginService.invalidateTokenBylogout(user.getToken()))) {
+                loginResponse.setMessage("You are loged out to access");
+                loginResponse.setToken("INVALID");
+                loginResponseEntity = ResponseEntity.status(HttpStatus.OK).body(loginResponse);
+            } else {
+                loginResponse.setMessage("You are not loged out");
+                loginResponseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(loginResponse);
+            }
+        } catch (Exception e) {
+            loginResponse.setMessage("You are not loged out");
+            loginResponseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(loginResponse);
+            logger.error("Error => LoginController => logout  for user " + user.getToken());
+        }
+        logger.debug("End => LoginController => logout  for user " + user.getToken());
+        return loginResponseEntity;
     }
 
 }

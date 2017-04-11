@@ -3,8 +3,10 @@ package com.cheapRide.service.impl;
 import java.io.UnsupportedEncodingException;
 import java.net.UnknownHostException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.UUID;
 
+import com.cheapRide.model.User;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,23 +24,26 @@ public class LoginServiceImpl implements LoginService {
     private LoginDao loginDao;
 
     @Override
-    public String loginUsingUsernameAndPassword(String username, String password) throws UnknownHostException, UnsupportedEncodingException, NoSuchAlgorithmException {
+    public User loginUsingUsernameAndPassword(String username, String password) throws UnknownHostException, UnsupportedEncodingException, NoSuchAlgorithmException {
     	logger.debug("Start => LoginServiceImpl => loginUsingUsernameAndPassword  for user "+ username);
-    	String returnString;
-    	if(loginDao.getUserByUserAndPass(username, Security.SHA1(password))!=null)
-    		returnString = "found";
-        else
-        	returnString = "UserNotFound";
+//    	String returnString;
+    	User foundUser=loginDao.getUserByUserAndPass(username, Security.SHA1(password));
+    	if(foundUser!=null) {
+			foundUser.setDate(new Date());
+			foundUser.setToken(getRandomToken());
+			loginDao.refreshTokenAndDate(foundUser);
+		}
     	logger.debug("end => LoginServiceImpl => loginUsingUsernameAndPassword  for user "+ username);
-    	return returnString;
+    	return foundUser;
     }
 
     @Override
     public String createNewUsernameAndPassword(String username, String password) throws  UnknownHostException, UnsupportedEncodingException, NoSuchAlgorithmException {
     	logger.debug("Start => LoginServiceImpl => createNewUsernameAndPassword  for user "+ username);
     	String returnString;
-    	if (loginDao.getUserByUserAndPass(username) != null)
-    		returnString = "alreadyRegistered";
+    	if (loginDao.getUserByUserAndPass(username) != null){
+
+    		returnString = "alreadyRegistered";}
         else {
             loginDao.registerNewUser(username, Security.SHA1(password));
             returnString = "done";
@@ -68,9 +73,26 @@ public class LoginServiceImpl implements LoginService {
 		logger.debug("Start => LoginServiceImpl => getRandomToken  for token ");
         UUID tmepUUID = UUID.randomUUID();
         String tempValidId = tmepUUID.toString();
+		tempValidId = tempValidId.replace("-", "");
         logger.debug("Start => LoginServiceImpl => getRandomToken  for tokrn "+ tmepUUID);
         return tempValidId;
     }
+
+	@Override
+	public String invalidateTokenBylogout(String token) {
+		logger.debug("Start => Logout => invalidateTokenBylogout  for user "+ token);
+		String returnString;
+		if(loginDao.getUserByToken(token)!=null){
+			User user=loginDao.getUserByToken(token);
+			user.setDate(new Date());
+			user.setToken("INVALID");
+			loginDao.refreshTokenAndDate(user);
+			returnString = "logoutSuccessful";}
+		else
+			returnString = "logoutFailed";
+		logger.debug("end => LoginServiceImpl => invalidateTokenBylogout  for user "+ token);
+		return returnString;
+	}
 
 
 }
