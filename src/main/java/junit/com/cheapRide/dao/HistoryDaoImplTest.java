@@ -1,4 +1,7 @@
 package junit.com.cheapRide.dao;
+/**
+ * @author Agnes
+ */
 
 import static org.junit.Assert.*;
 
