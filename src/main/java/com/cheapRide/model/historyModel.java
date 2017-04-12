@@ -4,12 +4,19 @@ package com.cheapRide.model;
  * @author Agnes 
  *
  */
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "history")
 public class historyModel {
+@Id
 private String date;
 private String provider;
 private String pickup;
 private String destination;
 private String fee;
+private String type;
 
 public String getDate(){
 	return date;
@@ -40,5 +47,11 @@ public String getFee(){
 }
 public void setFee(String fee){
 	this.fee = fee;
+}
+public String getType(){
+	return type;
+}
+public void setType(String type){
+	this.type = type;
 }
 }

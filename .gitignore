@@ -7,3 +7,4 @@ RemoteSystemsTempFiles/
 pom.xml.bak
 target/
 .gitignore.bak
+/bin/
