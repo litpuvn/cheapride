@@ -1,6 +1,5 @@
 package com.cheapRide.dao;
 
-import com.cheapRide.model.historyModel;
 
 /**
  * 

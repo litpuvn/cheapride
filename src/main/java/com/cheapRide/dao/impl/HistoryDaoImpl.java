@@ -1,12 +1,9 @@
 package com.cheapRide.dao.impl;
-<<<<<<< HEAD
 
 import org.junit.runner.RunWith;
-=======
 /**
 *@author: Agnes
 */
->>>>>>> 8a9b6b09c3419f779d7dbb3bd29bbc58a35577e8
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
