@@ -7,6 +7,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import com.cheapRide.model.uber.ListUberETAModel;
 import com.cheapRide.model.uber.ListUberPriceModel;
@@ -18,6 +19,7 @@ import com.cheapRide.util.CommonUtil;
  * @author Amit
  *
  */
+@Service
 public class UberEstmiateServiceImpl implements UberEstmiateService {
 
 	private final static org.slf4j.Logger logger = LoggerFactory.getLogger(UberEstmiateServiceImpl.class);
@@ -76,7 +78,7 @@ public class UberEstmiateServiceImpl implements UberEstmiateService {
 				+ " origin longitude " + originLong);
 		ListUberETAModel uberETAModel = null;
 		try {
-			String reqUrl = uberBaseUrl + UBER_PRC_ESMT_URL;
+			String reqUrl = uberBaseUrl + UBER_ETA_URL;
 			Map<String, String> prmMap = new HashMap<String, String>();
 			prmMap.put("start_latitude", "" + originLat);
 			prmMap.put("start_longitude", "" + originLong);

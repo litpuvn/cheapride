@@ -1,7 +1,5 @@
 package com.cheapRide.controller;
 
-import java.util.UUID;
-
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

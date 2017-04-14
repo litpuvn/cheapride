@@ -2,20 +2,25 @@ package junit.com.cheapRide.service;
 
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
+
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.cheapRide.model.uber.ListUberETAModel;
 import com.cheapRide.model.uber.ListUberPriceModel;
+import com.cheapRide.service.UberEstmiateService;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
-import com.uber.sdk.rides.client.services.RidesService;
 
 /**
  *
@@ -45,7 +50,8 @@ public class TestUberAPI {
 
 	ObjectMapper mapper = new ObjectMapper();
 
-	private RidesService service;
+	@Autowired
+	private UberEstmiateService uberEstmiateService;
 
 	private String UBER_PRC_ESMT_URL = "/estimates/price";
 
@@ -53,11 +59,25 @@ public class TestUberAPI {
 
 	private String Q_MARK = "?";
 
+	
 
 
-	//@Test
+	@Test
 	public void TestGetEstimatedPrice() {
-		String responseString =  getEstimatedPrice(PICKUP_LATITUDE, PICKUP_LONGITUDE, DROPOFF_LATITUDE, DROPOFF_LONGITUDE);
+		//String responseString =  getEstimatedPrice(PICKUP_LATITUDE, PICKUP_LONGITUDE, DROPOFF_LATITUDE, DROPOFF_LONGITUDE);
+		ListUberETAModel model = uberEstmiateService.getETA(PICKUP_LATITUDE+"", PICKUP_LONGITUDE+"");
+		try {
+			System.out.println(mapper.writeValueAsString(model));
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private String getEstimatedPrice(float start_lat, float start_lon, float dropOffLat, float dropOffLon){
@@ -134,7 +154,7 @@ public class TestUberAPI {
 	}
 	
 	
-	@Test
+	//@Test
 	public void uberPriceJsonToObject() {
 		try {
 			
@@ -148,7 +168,7 @@ public class TestUberAPI {
 		}
 	}
 	
-	@Test
+	//@Test
 	public void uberETAJsonToObject() {
 		try {
 			
