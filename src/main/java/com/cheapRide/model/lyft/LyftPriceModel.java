@@ -18,6 +18,18 @@ public class LyftPriceModel {
 	private String display_name;
 	private String primetime_confirmation_token;
 	private boolean can_request_ride;
+	private String cost_token;
+	
+	
+	
+	
+	public String getCost_token() {
+		return cost_token;
+	}
+
+	public void setCost_token(String cost_token) {
+		this.cost_token = cost_token;
+	}
 
 	public String getRide_type() {
 		return ride_type;

@@ -78,7 +78,7 @@ public class UberEstmiateServiceImpl implements UberEstmiateService {
 				+ " origin longitude " + originLong);
 		ListUberETAModel uberETAModel = null;
 		try {
-			String reqUrl = uberBaseUrl + UBER_PRC_ESMT_URL;
+			String reqUrl = uberBaseUrl + UBER_ETA_URL;
 			Map<String, String> prmMap = new HashMap<String, String>();
 			prmMap.put("start_latitude", "" + originLat);
 			prmMap.put("start_longitude", "" + originLong);
