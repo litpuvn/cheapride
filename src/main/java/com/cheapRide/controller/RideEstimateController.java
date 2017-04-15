@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,7 +29,7 @@ public class RideEstimateController {
 
 
     @RequestMapping(value = "/getEstimate" , method = RequestMethod.GET)
-    public String getEstimatedPrice(@RequestParam(value="pick_up_lattitude") float originLat,
+    public String getEstimatedPrice(@RequestHeader HttpHeaders headers,@RequestParam(value="pick_up_lattitude") float originLat,
     		@RequestParam(value="pick_up_longitude") float originLon,
     		@RequestParam(value="drop_off_lattitude") float destLat,
     		@RequestParam(value="drop_off_longitude") float destLon,
@@ -35,8 +37,9 @@ public class RideEstimateController {
     		@RequestParam(value="lyft_car_type", required = false) String lyft_car_type){
     	
     	logger.debug("Start : RideEstimateServiceImpl => getPriceEstmiate  for origin lattitude" + originLat
-				+ " origin longitude " + originLon + " destination lattitude " + destLat + " destination longitude "
+					+ " origin longitude " + originLon + " destination lattitude " + destLat + " destination longitude "
 				+ destLon);
+    //	headers.get("")
         String resString = null;
         Map<String, String> options = new HashMap<String,String>();
         options.put("uber_car_type", uber_car_type);

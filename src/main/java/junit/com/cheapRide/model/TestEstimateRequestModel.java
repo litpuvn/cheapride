@@ -1,10 +1,10 @@
 package junit.com.cheapRide.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.collections4.map.HashedMap;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,7 +42,7 @@ public class TestEstimateRequestModel{
 			destination.setLat(PICKUP_LATITUDE);
 			destination.setLon(PICKUP_LONGITUDE);
 			
-			Map<String, String> options = new HashedMap<String, String>();
+			Map<String, String> options = new HashMap<String, String>();
 			options.put("lyft_car_type", "lyft_plus");
 			options.put("uber_car_type", "sedan");
 			
