@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.cheapRide.model.lyft.ListLyftETAModel;
 import com.cheapRide.model.lyft.ListLyftPriceModel;
+import com.cheapRide.model.uber.ListUberPriceModel;
 import com.cheapRide.util.CommonUtil;
 /**
  * 
@@ -49,6 +50,7 @@ public class LyftEstimateServiceImpl implements LyftEstimateService {
 				+ " origin longitude " + originLong + " destination lattitude " + destLat + " destination longitude "
 				+ destLon);
 		ListLyftPriceModel lyftPriceModel = null;
+		String resString = null;
 		try {
 			String reqUrl = lyftBaseUrl + LYFT_PRC_ESMT_URL;
 			Map<String,String> prmMap = new HashMap<String,String>();
@@ -61,9 +63,16 @@ public class LyftEstimateServiceImpl implements LyftEstimateService {
 			hdrMap.put("Content-Type",  "application/json");
 			hdrMap.put("Accept-Language",  "en_EN");
 			hdrMap.put("Authorization",  "bearer "+lyftSecretToken);
+			try{
+				resString = util.makeGetReuqest(reqUrl, prmMap, hdrMap);
+				lyftPriceModel = mapper.readValue(resString, ListLyftPriceModel.class);
+			} catch (Exception e1) {
+				
+				logger.error("ERROR : UberEstmiateServiceImpl => getPriceEstmiate => Reason => "+resString);
+				lyftPriceModel = new ListLyftPriceModel();
+				lyftPriceModel.setErrorMessage(resString);
 			
-
-			lyftPriceModel = mapper.readValue(util.makeGetReuqest(reqUrl, prmMap, hdrMap), ListLyftPriceModel.class);
+			}
 
 		} catch (Exception e) {
 			logger.error("ERROR : LyftEstimateServiceImpl => getPriceEstmiate  for origin lattitude" + originLat
@@ -82,6 +91,7 @@ public class LyftEstimateServiceImpl implements LyftEstimateService {
 		logger.debug("Start : LyftEstimateServiceImpl => getETA  for origin lattitude" + originLat
 				+ " origin longitude " + originLong);
 		ListLyftETAModel lyftETAModel = null;
+		String resString = null;
 		try {
 			String reqUrl = lyftBaseUrl + LYFT_ETA_ESMT_URL;
 			Map<String, String> prmMap = new HashMap<String, String>();
@@ -92,8 +102,16 @@ public class LyftEstimateServiceImpl implements LyftEstimateService {
 			hdrMap.put("Content-Type", "application/json");
 			hdrMap.put("Accept-Language", "en_EN");
 			hdrMap.put("Authorization",  "bearer "+lyftSecretToken);
-
-			lyftETAModel = mapper.readValue(util.makeGetReuqest(reqUrl, prmMap, hdrMap), ListLyftETAModel.class);
+			try{
+				resString = util.makeGetReuqest(reqUrl, prmMap, hdrMap);
+				lyftETAModel = mapper.readValue(resString, ListLyftETAModel.class);
+			} catch (Exception e1) {
+			
+				logger.error("ERROR : UberEstmiateServiceImpl => getETA => Reason => "+resString);
+				lyftETAModel = new ListLyftETAModel();
+				lyftETAModel.setErrorMessage(resString);
+		
+			}
 
 		} catch (Exception e) {
 			logger.error("ERROR : LyftEstimateServiceImpl => getETA  for origin lattitude" + originLat

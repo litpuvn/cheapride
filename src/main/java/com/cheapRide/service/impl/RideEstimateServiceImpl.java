@@ -82,16 +82,20 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 		logger.debug("Start : RideEstimateServiceImpl => getEstResponse ");
 		EstimateResponseModel estResModel = new EstimateResponseModel();
 		ResponseModel uber = new ResponseModel();
-		uber.setMaxVal(uberPriceMoel.getHigh_estimate());
-		uber.setMinVal(uberPriceMoel.getLow_estimate());
-		uber.setRideRequestId(uberPriceMoel.getProduct_id());
-		uber.setTime(uberETAModel.getEstimate()+"");
+		//uber.setMaxVal(uberPriceMoel.getHigh_estimate());
+		if(uberPriceMoel != null){
+			uber.setCost(uberPriceMoel.getLow_estimate());
+			uber.setRideRequestId(uberPriceMoel.getProduct_id());
+			uber.setTime(uberETAModel.getEstimate()+"");
+		}
 		
 		ResponseModel lyft = new ResponseModel();
-		lyft.setMaxVal(lyftPriceModel.getEstimated_cost_cents_max());
-		lyft.setMinVal(lyftPriceModel.getEstimated_cost_cents_min());
-		lyft.setRideRequestId(lyftPriceModel.getRide_type());
-		lyft.setTime(lyftETAModel.getEta_seconds()+"");
+		//lyft.setMaxVal(lyftPriceModel.getEstimated_cost_cents_max());
+		if(lyftPriceModel != null){
+			lyft.setCost(lyftPriceModel.getEstimated_cost_cents_min());
+			lyft.setRideRequestId(lyftPriceModel.getRide_type());
+			lyft.setTime(lyftETAModel.getEta_seconds()+"");
+		}
 		
 		estResModel.setUber(uber);
 		estResModel.setLyft(lyft);
@@ -104,25 +108,34 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 
 	private UberPriceModel getCheapMinCostUber(ListUberPriceModel listUberModel, Map<String, String> options) {
 		logger.debug("Start : RideEstimateServiceImpl => getCheapMinCostUber ");
-		String uberCarType = null;
-		if(options != null)
-			uberCarType = options.get(Contants.UBER_CART_TYPE);
-		List<UberPriceModel> lisUberPriceModel = listUberModel.getPrices();
 		UberPriceModel returnUberPriceModel = null;
-		if(uberCarType == null){
-			Collections.sort(lisUberPriceModel, new UberMinPriceComparator());
-			returnUberPriceModel = lisUberPriceModel.get(0);
-		}else{
-			double minPrice = 10000.0;
-			for(UberPriceModel model : lisUberPriceModel ){
-				if(uberCarType.equalsIgnoreCase(model.getDisplay_name())){
-					if(model.getLow_estimate() < minPrice){
-						returnUberPriceModel = model;
-						minPrice = model.getLow_estimate();
+		String uberCarType = null;
+		if(listUberModel.getPrices().size()> 0){
+			if(options != null)
+				uberCarType = options.get(Contants.UBER_CART_TYPE);
+			List<UberPriceModel> lisUberPriceModel = listUberModel.getPrices();
+			
+			if(uberCarType == null){
+				Collections.sort(lisUberPriceModel, new UberMinPriceComparator());
+				for(UberPriceModel model : lisUberPriceModel ){
+						if(model.getLow_estimate() > 0){
+							returnUberPriceModel = model;
+							break;
+						}
+				}
+			}else{
+				double minPrice = 10000.0;
+				for(UberPriceModel model : lisUberPriceModel ){
+					if(uberCarType.equalsIgnoreCase(model.getDisplay_name())){
+						if(model.getLow_estimate() < minPrice){
+							returnUberPriceModel = model;
+							minPrice = model.getLow_estimate();
+						}
 					}
 				}
 			}
 		}
+		
 		logger.debug("End : RideEstimateServiceImpl => getCheapMinCostUber ");
 		return returnUberPriceModel;
 	}
@@ -130,20 +143,22 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 	private UberETAModel getCheapMinETAUber(ListUberETAModel listUberModel, Map<String, String> options) {
 		logger.debug("Start : RideEstimateServiceImpl => getCheapMinETAUber ");
 		String uberCarType = null;
-		if(options != null)
-		 uberCarType = options.get(Contants.UBER_CART_TYPE);
-		List<UberETAModel> listUberEtaModel = listUberModel.getTimes();
 		UberETAModel returnUberEtaModel = null;
-		if(uberCarType == null){
-			Collections.sort(listUberEtaModel, new UberETAComparator());
-			returnUberEtaModel = listUberEtaModel.get(0);
-		}else{
-			double minETA = 10000.0;
-			for(UberETAModel model : listUberEtaModel ){
-				if(uberCarType.equalsIgnoreCase(model.getDisplay_name())){
-					if(model.getEstimate() < minETA){
-						returnUberEtaModel = model;
-						minETA = model.getEstimate();
+		if(listUberModel.getTimes().size()> 0){
+			if(options != null)
+			 uberCarType = options.get(Contants.UBER_CART_TYPE);
+			List<UberETAModel> listUberEtaModel = listUberModel.getTimes();
+			if(uberCarType == null){
+				Collections.sort(listUberEtaModel, new UberETAComparator());
+				returnUberEtaModel = listUberEtaModel.get(0);
+			}else{
+				double minETA = 10000.0;
+				for(UberETAModel model : listUberEtaModel ){
+					if(uberCarType.equalsIgnoreCase(model.getDisplay_name())){
+						if(model.getEstimate() < minETA){
+							returnUberEtaModel = model;
+							minETA = model.getEstimate();
+						}
 					}
 				}
 			}
@@ -156,20 +171,23 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 	private LyftPriceModel getCheapMinCostLyft(ListLyftPriceModel listLyftModel, Map<String, String> options) {
 		logger.debug("Start : RideEstimateServiceImpl => getCheapMinCostLyft ");
 		String lyftCarType = null;
-		if(options != null)
-		 lyftCarType = options.get(Contants.LYFT_CART_TYPE);
-		List<LyftPriceModel> listLyftPriceModel = listLyftModel.getCost_estimates();
-				LyftPriceModel returnLyftPriceModel = null;
-		if(lyftCarType == null){
-			Collections.sort(listLyftPriceModel, new LyftMinPriceComparator());
-			returnLyftPriceModel = listLyftPriceModel.get(0);
-		}else{
-			double minPrice = 10000.0;
-			for(LyftPriceModel model : listLyftPriceModel ){
-				if(lyftCarType.equalsIgnoreCase(model.getDisplay_name())){
-					if(model.getEstimated_cost_cents_min() < minPrice){
-						returnLyftPriceModel = model;
-						minPrice = model.getEstimated_cost_cents_min();
+		LyftPriceModel returnLyftPriceModel = null;
+		if(listLyftModel.getErrorMessage() ==null){
+			if(options != null)
+			 lyftCarType = options.get(Contants.LYFT_CART_TYPE);
+			List<LyftPriceModel> listLyftPriceModel = listLyftModel.getCost_estimates();
+					
+			if(lyftCarType == null){
+				Collections.sort(listLyftPriceModel, new LyftMinPriceComparator());
+				returnLyftPriceModel = listLyftPriceModel.get(0);
+			}else{
+				double minPrice = 10000.0;
+				for(LyftPriceModel model : listLyftPriceModel ){
+					if(lyftCarType.equalsIgnoreCase(model.getDisplay_name())){
+						if(model.getEstimated_cost_cents_min() < minPrice){
+							returnLyftPriceModel = model;
+							minPrice = model.getEstimated_cost_cents_min();
+						}
 					}
 				}
 			}
@@ -181,21 +199,23 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 	
 	private LyftETAModel getCheapMinETALyft(ListLyftETAModel listLyftModel, Map<String, String> options) {
 		logger.debug("Start : RideEstimateServiceImpl => getCheapMinETALyft ");
-		String lyftCarType = null;
-		if(options != null)
-		 lyftCarType = options.get(Contants.LYFT_CART_TYPE);;
-		List<LyftETAModel> listLyftETAModel = listLyftModel.getEta_estimates();
 		LyftETAModel returnLyftETAModel = null;
-		if(lyftCarType == null){
-			Collections.sort(listLyftETAModel, new LyftETAComparator());
-			returnLyftETAModel = listLyftETAModel.get(0);
-		}else{
-			double minETA = 10000.0;
-			for(LyftETAModel model : listLyftETAModel ){
-				if(lyftCarType.equalsIgnoreCase(model.getDisplay_name())){
-					if(model.getEta_seconds() < minETA){
-						returnLyftETAModel = model;
-						minETA = model.getEta_seconds();
+		String lyftCarType = null;
+		if(listLyftModel.getErrorMessage() == null ){
+			if(options != null)
+			 lyftCarType = options.get(Contants.LYFT_CART_TYPE);;
+			List<LyftETAModel> listLyftETAModel = listLyftModel.getEta_estimates();
+			if(lyftCarType == null){
+				Collections.sort(listLyftETAModel, new LyftETAComparator());
+				returnLyftETAModel = listLyftETAModel.get(0);
+			}else{
+				double minETA = 10000.0;
+				for(LyftETAModel model : listLyftETAModel ){
+					if(lyftCarType.equalsIgnoreCase(model.getDisplay_name())){
+						if(model.getEta_seconds() < minETA){
+							returnLyftETAModel = model;
+							minETA = model.getEta_seconds();
+						}
 					}
 				}
 			}
