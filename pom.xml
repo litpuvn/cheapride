@@ -21,11 +21,7 @@
 
 	<dependencies>
 
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>2.1.2</version>
-		</dependency>
+		
 
 		<!-- Unit Test -->
 		<dependency>
@@ -111,33 +107,8 @@
 		    <scope>provided</scope>
 		</dependency>
 		
-		 <!--UBER API-->
 		
-		<dependency>
-  			<groupId>com.uber.sdk</groupId>
-  			<artifactId>rides</artifactId>
-  			<version>0.6.0</version>
-		</dependency>
 
- 		<!-- UBER API  -->
-
- 		<!-- WIRE MOCK -->
- 		<dependency>
-		    <groupId>com.github.tomakehurst</groupId>
-		    <artifactId>wiremock</artifactId>
-		    <version>2.5.1</version>
-		</dependency>
-		<!-- WIRE MOCK -->
-
-		<!--  Retrofit -->
-
-		<dependency>
-		  <groupId>com.squareup.retrofit2</groupId>
-		  <artifactId>retrofit</artifactId>
-		  <version>2.2.0</version>
-		</dependency>
-
-		<!-- Retrofit -->
 
 		<!-- okHTTP -->
 		<dependency>

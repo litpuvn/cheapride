@@ -10,7 +10,6 @@ import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
-import com.uber.sdk.rides.client.services.RidesService;
 
 /**
  * 
@@ -40,9 +39,6 @@ public class TestLyftETA{
 	@Value("${LYFT_BASE_URL}")
 	private String lyftBaseUrl;
 
-
-
-	private RidesService service;
 
 	private String LYFT_PRC_ESMT_URL = "/eta";
 

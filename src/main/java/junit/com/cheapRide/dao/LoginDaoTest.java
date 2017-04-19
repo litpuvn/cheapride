@@ -55,7 +55,7 @@ public class LoginDaoTest {
 
 	}
 	//method for saving the getting the details from the database
-	//@Test
+	@Test
 	public void getdetails() {
 		try {
 			// query to search user
@@ -71,7 +71,7 @@ public class LoginDaoTest {
 
 	}
 	//method for updating the password into the database
-	//@Test
+	@Test
 	public void updatePassword() {
 		try {
 			Query q = new Query(Criteria.where("userName").is(username));

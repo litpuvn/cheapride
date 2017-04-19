@@ -1,5 +1,6 @@
 package com.cheapRide.model;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.data.annotation.Id;
 
 import java.util.Date;
@@ -11,7 +12,11 @@ public class User {
 
     private String username;
     private String password;
+
+    @JsonIgnore
     private String token;
+
+    @JsonIgnore
     private Date date;
 
     public String getToken() {
