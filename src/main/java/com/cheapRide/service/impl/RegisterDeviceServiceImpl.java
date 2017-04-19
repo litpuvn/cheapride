@@ -1,6 +1,5 @@
 package com.cheapRide.service.impl;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,7 @@ public class RegisterDeviceServiceImpl implements RegisterDeviceService {
 
 	private final static org.slf4j.Logger logger = LoggerFactory.getLogger(RegisterDeviceServiceImpl.class);
 
-	private ObjectMapper mapper = new ObjectMapper();
+	//private ObjectMapper mapper = new ObjectMapper();
 
 	@Autowired
 	private RegisterDeviceDao registerDeviceDao;
@@ -31,7 +30,7 @@ public class RegisterDeviceServiceImpl implements RegisterDeviceService {
 		logger.debug("Start => RegisterDeviceServiceImpl => getRegisteredDevice  for device ID " + deviceID);
 		String returnString = null;
 		try {
-			returnString = mapper.writeValueAsString(registerDeviceDao.getBydeviceID(deviceID));
+		//	returnString = mapper.writeValueAsString(registerDeviceDao.getBydeviceID(deviceID));
 		} catch (Exception e) {
 			logger.error("ERROR : RegisterDeviceServiceImpl => getRegisteredDevice  for device ID " + deviceID);
 			e.printStackTrace();
@@ -47,7 +46,7 @@ public class RegisterDeviceServiceImpl implements RegisterDeviceService {
 		logger.debug("Start => RegisterDeviceServiceImpl => addRegisteredDevice  for device ID " + deviceID);
 		String returnString = null;
 		try {
-			returnString = mapper.writeValueAsString(registerDeviceDao.createBydeviceID(deviceID));
+			//returnString = mapper.writeValueAsString(registerDeviceDao.createBydeviceID(deviceID));
 		} catch (Exception e) {
 			logger.error("ERROR : RegisterDeviceServiceImpl => addRegisteredDevice  for device ID " + deviceID);
 			e.printStackTrace();
@@ -63,7 +62,7 @@ public class RegisterDeviceServiceImpl implements RegisterDeviceService {
 		logger.debug("Start => RegisterDeviceServiceImpl => updateRegisteredDevice  for device ID " + deviceID);
 		String returnString = null;
 		try {
-			returnString = mapper.writeValueAsString(registerDeviceDao.updateBydeviceID(deviceID));
+			//returnString = mapper.writeValueAsString(registerDeviceDao.updateBydeviceID(deviceID));
 		} catch (Exception e) {
 			logger.error("ERROR : RegisterDeviceServiceImpl => updateRegisteredDevice  for device ID " + deviceID);
 			e.printStackTrace();

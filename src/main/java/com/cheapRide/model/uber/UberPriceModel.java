@@ -12,9 +12,9 @@ public class UberPriceModel {
 	private String product_id;
 	private String estimate;
 	private String currency_code;
-	private int high_estimate; 
-	private int low_estimate;
-	private int duration;
+	private Integer high_estimate; 
+	private Integer low_estimate;
+	private Integer duration;
 	public String getLocalized_display_name() {
 		return localized_display_name;
 	}
