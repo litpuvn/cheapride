@@ -42,13 +42,13 @@ public class HistoryDaoImpl implements HistoryDao {
 	}
 
 	@Override
-	public void getHistoryByUsername(String username) {
+	public HistoryModel getHistoryByUsername(String username) {
 		// TODO Auto-generated method stub
 		logger.debug("Start => HistoryDaoImpl => getHistoryByUsername  for user "
 				+ username);
 		HistoryModel userHistoryByUsername = null;
+		Query searchUsername = new Query(Criteria.where("username").is(username));
 		try{
-			Query searchUsername = new Query(Criteria.where("username").is(username));
 			userHistoryByUsername = mongoTemplate.findOne(searchUsername, HistoryModel.class);
 		}catch(Exception e){
 			logger.error("ERROR => HistoryDaoImpl => getHistoryByUsername  for user "
@@ -57,6 +57,44 @@ public class HistoryDaoImpl implements HistoryDao {
 		
 		logger.debug("End => HistoryDaoImpl => getHistoryByUsername  for user "
 				+ username);
+		return userHistoryByUsername;
 	}
-
+	
+	@Override
+	public HistoryModel getHistoryByProvider(String username,String provider) {
+		logger.debug("Start => HistoryDaoImpl => getHistoryByProvider  for user "
+				+ username);
+		HistoryModel userHistoryByProvider = null;
+		Query searchUserHistoryByProvider = new Query(Criteria.where("username").is(
+				username).and("provider").is(provider));
+		try{
+			userHistoryByProvider = mongoTemplate.findOne(searchUserHistoryByProvider, HistoryModel.class);
+		}catch(Exception e){
+			logger.error("ERROR => HistoryDaoImpl => getHistoryByProvider  for user "
+					+ username);
+		}
+		
+		logger.debug("End => HistoryDaoImpl => getHistoryByProvider  for user "
+				+ username);
+		return userHistoryByProvider;
+	}
+	
+	@Override
+	public HistoryModel getHistoryByDate(String username,String fromDate, String toDate){
+		logger.debug("Start => HistoryDaoImpl => getHistoryByDate  for user "
+				+ username);
+		HistoryModel userHistoryByDate = null;
+		Query searchUserHistoryByDate = new Query();
+		searchUserHistoryByDate.addCriteria(Criteria.where("date").gte(fromDate).lt(toDate).and("username").is(username));
+		try{
+			userHistoryByDate = (HistoryModel) mongoTemplate.find(searchUserHistoryByDate, HistoryModel.class);
+		}catch(Exception e){
+			logger.error("ERROR => HistoryDaoImpl => getHistoryByDate  for user "
+					+ username);
+		}
+		
+		logger.debug("End => HistoryDaoImpl => getHistoryByDate  for user "
+				+ username);
+		return userHistoryByDate;
+	}
 }
