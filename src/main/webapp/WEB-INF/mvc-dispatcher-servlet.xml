@@ -44,10 +44,6 @@
 	</beans:bean>
 	<beans:bean id="loginDao" class="com.cheapRide.dao.impl.LoginDaoImpl">
 	</beans:bean>
-<!--</beans:bean>-->
-	<beans:bean id="HistoryService" class="com.cheapRide.service.impl.HistoryServiceImpl">
-	</beans:bean>
-	<beans:bean id="HistoryDao" class="com.cheapRide.dao.impl.HistoryDaoImpl">
-	</beans:bean>
+
 
 </beans>
