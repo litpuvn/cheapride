@@ -4,8 +4,10 @@ import static org.junit.Assert.fail;
 
 import java.util.Map;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.cheapRide.service.impl.UberEstmiateServiceImpl;
 import com.squareup.okhttp.Headers;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
@@ -20,9 +22,11 @@ import com.squareup.okhttp.Response;
 @Component
 public class CommonUtil {
 	
+	private final static org.slf4j.Logger logger = LoggerFactory.getLogger(CommonUtil.class);
+
 	public static String makeGetReuqest(String urlRequest, Map<String, String> queryPrms, Map<String, String> headersMap){
 		String responseStr = null;
-		
+		logger.debug("Start : CommonUtil => makeGetReuqest  for URL " + urlRequest);
 		try {
 			OkHttpClient client = new OkHttpClient();
 
@@ -54,11 +58,15 @@ public class CommonUtil {
 
 			Response response = client.newCall(request).execute();
 			responseStr = new String(response.body().bytes());
-			System.out.println(responseStr);
+			//System.out.println(responseStr);
 
 		} catch (Exception exc) {
 			fail(exc.getMessage());
+			logger.error("ERROR : CommonUtil => makeGetReuqest  for URL " + exc.getMessage());
 		}
+		
+		logger.debug("End : CommonUtil => makeGetReuqest  for Response " + responseStr);
+
 		return responseStr;
 	}
 

@@ -7,8 +7,8 @@ package com.cheapRide.model;
 public class ResponseModel {
 
 	private String time;
-	private long minVal;
-	private long maxVal;
+	private long cost;
+	
 	private String rideRequestId;
 	public String getTime() {
 		return time;
@@ -16,17 +16,12 @@ public class ResponseModel {
 	public void setTime(String time) {
 		this.time = time;
 	}
-	public long getMinVal() {
-		return minVal;
+	
+	public long getCost() {
+		return cost;
 	}
-	public void setMinVal(long minVal) {
-		this.minVal = minVal;
-	}
-	public long getMaxVal() {
-		return maxVal;
-	}
-	public void setMaxVal(long maxVal) {
-		this.maxVal = maxVal;
+	public void setCost(long cost) {
+		this.cost = cost;
 	}
 	public String getRideRequestId() {
 		return rideRequestId;

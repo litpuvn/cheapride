@@ -9,14 +9,14 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "history")
-public class historyModel {
+public class HistoryModel {
 @Id
 private String date;
 private String provider;
 private String pickup;
 private String destination;
 private String fee;
-private String type;
+private String username;
 
 public String getDate(){
 	return date;
@@ -48,10 +48,25 @@ public String getFee(){
 public void setFee(String fee){
 	this.fee = fee;
 }
-public String getType(){
-	return type;
+public String getUsername(){
+	return username;
 }
-public void setType(String type){
-	this.type = type;
+public void setUsername(String username){
+		this.username = username;
 }
+public HistoryModel(String username, String date,String pickup,String destination, String fee, String provider) {
+	super();
+	this.username = username;
+	this.date = date;
+	this.pickup = pickup;
+	this.destination = destination;
+	this.fee = fee;
+	this.provider = provider;
+}
+
+@Override
+public String toString() {
+	return "History [username=" + username + ",date=" + date + ",pickup=" + pickup + ",destination=" + destination + ",fee=" + fee + ", provider=" + provider + "]";
+}
+
 }

@@ -1,5 +1,6 @@
 package com.cheapRide.service.impl;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,6 +46,7 @@ public class UberEstmiateServiceImpl implements UberEstmiateService {
 				+ " origin longitude " + originLong + " destination lattitude " + destLat + " destination longitude "
 				+ destLon);
 		ListUberPriceModel uberPriceModel = null;
+		String responseString = null;
 		try {
 			String reqUrl = uberBaseUrl + UBER_PRC_ESMT_URL;
 			Map<String, String> prmMap = new HashMap<String, String>();
@@ -58,7 +60,15 @@ public class UberEstmiateServiceImpl implements UberEstmiateService {
 			hdrMap.put("Content-Type", "application/json");
 			hdrMap.put("Accept-Language", "en_EN");
 
-			uberPriceModel = mapper.readValue(util.makeGetReuqest(reqUrl, prmMap, hdrMap), ListUberPriceModel.class);
+			try {
+				responseString = util.makeGetReuqest(reqUrl, prmMap, hdrMap);
+				uberPriceModel = mapper.readValue(responseString, ListUberPriceModel.class);
+			} catch (Exception e1) {
+				logger.error("ERROR : UberEstmiateServiceImpl => getPriceEstmiate => Reason => "+responseString);
+				uberPriceModel = new ListUberPriceModel();
+				uberPriceModel.setErrorMessage(responseString);
+				
+			}
 
 		} catch (Exception e) {
 			logger.error("ERROR : UberEstmiateServiceImpl => getPriceEstmiate  for origin lattitude" + originLat
@@ -77,6 +87,7 @@ public class UberEstmiateServiceImpl implements UberEstmiateService {
 		logger.debug("Start : UberEstmiateServiceImpl => getETA  for origin lattitude" + originLat
 				+ " origin longitude " + originLong);
 		ListUberETAModel uberETAModel = null;
+		String responseString = null;
 		try {
 			String reqUrl = uberBaseUrl + UBER_ETA_URL;
 			Map<String, String> prmMap = new HashMap<String, String>();
@@ -87,8 +98,16 @@ public class UberEstmiateServiceImpl implements UberEstmiateService {
 			Map<String, String> hdrMap = new HashMap<String, String>();
 			hdrMap.put("Content-Type", "application/json");
 			hdrMap.put("Accept-Language", "en_EN");
-
-			uberETAModel = mapper.readValue(util.makeGetReuqest(reqUrl, prmMap, hdrMap), ListUberETAModel.class);
+			try{
+				responseString = util.makeGetReuqest(reqUrl, prmMap, hdrMap);
+				uberETAModel = mapper.readValue(responseString, ListUberETAModel.class);
+			} catch (Exception e1) {
+				
+				logger.error("ERROR : UberEstmiateServiceImpl => getETA => Reason => "+responseString);
+				uberETAModel = new ListUberETAModel();
+				uberETAModel.setErrorMessage(responseString);
+				
+			}
 
 		} catch (Exception e) {
 			logger.error("ERROR : UberEstmiateServiceImpl => getETA  for origin lattitude" + originLat
