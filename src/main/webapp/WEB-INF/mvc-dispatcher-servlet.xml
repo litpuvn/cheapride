@@ -37,13 +37,22 @@
 	  <beans:bean id="mongo" class="org.springframework.data.mongodb.core.MongoFactoryBean">
 	    <beans:property name="host" value="localhost"/>
 	  </beans:bean>
-	<!--uncomment this:-->
-	<!--<beans:bean id="loginService" class="com.cheapRide.service.impl.LoginServiceImpl">-->
-	  <!--</beans:bean>-->
-	<beans:bean id="loginService" class="com.cheapRide.service.impl.LoginServiceImpl">
-	</beans:bean>
-	<beans:bean id="loginDao" class="com.cheapRide.dao.impl.LoginDaoImpl">
-	</beans:bean>
-
+	<bean id="contentNegotiationManager"
+             class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+    <property name="favorPathExtension" value="false" />
+    <property name="favorParameter" value="true" />
+    <property name="parameterName" value="mediaType" />
+    <property name="ignoreAcceptHeader" value="true"/>
+    <property name="useJaf" value="false"/>
+    <property name="defaultContentType" value="application/json" />
+ 
+    <property name="mediaTypes">
+        <map>
+            <entry key="json" value="application/json" />
+            <entry key="xml" value="application/xml" />
+       </map>
+    </property>
+</bean>
+	
 
 </beans>

@@ -92,9 +92,15 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 		ResponseModel lyft = new ResponseModel();
 		//lyft.setMaxVal(lyftPriceModel.getEstimated_cost_cents_max());
 		if(lyftPriceModel != null){
-			lyft.setCost(lyftPriceModel.getEstimated_cost_cents_min());
+			if(lyftPriceModel.getEstimated_cost_cents_min() == 0)
+				lyft.setCost((long)(uberPriceMoel.getLow_estimate() * 1.2)); // remove 
+			else
+				lyft.setCost(lyftPriceModel.getEstimated_cost_cents_min());
 			lyft.setRideRequestId(lyftPriceModel.getRide_type());
-			lyft.setTime(lyftETAModel.getEta_seconds()+"");
+			if(lyftETAModel.getEta_seconds() == 0)
+				lyft.setTime(uberETAModel.getEstimate() * 1.2+"");
+			else
+			 lyft.setTime(lyftETAModel.getEta_seconds()+""); //remove random data
 		}
 		
 		estResModel.setUber(uber);

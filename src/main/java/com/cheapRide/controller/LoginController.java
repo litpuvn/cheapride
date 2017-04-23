@@ -3,11 +3,12 @@ package com.cheapRide.controller;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.cheapRide.model.LoginResponse;
 import com.cheapRide.model.User;
@@ -16,7 +17,7 @@ import com.cheapRide.service.LoginService;
 /**
  * Created by pshayegh on 3/8/2017.
  */
-@RestController
+@Controller
 public class LoginController {
 
     private final static org.slf4j.Logger logger = LoggerFactory.getLogger(LoginController.class);
@@ -49,7 +50,8 @@ public class LoginController {
     }
 
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    
     public ResponseEntity<LoginResponse> register(@RequestBody User user) {
         logger.debug("Start => LoginController => register  for user " + user.getUsername());
         ResponseEntity<LoginResponse> loginResponseEntity;

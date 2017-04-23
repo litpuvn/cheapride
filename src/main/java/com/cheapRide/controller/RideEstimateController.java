@@ -55,6 +55,8 @@ public class RideEstimateController {
         logger.debug("End : RideEstimateServiceImpl => getPriceEstmiate  for origin lattitude" + originLat
 				+ " origin longitude " + originLon + " destination lattitude " + destLat + " destination longitude "
 				+ destLon);
+        
+        logger.debug("OUTPUT : "+resString);
         return resString;
     }
     @RequestMapping(value="/getEstimatedTime" , method = RequestMethod.GET)
