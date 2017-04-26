@@ -7,7 +7,6 @@ import java.util.Map;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.cheapRide.service.impl.UberEstmiateServiceImpl;
 import com.squareup.okhttp.Headers;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
@@ -19,8 +18,11 @@ import com.squareup.okhttp.Response;
  * Common util class which serves common utility functionality
  */
 
+
+
 @Component
 public class CommonUtil {
+	
 	
 	private final static org.slf4j.Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 

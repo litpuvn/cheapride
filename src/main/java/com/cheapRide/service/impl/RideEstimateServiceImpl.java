@@ -8,6 +8,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.cheapRide.comparators.LyftETAComparator;
@@ -25,8 +26,7 @@ import com.cheapRide.model.uber.ListUberPriceModel;
 import com.cheapRide.model.uber.UberETAModel;
 import com.cheapRide.model.uber.UberPriceModel;
 import com.cheapRide.service.RideEstimateService;
-import com.cheapRide.service.UberEstmiateService;
-import com.cheapRide.util.Contants;;
+import com.cheapRide.service.UberEstmiateService;;
 
 @Service
 public class RideEstimateServiceImpl implements RideEstimateService {
@@ -34,14 +34,26 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 	private final static org.slf4j.Logger logger = LoggerFactory.getLogger(RideEstimateServiceImpl.class);
 
 	private static ObjectMapper mapper = new ObjectMapper();
+	
+	
 
 	@Autowired
 	LyftEstimateService lyftEstimateService;
 	
 	@Autowired
 	UberEstmiateService uberEstimateService;
+	
+	@Value("${4_seats}")
+	private String seats4;
 
-	public String getEstimates(float originLat, float originLong, float destLat, float destLon, Map<String,String> options) {
+	@Value("${6_or_more_seats}")
+	private String seats6;
+
+	@Value("${luxury_4_seats}")
+	private String lux4;
+
+
+	public String getEstimates(float originLat, float originLong, float destLat, float destLon, Map<String,String> options,String carType) {
 		logger.debug("Start : RideEstimateServiceImpl => getEstimates  for origin lattitude" + originLat
 				+ " origin longitude " + originLong + " destination lattitude " + destLat + " destination longitude "
 				+ destLon);
@@ -52,11 +64,24 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 			ListLyftPriceModel listLyftModel = lyftEstimateService.getPriceEstmiate(""+originLat, ""+originLong,""+destLat, ""+destLon);
 			ListUberETAModel   listUberETAModel = uberEstimateService.getETA(""+originLat, ""+originLong);
 			ListLyftETAModel   listLyftETAModel = lyftEstimateService.getETA(""+originLat, ""+originLong);
+			String uberCarType = null;
+			String lyftCarType = null;
+			if(carType != null){
+				String[] carTypeArr = null;;
+				if("4_seats".equalsIgnoreCase(carType))
+					carTypeArr = seats4.split(":");
+				if("6_or_more_seats".equalsIgnoreCase(carType))
+					carTypeArr = seats6.split(":");
+				if("luxury_4_seats".equalsIgnoreCase(carType))
+					carTypeArr = lux4.split(":");
+				uberCarType = carTypeArr[1];
+				lyftCarType = carTypeArr[0];
+			}
 			
-			UberPriceModel uberPriceMoel = getCheapMinCostUber(listUberModel, options);
-			UberETAModel	uberETAModel = getCheapMinETAUber(listUberETAModel, options);
-			LyftPriceModel lyftPriceModel = getCheapMinCostLyft(listLyftModel, options);
-			LyftETAModel	lyftETAModel = getCheapMinETALyft(listLyftETAModel, options);
+			UberPriceModel uberPriceMoel = getCheapMinCostUber(listUberModel, uberCarType);
+			UberETAModel	uberETAModel = getCheapMinETAUber(listUberETAModel, uberCarType);
+			LyftPriceModel lyftPriceModel = getCheapMinCostLyft(listLyftModel, lyftCarType);
+			LyftETAModel	lyftETAModel = getCheapMinETALyft(listLyftETAModel, lyftCarType);
 			
 			EstimateResponseModel estResModel = getEstResponse(uberPriceMoel, uberETAModel, lyftPriceModel, lyftETAModel);
 			
@@ -71,6 +96,7 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 		logger.debug("End : RideEstimateServiceImpl => getEstimates  for origin lattitude" + originLat
 				+ " origin longitude " + originLong + " destination lattitude " + destLat + " destination longitude "
 				+ destLon);
+		System.out.println(returnVal);
 		return returnVal;
 	}
 
@@ -87,6 +113,7 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 			uber.setCost(uberPriceMoel.getLow_estimate());
 			uber.setRideRequestId(uberPriceMoel.getProduct_id());
 			uber.setTime(uberETAModel.getEstimate()+"");
+			uber.setRideType(uberPriceMoel.getLocalized_display_name());
 		}
 		
 		ResponseModel lyft = new ResponseModel();
@@ -95,6 +122,7 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 			lyft.setCost(lyftPriceModel.getEstimated_cost_cents_min());
 			lyft.setRideRequestId(lyftPriceModel.getRide_type());
 			lyft.setTime(lyftETAModel.getEta_seconds()+"");
+			lyft.setRideType(lyftPriceModel.getRide_type());
 		}
 		
 		estResModel.setUber(uber);
@@ -106,13 +134,13 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 
 
 
-	private UberPriceModel getCheapMinCostUber(ListUberPriceModel listUberModel, Map<String, String> options) {
+	private UberPriceModel getCheapMinCostUber(ListUberPriceModel listUberModel,String carType) {
 		logger.debug("Start : RideEstimateServiceImpl => getCheapMinCostUber ");
 		UberPriceModel returnUberPriceModel = null;
 		String uberCarType = null;
 		if(listUberModel.getPrices().size()> 0){
-			if(options != null)
-				uberCarType = options.get(Contants.UBER_CART_TYPE);
+			//if(options != null)
+				uberCarType = carType;// options.get(Contants.UBER_CART_TYPE);
 			List<UberPriceModel> lisUberPriceModel = listUberModel.getPrices();
 			
 			if(uberCarType == null){
@@ -140,13 +168,13 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 		return returnUberPriceModel;
 	}
 	
-	private UberETAModel getCheapMinETAUber(ListUberETAModel listUberModel, Map<String, String> options) {
+	private UberETAModel getCheapMinETAUber(ListUberETAModel listUberModel,String carType) {
 		logger.debug("Start : RideEstimateServiceImpl => getCheapMinETAUber ");
 		String uberCarType = null;
 		UberETAModel returnUberEtaModel = null;
 		if(listUberModel.getTimes().size()> 0){
-			if(options != null)
-			 uberCarType = options.get(Contants.UBER_CART_TYPE);
+		//	if(options != null)
+			 uberCarType = carType;//options.get(Contants.UBER_CART_TYPE);
 			List<UberETAModel> listUberEtaModel = listUberModel.getTimes();
 			if(uberCarType == null){
 				Collections.sort(listUberEtaModel, new UberETAComparator());
@@ -168,13 +196,13 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 	}
 
 	
-	private LyftPriceModel getCheapMinCostLyft(ListLyftPriceModel listLyftModel, Map<String, String> options) {
+	private LyftPriceModel getCheapMinCostLyft(ListLyftPriceModel listLyftModel,String carType) {
 		logger.debug("Start : RideEstimateServiceImpl => getCheapMinCostLyft ");
 		String lyftCarType = null;
 		LyftPriceModel returnLyftPriceModel = null;
 		if(listLyftModel.getErrorMessage() ==null){
-			if(options != null)
-			 lyftCarType = options.get(Contants.LYFT_CART_TYPE);
+			//if(options != null)
+			 lyftCarType = carType;// options.get(Contants.LYFT_CART_TYPE);
 			List<LyftPriceModel> listLyftPriceModel = listLyftModel.getCost_estimates();
 					
 			if(lyftCarType == null){
@@ -183,7 +211,7 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 			}else{
 				double minPrice = 10000.0;
 				for(LyftPriceModel model : listLyftPriceModel ){
-					if(lyftCarType.equalsIgnoreCase(model.getDisplay_name())){
+					if(lyftCarType.equalsIgnoreCase(model.getRide_type())){
 						if(model.getEstimated_cost_cents_min() < minPrice){
 							returnLyftPriceModel = model;
 							minPrice = model.getEstimated_cost_cents_min();
@@ -197,13 +225,13 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 	}
 
 	
-	private LyftETAModel getCheapMinETALyft(ListLyftETAModel listLyftModel, Map<String, String> options) {
+	private LyftETAModel getCheapMinETALyft(ListLyftETAModel listLyftModel,String carType) {
 		logger.debug("Start : RideEstimateServiceImpl => getCheapMinETALyft ");
 		LyftETAModel returnLyftETAModel = null;
 		String lyftCarType = null;
 		if(listLyftModel.getErrorMessage() == null ){
-			if(options != null)
-			 lyftCarType = options.get(Contants.LYFT_CART_TYPE);;
+			//if(options != null)
+			 lyftCarType = carType;
 			List<LyftETAModel> listLyftETAModel = listLyftModel.getEta_estimates();
 			if(lyftCarType == null){
 				Collections.sort(listLyftETAModel, new LyftETAComparator());
@@ -211,7 +239,7 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 			}else{
 				double minETA = 10000.0;
 				for(LyftETAModel model : listLyftETAModel ){
-					if(lyftCarType.equalsIgnoreCase(model.getDisplay_name())){
+					if(lyftCarType.equalsIgnoreCase(model.getRide_type())){
 						if(model.getEta_seconds() < minETA){
 							returnLyftETAModel = model;
 							minETA = model.getEta_seconds();

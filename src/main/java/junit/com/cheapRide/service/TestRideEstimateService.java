@@ -27,7 +27,7 @@ public class TestRideEstimateService {
 
 	@Test
 	public void TestGetEstimate() {
-		String responseString =  rideEstimateService.getEstimates(PICKUP_LATITUDE, PICKUP_LONGITUDE, DROPOFF_LATITUDE, DROPOFF_LONGITUDE, null);
+		String responseString =  rideEstimateService.getEstimates(PICKUP_LATITUDE, PICKUP_LONGITUDE, DROPOFF_LATITUDE, DROPOFF_LONGITUDE, null,"6_or_more_seats");
 		System.out.println(responseString);
 	}
 	

@@ -7,7 +7,7 @@ import java.util.Map;
  */
 public interface RideEstimateService {
 	
-	 String getEstimates(float pickUpLat, float pickUpLong, float dropOffLat, float dropOffLong,Map<String,String> options);
+	 String getEstimates(float pickUpLat, float pickUpLong, float dropOffLat, float dropOffLong,Map<String,String> optionsString ,String carType);
 	
 	 String getEstimatedTime(float pickUpLat, float pickUpLong, Map<String,String> options) ;
 
