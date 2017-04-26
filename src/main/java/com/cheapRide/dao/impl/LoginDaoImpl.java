@@ -1,20 +1,22 @@
 package com.cheapRide.dao.impl;
 
+import java.util.Date;
+
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.stereotype.Repository;
 
 import com.cheapRide.dao.LoginDao;
 import com.cheapRide.model.User;
-import org.springframework.data.mongodb.core.query.Update;
-
-import java.util.Date;
 
 /**
  * Created by pshayegh on 3/22/2017.
  */
+@Repository
 public class LoginDaoImpl implements LoginDao {
 
 	private final static org.slf4j.Logger logger = LoggerFactory

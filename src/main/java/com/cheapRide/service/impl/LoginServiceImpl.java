@@ -6,16 +6,18 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.UUID;
 
-import com.cheapRide.model.User;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.cheapRide.dao.LoginDao;
+import com.cheapRide.model.User;
 import com.cheapRide.service.LoginService;
 
 /**
  * Created by pshayegh on 3/8/2017.
  */
+@Service
 public class LoginServiceImpl implements LoginService {
 	
 	private final static org.slf4j.Logger logger = LoggerFactory.getLogger(LoginServiceImpl.class);
