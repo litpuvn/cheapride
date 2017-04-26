@@ -67,7 +67,13 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 			String uberCarType = null;
 			String lyftCarType = null;
 			if(carType != null){
-				String[] carTypeArr = carType.split(carType);
+				String[] carTypeArr = null;;
+				if("4_seats".equalsIgnoreCase(carType))
+					carTypeArr = seats4.split(":");
+				if("6_or_more_seats".equalsIgnoreCase(carType))
+					carTypeArr = seats6.split(":");
+				if("luxury_4_seats".equalsIgnoreCase(carType))
+					carTypeArr = lux4.split(":");
 				uberCarType = carTypeArr[1];
 				lyftCarType = carTypeArr[0];
 			}
@@ -90,6 +96,7 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 		logger.debug("End : RideEstimateServiceImpl => getEstimates  for origin lattitude" + originLat
 				+ " origin longitude " + originLong + " destination lattitude " + destLat + " destination longitude "
 				+ destLon);
+		System.out.println(returnVal);
 		return returnVal;
 	}
 
@@ -204,7 +211,7 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 			}else{
 				double minPrice = 10000.0;
 				for(LyftPriceModel model : listLyftPriceModel ){
-					if(lyftCarType.equalsIgnoreCase(model.getDisplay_name())){
+					if(lyftCarType.equalsIgnoreCase(model.getRide_type())){
 						if(model.getEstimated_cost_cents_min() < minPrice){
 							returnLyftPriceModel = model;
 							minPrice = model.getEstimated_cost_cents_min();
@@ -232,7 +239,7 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 			}else{
 				double minETA = 10000.0;
 				for(LyftETAModel model : listLyftETAModel ){
-					if(lyftCarType.equalsIgnoreCase(model.getDisplay_name())){
+					if(lyftCarType.equalsIgnoreCase(model.getRide_type())){
 						if(model.getEta_seconds() < minETA){
 							returnLyftETAModel = model;
 							minETA = model.getEta_seconds();
