@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "history")
 public class HistoryModel {
 @Id
+private String Id;
 private String date;
 private String provider;
 private String pickup;
@@ -55,7 +56,6 @@ public void setUsername(String username){
 		this.username = username;
 }
 public HistoryModel(String username, String date,String pickup,String destination, String fee, String provider) {
-	super();
 	this.username = username;
 	this.date = date;
 	this.pickup = pickup;
@@ -63,10 +63,12 @@ public HistoryModel(String username, String date,String pickup,String destinatio
 	this.fee = fee;
 	this.provider = provider;
 }
-
+public HistoryModel(){
+	
+}
 @Override
 public String toString() {
-	return "History [username=" + username + ",date=" + date + ",pickup=" + pickup + ",destination=" + destination + ",fee=" + fee + ", provider=" + provider + "]";
+	return "History [id ="+Id+ " username=" + username + ",date=" + date + ",pickup=" + pickup + ",destination=" + destination + ",fee=" + fee + ", provider=" + provider + "]";
 }
 
 }
