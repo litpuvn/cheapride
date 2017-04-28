@@ -33,19 +33,18 @@ public class RideEstimateController {
     		@RequestParam(value="pick_up_longitude") float originLon,
     		@RequestParam(value="drop_off_lattitude") float destLat,
     		@RequestParam(value="drop_off_longitude") float destLon,
-    		@RequestParam(value="uber_car_type", required = false ) String uber_car_type,
-    		@RequestParam(value="lyft_car_type", required = false) String lyft_car_type){
+    		@RequestParam(value="car_type", required = false ) String carType){
     	
     	logger.debug("Start : RideEstimateServiceImpl => getPriceEstmiate  for origin lattitude" + originLat
 					+ " origin longitude " + originLon + " destination lattitude " + destLat + " destination longitude "
 				+ destLon);
     //	headers.get("")
         String resString = null;
-        Map<String, String> options = new HashMap<String,String>();
+     /*   Map<String, String> options = new HashMap<String,String>();
         options.put("uber_car_type", uber_car_type);
-        options.put("lyft_car_type", lyft_car_type);
+        options.put("lyft_car_type", lyft_car_type);*/
         try {
-            resString = rideService.getEstimates(originLat, originLon, destLat, destLon, options);
+            resString = rideService.getEstimates(originLat, originLon, destLat, destLon, null, carType);
         } catch (Exception e) {
         	 logger.error("ERROR : RideEstimateServiceImpl => getPriceEstmiate  for origin lattitude" + originLat
      				+ " origin longitude " + originLon + " destination lattitude " + destLat + " destination longitude "
@@ -55,6 +54,8 @@ public class RideEstimateController {
         logger.debug("End : RideEstimateServiceImpl => getPriceEstmiate  for origin lattitude" + originLat
 				+ " origin longitude " + originLon + " destination lattitude " + destLat + " destination longitude "
 				+ destLon);
+        
+        logger.debug("OUTPUT : "+resString);
         return resString;
     }
     @RequestMapping(value="/getEstimatedTime" , method = RequestMethod.GET)

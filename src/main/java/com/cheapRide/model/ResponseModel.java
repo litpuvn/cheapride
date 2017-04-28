@@ -8,8 +8,15 @@ public class ResponseModel {
 
 	private String time;
 	private long cost;
+	private String rideRequestId;	
+	private String rideType;
 	
-	private String rideRequestId;
+	public String getRideType() {
+		return rideType;
+	}
+	public void setRideType(String rideType) {
+		this.rideType = rideType;
+	}
 	public String getTime() {
 		return time;
 	}
