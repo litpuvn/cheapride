@@ -28,26 +28,20 @@ public class HistoryServiceImpl implements HistoryService {
 			.getLogger(HistoryDaoImpl.class);
 	
 	@Override
-	public String checkAddHistory(String username,String date,String pickup, String destination, String fee, String provider) {
+	public HistoryModel checkAddHistory(String username,String date,String pickup, String destination, String fee, String provider) {
 		// TODO Auto-generated method stub
 		logger.debug("Start => HistoryServiceImpl => checkAddHistory  for user "
 				+ username);
-		String str = null;
 		HistoryModel model = null;
 		try{
 			model = dao.addHistory(username, date, pickup, destination, fee, provider);
-			if(model != null){
-				str = "history inserted";
-			}else{
-				str = "error in insertion";
-			}
 		}catch(Exception e){
 			logger.error("ERROR => HistoryServiceImpl => checkForUsername  for user "
 					+ username);
 		}
 		logger.debug("End => HistoryServiceImpl => checkAddHistory  for user "
 				+ username);
-		return str;
+		return model;
 		
 	}
 
