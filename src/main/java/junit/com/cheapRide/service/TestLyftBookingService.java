@@ -30,7 +30,7 @@ public class TestLyftBookingService {
 	LyftRideBookingServiceImpl service;
 	
 
-	@Test
+	//@Test
 	public void testGetToken() {
 
 		try {
@@ -42,5 +42,17 @@ public class TestLyftBookingService {
 		}
 	}
 	
-	
+	@Test
+	public void testRequestLyftRide() {
+
+		try {
+			String requestJson = "{\"ride_type\" : \"lyft\", \"origin\" : {\"lat\" : 37.7763, \"lng\" : -122.3918 }, \"destination\" : {\"lat\" : 37.7972, \"lng\" : -122.4533 } }";
+			String rideID = service.requestLyftRide(requestJson);
+			assert (rideID != null);
+			
+		} catch (Exception exc) {
+			fail(exc.getMessage());
+		}
+	}
+
 }
