@@ -29,23 +29,28 @@ public class HistoryServiceImplTest {
 	private String fromDate = "09/11/2017";
 	private String toDate = "09/13/2017";
 	@Test
-	public void checkForUsername() {
+	public String checkForUsername() {
 		// TODO Auto-generated method stub
+		String result = null;
 		
 		try{
 			ArrayList<HistoryModel> model = null;
 			Query searchUsername = new Query(Criteria.where("username").is(username));
 			if(searchUsername != null){
 				model = dao.getHistoryByUsername(username);
-				System.out.println("check for username" +model);
+				if(model != null){
+					result = "inserted";
+				}
+				
 			}
 				}catch(Exception e){
 					fail(e.getMessage());
 					System.out.println(e);
 		}
+		return result;
 
 	}
-	@Test
+	//@Test
 	public void checkForProvider(){
 		try{
 			ArrayList<HistoryModel> model = null;
@@ -60,7 +65,7 @@ public class HistoryServiceImplTest {
 		System.out.println(e);
 }
 }
-	@Test
+	//@Test
 	public void checkDate(){
 		try{
 			ArrayList<HistoryModel> model = null;

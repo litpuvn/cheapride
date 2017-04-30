@@ -5,6 +5,8 @@ package com.cheapRide.model;
  *
  */
 
+import java.awt.print.Pageable;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
