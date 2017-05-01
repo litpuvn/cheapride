@@ -16,6 +16,7 @@ public class RideRequestServiceSimulatorImpl implements RideRequestSimulatorServ
     @Override
     public RideResponseModel getLyftRide(String rideRequestId) {
         RideResponseModel rideResponseModel =new RideResponseModel();
+        rideResponseModel.setStatus("accepted");
         rideResponseModel.setRideId(rideRequestId);
         rideResponseModel.setCar(getCar());
         rideResponseModel.setDriver(getDriver());

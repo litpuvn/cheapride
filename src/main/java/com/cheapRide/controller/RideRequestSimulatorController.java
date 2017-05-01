@@ -33,7 +33,7 @@ public class RideRequestSimulatorController {
     public ResponseEntity<RideResponseModel> requestRide(@RequestParam String rideRequestId, @RequestParam String rideType) {
         ResponseEntity<RideResponseModel> responseEntity;
         RideResponseModel rideResponseModel= rideRequestSimulatorService.getLyftRide(rideRequestId);
-        responseEntity = ResponseEntity.status(HttpStatus.ACCEPTED).body(rideResponseModel);
+        responseEntity = ResponseEntity.status(HttpStatus.OK).body(rideResponseModel);
         return responseEntity;
     }
 }
