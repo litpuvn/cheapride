@@ -14,10 +14,9 @@ import java.util.Random;
  */
 public class RideRequestServiceSimulatorImpl implements RideRequestSimulatorService {
     @Override
-    public RideResponseModel getLyftRide(String rideRequestId) {
+    public RideResponseModel getLyftRide() {
         RideResponseModel rideResponseModel =new RideResponseModel();
         rideResponseModel.setStatus("accepted");
-        rideResponseModel.setRideId(rideRequestId);
         rideResponseModel.setCar(getCar());
         rideResponseModel.setDriver(getDriver());
         return rideResponseModel;
@@ -48,7 +47,7 @@ public class RideRequestServiceSimulatorImpl implements RideRequestSimulatorServ
 
     private String getRandomDriverImage() {
         Random r = new Random();
-        String imagePath= "/resources/images/avatar/"+r.nextInt(10)+".jpg";
+        String imagePath= "/images/avatar/"+r.nextInt(10)+".jpg";
        return imagePath;
     }
 

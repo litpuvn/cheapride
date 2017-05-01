@@ -22,17 +22,10 @@ public class RideRequestSimulatorController {
     @Autowired
     private RideRequestSimulatorService rideRequestSimulatorService;
 
-//    @RequestMapping(value = "/bookRide", method = RequestMethod.POST)
-//    public ResponseEntity<RideResponseModel> requestRide(@RequestBody RideRequestModel rideRequestModel) {
-//        ResponseEntity<RideResponseModel> responseEntity;
-//        RideResponseModel rideResponseModel= rideRequestSimulatorService.getLyftRide();
-//        responseEntity = ResponseEntity.status(HttpStatus.ACCEPTED).body(rideResponseModel);
-//        return responseEntity;
-//    }
-    @RequestMapping(value = "/bookRide", method = RequestMethod.GET)
-    public ResponseEntity<RideResponseModel> requestRide(@RequestParam String rideRequestId, @RequestParam String provider) {
+    @RequestMapping(value = "/bookRide", method = RequestMethod.POST)
+    public ResponseEntity<RideResponseModel> requestRide(@RequestBody RideRequestModel rideRequestModel) {
         ResponseEntity<RideResponseModel> responseEntity;
-        RideResponseModel rideResponseModel= rideRequestSimulatorService.getLyftRide(rideRequestId);
+        RideResponseModel rideResponseModel= rideRequestSimulatorService.getLyftRide();
         responseEntity = ResponseEntity.status(HttpStatus.OK).body(rideResponseModel);
         return responseEntity;
     }

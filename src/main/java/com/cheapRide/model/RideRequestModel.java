@@ -4,6 +4,7 @@ package com.cheapRide.model;
  * Created by pshayegh on 4/28/2017.
  */
 public class RideRequestModel {
+    private String provider;
     private String ride_type;
     private Origin origin;
     private Destination destination;
@@ -32,4 +33,12 @@ public class RideRequestModel {
         this.destination = destination;
     }
     public RideRequestModel(){}
+
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
 }

@@ -8,5 +8,5 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface RideRequestSimulatorService {
-    RideResponseModel getLyftRide(String rideRequestId);
+    RideResponseModel getLyftRide();
 }
