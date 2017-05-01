@@ -9,6 +9,7 @@ public class Car {
     private String imageUrl;
     private String year;
     private String license_plate_state;
+    private String license_plate;
     private String model;
 
     public String getColor() {
@@ -58,5 +59,13 @@ public class Car {
 
     public void setModel(String model) {
         this.model = model;
+    }
+
+    public String getLicense_plate() {
+        return license_plate;
+    }
+
+    public void setLicense_plate(String license_plate) {
+        this.license_plate = license_plate;
     }
 }

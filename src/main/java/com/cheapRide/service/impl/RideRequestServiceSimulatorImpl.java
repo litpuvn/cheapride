@@ -38,8 +38,11 @@ public class RideRequestServiceSimulatorImpl implements RideRequestSimulatorServ
 
     private String getRandomPhoneNumber() {
         Random r = new Random();
-
-        return "3434454556556";
+        List<String>   phones=new ArrayList<>();
+        phones.add("8064567532");
+        phones.add("7314567560");
+        phones.add("6873445123");
+        return phones.get(r.nextInt(3));
 
     }
 
@@ -70,11 +73,33 @@ public class RideRequestServiceSimulatorImpl implements RideRequestSimulatorServ
         car.setColor(getRandomColor());
         car.setModel(getRandomCarModel());
         car.setImageUrl(getRandomCarImage());
-        car.setLicense_plate_state("AAAAAA");
+        car.setLicense_plate(getRandomLicencePlate());
         car.setMake(getRandomCarMake());
         car.setYear(getRandomYear());
+        car.setLicense_plate_state(getRandomLicencePlateState());
         return car;
 
+    }
+
+    private String getRandomLicencePlate() {
+        List<String> plates=new ArrayList<>();
+        Random r=new Random();
+        plates.add("11BA44");
+        plates.add("BC44CC");
+        plates.add("23DS23");
+        plates.add("67TY34");
+        plates.add("AZX457");
+        return plates.get(r.nextInt(5));    }
+
+    private String getRandomLicencePlateState() {
+        List<String> states=new ArrayList<>();
+        Random r=new Random();
+        states.add("TX");
+        states.add("CA");
+        states.add("AL");
+        states.add("AZ");
+        states.add("AR");
+        return states.get(r.nextInt(5));
     }
 
     private String getRandomYear() {
