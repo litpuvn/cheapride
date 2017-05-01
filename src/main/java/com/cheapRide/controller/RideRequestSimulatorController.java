@@ -30,7 +30,7 @@ public class RideRequestSimulatorController {
 //        return responseEntity;
 //    }
     @RequestMapping(value = "/bookRide", method = RequestMethod.GET)
-    public ResponseEntity<RideResponseModel> requestRide(@RequestParam String rideRequestId, @RequestParam String rideType) {
+    public ResponseEntity<RideResponseModel> requestRide(@RequestParam String rideRequestId, @RequestParam String provider) {
         ResponseEntity<RideResponseModel> responseEntity;
         RideResponseModel rideResponseModel= rideRequestSimulatorService.getLyftRide(rideRequestId);
         responseEntity = ResponseEntity.status(HttpStatus.OK).body(rideResponseModel);
