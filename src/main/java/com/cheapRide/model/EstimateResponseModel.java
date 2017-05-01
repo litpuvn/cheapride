@@ -6,6 +6,7 @@ package com.cheapRide.model;
  *
  */
 public class EstimateResponseModel {
+	private String rideId;
 
 	private ResponseModel uber;
 
@@ -27,4 +28,11 @@ public class EstimateResponseModel {
 		this.lyft = lyft;
 	}
 
+	public String getRideId() {
+		return rideId;
+	}
+
+	public void setRideId(String rideId) {
+		this.rideId = rideId;
+	}
 }

@@ -1,4 +1,7 @@
-package com.cheapRide.model.lyft;
+package com.cheapRide.model;
+
+import com.cheapRide.model.Car;
+import com.cheapRide.model.Driver;
 
 /**
  * Created by pshayegh on 4/28/2017.

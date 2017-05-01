@@ -37,12 +37,14 @@
 	  <beans:bean id="mongo" class="org.springframework.data.mongodb.core.MongoFactoryBean">
 	    <beans:property name="host" value="localhost"/>
 	  </beans:bean>
-<<<<<<< HEAD
+<!--<<<<<<< HEAD-->
 
 	<!--uncomment this:-->
 	<!--<beans:bean id="loginService" class="com.cheapRide.service.impl.LoginServiceImpl">-->
 	  <!--</beans:bean>-->
 	<beans:bean id="loginService" class="com.cheapRide.service.impl.LoginServiceImpl">
+	</beans:bean>
+	<beans:bean id="rideRequestSimulatorService" class="com.cheapRide.service.impl.RideRequestServiceSimulatorImpl">
 	</beans:bean>
 	<beans:bean id="loginDao" class="com.cheapRide.dao.impl.LoginDaoImpl">
 	</beans:bean>
@@ -51,8 +53,7 @@
 	</beans:bean>
 	<beans:bean id="HistoryDao" class="com.cheapRide.dao.impl.HistoryDaoImpl">
 	</beans:bean>
-=======
->>>>>>> f576e3f1e1fa80a3957acdce8a6d87a9436450bf
+
 	<bean id="contentNegotiationManager"
              class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
     <property name="favorPathExtension" value="false" />
@@ -69,9 +70,7 @@
        </map>
     </property>
 </bean>
-<<<<<<< HEAD
-=======
-	
+<!--<<<<<<< HEAD-->
 
->>>>>>> f576e3f1e1fa80a3957acdce8a6d87a9436450bf
+
 </beans>
