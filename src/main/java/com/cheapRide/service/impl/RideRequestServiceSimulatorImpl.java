@@ -14,8 +14,9 @@ import java.util.Random;
  */
 public class RideRequestServiceSimulatorImpl implements RideRequestSimulatorService {
     @Override
-    public RideResponseModel getLyftRide() {
+    public RideResponseModel getLyftRide(String rideRequestId) {
         RideResponseModel rideResponseModel =new RideResponseModel();
+        rideResponseModel.setRideId(rideRequestId);
         rideResponseModel.setCar(getCar());
         rideResponseModel.setDriver(getDriver());
         return rideResponseModel;
