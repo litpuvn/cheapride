@@ -30,8 +30,8 @@ public class RideRequestSimulatorController {
         ResponseEntity<RideResponseModel> responseEntity;
         RideResponseModel rideResponseModel;
         if("lyft".equalsIgnoreCase(rideRequestModel.getProvider())){
-        	//rideResponseModel= liftRideBookingService.requestLyftRide(rideRequestModel);
-        	rideResponseModel= rideRequestSimulatorService.getLyftRide();
+        	rideResponseModel= liftRideBookingService.requestLyftRide(rideRequestModel);
+        	//rideResponseModel= rideRequestSimulatorService.getLyftRide();
         }else{
         	rideResponseModel= rideRequestSimulatorService.getLyftRide();
         }

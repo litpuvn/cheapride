@@ -10,6 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.cheapRide.model.RideRequestModel;
+import com.cheapRide.model.RideResponseModel;
 import com.cheapRide.model.lyft.LyftRideRequestModel;
 import com.cheapRide.service.impl.LyftRideBookingServiceImpl;
 
@@ -57,8 +58,8 @@ public class TestLyftBookingService {
 			reideRqModel.setOrigin(model.getOrigin());
 			reideRqModel.setProvider("lyft");
 			reideRqModel.setRide_type("lyft");
-			String rideID = service.requestLyftRide(reideRqModel);
-			assert (rideID != null);
+			RideResponseModel ride = service.requestLyftRide(reideRqModel);
+			assert (ride.getRideId() != null);
 			
 		} catch (Exception exc) {
 			fail(exc.getMessage());

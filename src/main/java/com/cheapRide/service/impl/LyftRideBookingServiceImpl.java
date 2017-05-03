@@ -83,10 +83,11 @@ public class LyftRideBookingServiceImpl implements LyftRideBookingService {
 		return returnToken;
 	}
 
-	public String requestLyftRide(RideRequestModel requestObj) {
+	public RideResponseModel requestLyftRide(RideRequestModel requestObj) {
 		String requestJson = null;
 		String returnObj = "";
 		String rideId = "";
+		RideResponseModel rideResponseModel  = null;
 		try {
 			LyftRideRequestModel lyftRideRequestModel = convertToLyftRequestModel(requestObj);
 			requestJson = mapper.writeValueAsString(lyftRideRequestModel);
@@ -103,7 +104,7 @@ public class LyftRideBookingServiceImpl implements LyftRideBookingService {
 				rideId = (String) map.get("ride_id");
 				changeStatusToAccept(rideId, accessToken);
 				returnObj = getRideDetails(rideId, accessToken);
-				RideResponseModel reideResModel = convertIntoRideResponseModel(returnObj);
+				rideResponseModel = convertIntoRideResponseModel(returnObj);
 			} catch (Exception e1) {
 
 				logger.error("ERROR : LyftRideBookingServiceImpl => requestLyftRide => Reason => " + e1.getMessage());
@@ -116,7 +117,7 @@ public class LyftRideBookingServiceImpl implements LyftRideBookingService {
 		}
 
 		logger.debug("End : LyftRideBookingServiceImpl => requestLyftRide for object " + requestJson);
-		return returnObj;
+		return rideResponseModel;
 	}
 
 	private RideResponseModel convertIntoRideResponseModel(String returnObj) {
