@@ -30,6 +30,8 @@ public class HistoryDaoImplTest {
 	private String provider  = "uber";
 	private String fromDate = "09/09/2017";
 	private String toDate = "09/10/2017";
+	private int pageNumber = 1;
+	private int size = 3;
 @Test
 	public void addHistory() {
 		// TODO Auto-generated method stub
@@ -49,7 +51,7 @@ public void getHistoryByUsername() {
 	// TODO Auto-generated method stub
 	try{
 		//HistoryModel userHistoryByUsername = null;
-		Query searchUsername = new Query(Criteria.where("username").is(username));
+		Query searchUsername = new Query(Criteria.where("username").is(username)).skip((pageNumber-1)*size).limit(size);
 		ArrayList<HistoryModel> userHistoryByUsername = (ArrayList<HistoryModel>)mongoTemplate.find(searchUsername, HistoryModel.class);
 		System.out.println("history by user name " +userHistoryByUsername);
 	}catch(Exception e){
@@ -60,7 +62,7 @@ public void getHistoryByUsername() {
 // @Test
 public void getHistoryByProvider(){
 	try{
-		Query searchProvider = new Query(Criteria.where("provider").is(provider));
+		Query searchProvider = new Query(Criteria.where("provider").is(provider)).skip((pageNumber-1)*size).limit(size);
 		ArrayList<HistoryModel> userHistoryByProvider = (ArrayList<HistoryModel>) mongoTemplate.find(searchProvider, HistoryModel.class);
 	System.out.println("history by provider " +userHistoryByProvider);
 	}catch(Exception e){
@@ -73,7 +75,7 @@ public void getHistoryByDate(){
 	try{
 		ArrayList<HistoryModel> userHistoryByDate = null;
 		Query searchUserHistoryByDate = new Query();
-		searchUserHistoryByDate.addCriteria(Criteria.where("date").gte(fromDate).lt(toDate).and("username").is(username));
+		searchUserHistoryByDate.addCriteria(Criteria.where("date").gte(fromDate).lt(toDate).and("username").is(username)).skip((pageNumber-1)*size).limit(size);
 		userHistoryByDate =(ArrayList<HistoryModel>) mongoTemplate.find(searchUserHistoryByDate, HistoryModel.class);
 		System.out.println(userHistoryByDate);
 	}catch(Exception e){

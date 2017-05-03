@@ -10,7 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
-
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.cheapRide.dao.HistoryDao;
 import com.cheapRide.dao.impl.HistoryDaoImpl;
 import com.cheapRide.model.HistoryModel;
@@ -47,18 +48,18 @@ public class HistoryServiceImpl implements HistoryService {
 	}
 
 	@Override
-	public String checkForUsername(String username) {
+	public ArrayList<HistoryModel> checkForUsername(String username, int pageNumber,int size) {
 		// TODO Auto-generated method stub
 		logger.debug("Start => HistoryServiceImpl => checkForUsername  for user "
 				+ username);
-		String result  = null;
+		 result  = null;
 		
 		ArrayList<HistoryModel> model = null;
 		try{
-			Query searchUsername = new Query(Criteria.where("username").is(username));
+			Query searchUsername = new Query(Criteria.where("username").is(username)).skip((pageNumber-1)*size).limit(size);
 			if(searchUsername != null){
-				model = dao.getHistoryByUsername(username);
-				result = mapper.writeValueAsString(model);
+				model = dao.getHistoryByUsername(username,pageNumber,size);
+				//result = mapper.writeValueAsString(model);
 			}
 		}catch(Exception e){
 			logger.error("ERROR => HistoryServiceImpl => checkForUsername  for user "
@@ -66,11 +67,11 @@ public class HistoryServiceImpl implements HistoryService {
 		}
 		logger.debug("End => HistoryServiceImpl => checkForUsername  for user "
 				+ username);
-		return result;
+		return model;
 	}
 	
 	@Override
-	public String checkForProvider(String username, String provider) {
+	public ArrayList<HistoryModel> checkForProvider(String username, String provider, int pageNumber,int size) {
 		// TODO Auto-generated method stub
 		logger.debug("Start => HistoryServiceImpl => checkForProvider  for provider "
 				+ provider);
@@ -78,10 +79,10 @@ public class HistoryServiceImpl implements HistoryService {
 		ArrayList<HistoryModel> model = null;
 		try{
 			Query searchUserHistoryByProvider = new Query(Criteria.where("username").is(
-					username).and("provider").is(provider));
+					username).and("provider").is(provider)).skip((pageNumber-1)*size).limit(size);
 			if(searchUserHistoryByProvider != null){
-				model = dao.getHistoryByProvider(username, provider);
-				result = mapper.writeValueAsString(model);
+				model = dao.getHistoryByProvider(username, provider, pageNumber, size);
+				//result = mapper.writeValueAsString(model);
 			}
 		}catch(Exception e){
 			logger.error("ERROR => HistoryServiceImpl => checkForProvider  for provider "
@@ -89,11 +90,11 @@ public class HistoryServiceImpl implements HistoryService {
 		}
 		logger.debug("End => HistoryServiceImpl => checkForProvider  for provider "
 				+ provider);
-		return result;
+		return model;
 	}
 
 	@Override
-	public String checkDate(String username, String fromDate, String toDate) {
+	public ArrayList<HistoryModel> checkDate(String username, String fromDate, String toDate, int pageNumber,int size) {
 		// TODO Auto-generated method stub
 		logger.debug("Start => HistoryServiceImpl => checkDate  for username "
 				+ username);
@@ -105,8 +106,8 @@ public class HistoryServiceImpl implements HistoryService {
 			Query tDate = new Query(Criteria.where("username").is(
 					username).and("date").is(toDate));
 			if(fDate != null && tDate != null){
-				model = dao.getHistoryByDate(username, fromDate, toDate);
-				result = mapper.writeValueAsString(model);
+				model = dao.getHistoryByDate(username, fromDate, toDate, pageNumber, size);
+				//result = mapper.writeValueAsString(model);
 			}
 		}catch(Exception e){
 			logger.error("ERROR => HistoryServiceImpl => checkDate  for username "
@@ -114,7 +115,7 @@ public class HistoryServiceImpl implements HistoryService {
 		}
 		logger.debug("End => HistoryServiceImpl => checkDate  for username "
 				+ username);
-		return result;
+		return model;
 	}
 
 }
