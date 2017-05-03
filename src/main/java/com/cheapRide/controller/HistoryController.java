@@ -1,17 +1,20 @@
 package com.cheapRide.controller;
 import java.awt.print.Pageable;
 /**
- * @author Aggy
+ * @author Agnes
  */
 import java.util.ArrayList;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.junit.runner.RunWith;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,11 +32,11 @@ public class HistoryController {
 	@Autowired
     public HistoryService historyService;
 	@RequestMapping(value = "/getHistoryByUsername", method = RequestMethod.GET)
-    public String getHistoryByUsername(@RequestParam (value="username") String username) {
+    public ArrayList<HistoryModel> getHistoryByUsername(@RequestParam (value="username") String username, @RequestParam (value="pageNumber") int pageNumber, @RequestParam (value="size") int size) {
     	logger.debug("Start => HistoryController => getHistoryByUsername  for user " + username);
-        String returnString = null;
+        ArrayList<HistoryModel> returnString = null;
         try {
-        	returnString = historyService.checkForUsername(username);
+        	returnString = historyService.checkForUsername(username, pageNumber, size);
      
         } catch (Exception e) {
         	 logger.error("ERROR : HistoryController => getHistoryByUsername  for user " + username);
@@ -45,11 +48,11 @@ public class HistoryController {
         return returnString;
     }
 	@RequestMapping(value = "/getHistoryByProvider", method = RequestMethod.GET)
-	public String getHistoryByProvider(@RequestParam (value="username") String username, @RequestParam (value="provider") String provider) {
+	public ArrayList<HistoryModel> getHistoryByProvider(@RequestParam (value="username") String username, @RequestParam (value="provider") String provider, @RequestParam (value="pageNumber") int pageNumber, @RequestParam (value="size") int size) {
     	logger.debug("Start => HistoryController => getHistoryByProvider  for user " + username);
-        String returnString = null;
+        ArrayList<HistoryModel> returnString = null;
         try {
-            returnString = historyService.checkForProvider(username,provider);
+            returnString = historyService.checkForProvider(username,provider, pageNumber, size);
             //returnString = mapper.writeValueAsString(model);
         } catch (Exception e) {
         	 logger.error("ERROR : HistoryController => getHistoryByProvider  for user " + username);
@@ -60,11 +63,11 @@ public class HistoryController {
         return returnString;
     }
 	@RequestMapping(value = "/getHistoryByDate", method = RequestMethod.GET)
-	public String getHistoryByDate(@RequestParam (value="username") String username, @RequestParam (value="fromDate") String fromDate,  @RequestParam (value="toDate") String toDate) {
+	public ArrayList<HistoryModel> getHistoryByDate(@RequestParam (value="username") String username, @RequestParam (value="fromDate") String fromDate,  @RequestParam (value="toDate") String toDate, @RequestParam (value="pageNumber") int pageNumber, @RequestParam (value="size") int size) {
     	logger.debug("Start => HistoryController => getHistoryByDate  for user " + username);
-        String returnString = null;
+        ArrayList<HistoryModel> returnString = null;
         try {
-            returnString = historyService.checkDate(username,fromDate,toDate);
+            returnString = historyService.checkDate(username,fromDate,toDate, pageNumber, size);
         } catch (Exception e) {
         	 logger.error("ERROR : HistoryController => getHistoryByDate  for user " + username);
         }
