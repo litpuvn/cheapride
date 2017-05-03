@@ -3,6 +3,7 @@ package com.cheapRide.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.slf4j.LoggerFactory;
@@ -10,7 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.cheapRide.model.Car;
+import com.cheapRide.model.Driver;
+import com.cheapRide.model.RideRequestModel;
+import com.cheapRide.model.RideResponseModel;
 import com.cheapRide.model.lyft.AuthTokenModel;
+import com.cheapRide.model.lyft.LyftRideRequestModel;
 import com.cheapRide.service.LyftRideBookingService;
 import com.cheapRide.util.CommonUtil;
 import com.squareup.okhttp.Credentials;
@@ -77,13 +83,14 @@ public class LyftRideBookingServiceImpl implements LyftRideBookingService {
 		return returnToken;
 	}
 
-	public String requestLyftRide(String requestJson) {
-
-		logger.debug("Start : LyftRideBookingServiceImpl => requestLyftRide for object " + requestJson);
-
+	public String requestLyftRide(RideRequestModel requestObj) {
+		String requestJson = null;
 		String returnObj = "";
 		String rideId = "";
 		try {
+			LyftRideRequestModel lyftRideRequestModel = convertToLyftRequestModel(requestObj);
+			requestJson = mapper.writeValueAsString(lyftRideRequestModel);
+			logger.debug("Start : LyftRideBookingServiceImpl => requestLyftRide for object " + requestJson);
 			String reqUrl = lyftBaseUrl + RIDE_URL;
 			String accessToken = getLyftAuthToken();
 			Map<String, String> hdrMap = new HashMap<String, String>();
@@ -96,6 +103,7 @@ public class LyftRideBookingServiceImpl implements LyftRideBookingService {
 				rideId = (String) map.get("ride_id");
 				changeStatusToAccept(rideId, accessToken);
 				returnObj = getRideDetails(rideId, accessToken);
+				RideResponseModel reideResModel = convertIntoRideResponseModel(returnObj);
 			} catch (Exception e1) {
 
 				logger.error("ERROR : LyftRideBookingServiceImpl => requestLyftRide => Reason => " + e1.getMessage());
@@ -109,6 +117,48 @@ public class LyftRideBookingServiceImpl implements LyftRideBookingService {
 
 		logger.debug("End : LyftRideBookingServiceImpl => requestLyftRide for object " + requestJson);
 		return returnObj;
+	}
+
+	private RideResponseModel convertIntoRideResponseModel(String returnObj) {
+		RideResponseModel rideResModel = new RideResponseModel();
+		Car carObj = new Car();
+		Driver driverObj = new Driver();
+		try{
+			mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+			Map<String, Object> map = mapper.readValue(returnObj, new TypeReference<Map<String, Object>>() {});
+			carObj.setColor(((Map)map.get("vehicle")).get("color").toString());
+			carObj.setMake(((Map)map.get("vehicle")).get("make").toString());
+			carObj.setLicense_plate(((Map)map.get("vehicle")).get("license_plate").toString());
+			carObj.setImageUrl(((Map)map.get("vehicle")).get("image_url").toString());
+			carObj.setLicense_plate_state(((Map)map.get("vehicle")).get("license_plate_state").toString());
+			carObj.setYear(((Map)map.get("vehicle")).get("year").toString());
+			carObj.setModel(((Map)map.get("vehicle")).get("model").toString());
+			rideResModel.setCar(carObj);
+			
+			driverObj.setFirstName(((Map)map.get("driver")).get("first_name").toString());
+			driverObj.setImageUrl(((Map)map.get("driver")).get("image_url").toString());
+			driverObj.setPhone_number(((Map)map.get("driver")).get("phone_number").toString());
+			driverObj.setRating(((Map)map.get("driver")).get("rating").toString());
+			rideResModel.setDriver(driverObj);
+			rideResModel.setRideId(map.get("status").toString());
+			rideResModel.setStatus(map.get("ride_id").toString());
+		}catch(Exception e){
+			System.out.println(e.getMessage()); 
+			e.printStackTrace();
+		}
+		
+		return rideResModel;
+	}
+
+	private LyftRideRequestModel convertToLyftRequestModel(RideRequestModel requestObj) {
+		LyftRideRequestModel lyftRideRequestModel = new LyftRideRequestModel();
+		if(requestObj!=null){
+			lyftRideRequestModel.setOrigin(requestObj.getOrigin());
+			lyftRideRequestModel.setDestination(requestObj.getDestination());
+			lyftRideRequestModel.setRide_type(requestObj.getRide_type());
+			
+		}
+		return lyftRideRequestModel;
 	}
 
 	public String changeStatusToAccept(String rideId, String accessToken) {

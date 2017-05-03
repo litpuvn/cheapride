@@ -1,28 +1,22 @@
 package com.cheapRide.service.impl;
-import java.awt.print.Pageable;
 /**
  * @author Agnes
  */
 import java.util.ArrayList;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import org.junit.runner.RunWith;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.stereotype.Service;
 
 import com.cheapRide.dao.HistoryDao;
 import com.cheapRide.dao.impl.HistoryDaoImpl;
 import com.cheapRide.model.HistoryModel;
 import com.cheapRide.service.HistoryService;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml" })
-
+@Service
 public class HistoryServiceImpl implements HistoryService {
 	@Autowired 
 	public HistoryDao dao;
