@@ -50,7 +50,7 @@ public class RideEstimateController {
         	 logger.error("ERROR : RideEstimateServiceImpl => getPriceEstmiate  for origin lattitude" + originLat
      				+ " origin longitude " + originLon + " destination lattitude " + destLat + " destination longitude "
      				+ destLon);
-        	 responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid data");
+        	 responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{ \"message\" : \"Invalid data\"}");
             e.printStackTrace();
         }
         logger.debug("End : RideEstimateServiceImpl => getPriceEstmiate  for origin lattitude" + originLat
