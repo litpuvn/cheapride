@@ -12,14 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Repository;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.cheapRide.dao.HistoryDao;
 import com.cheapRide.model.HistoryModel;
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml" })
-
+@Repository
 public class HistoryDaoImpl implements HistoryDao {
 	private final static org.slf4j.Logger logger = LoggerFactory
 			.getLogger(HistoryDaoImpl.class);
@@ -47,15 +46,15 @@ public class HistoryDaoImpl implements HistoryDao {
 	}
 
 	@Override
-	public ArrayList<HistoryModel> getHistoryByUsername(String username) {
+	public ArrayList<HistoryModel> getHistoryByUsername(String username,int pageNumber,int size) {
 		// TODO Auto-generated method stub
 		logger.debug("Start => HistoryDaoImpl => getHistoryByUsername  for user "
 				+ username);
 		ArrayList<HistoryModel> userHistoryByUsername = null;
 		try{
 			
-			Query searchUsername = new Query(Criteria.where("username").is(username));
-			userHistoryByUsername = (ArrayList<HistoryModel>) mongoTemplate.find(searchUsername, HistoryModel.class);
+			Query searchUsername = new Query(Criteria.where("username").is(username)).skip((pageNumber-1)*size).limit(size);
+			userHistoryByUsername =  (ArrayList<HistoryModel>) mongoTemplate.find(searchUsername, HistoryModel.class);
 		}catch(Exception e){
 			logger.error("ERROR => HistoryDaoImpl => getHistoryByUsername  for user "
 					+ username);
@@ -67,14 +66,14 @@ public class HistoryDaoImpl implements HistoryDao {
 	}
 	
 	@Override
-	public ArrayList<HistoryModel> getHistoryByProvider(String username,String provider) {
+	public ArrayList<HistoryModel> getHistoryByProvider(String username,String provider, int pageNumber, int size) {
 		logger.debug("Start => HistoryDaoImpl => getHistoryByProvider  for user "
 				+ username);
 		ArrayList<HistoryModel> userHistoryByProvider = null;
 		
 		try{
 			Query searchUserHistoryByProvider = new Query(Criteria.where("username").is(
-					username).and("provider").is(provider));
+					username).and("provider").is(provider)).skip((pageNumber-1)*size).limit(size);
 			userHistoryByProvider = (ArrayList<HistoryModel>) mongoTemplate.find(searchUserHistoryByProvider, HistoryModel.class);
 		}catch(Exception e){
 			logger.error("ERROR => HistoryDaoImpl => getHistoryByProvider  for user "
@@ -87,7 +86,7 @@ public class HistoryDaoImpl implements HistoryDao {
 	}
 	
 	@Override
-	public ArrayList<HistoryModel> getHistoryByDate(String username,String fromDate, String toDate){
+	public ArrayList<HistoryModel> getHistoryByDate(String username,String fromDate, String toDate, int pageNumber, int size){
 		logger.debug("Start => HistoryDaoImpl => getHistoryByDate  for user "
 				+ username);
 		//HistoryModel userHistoryByDate = null;
@@ -95,7 +94,7 @@ public class HistoryDaoImpl implements HistoryDao {
 		try{
 			
 			Query searchUserHistoryByDate = new Query();
-			searchUserHistoryByDate.addCriteria(Criteria.where("date").gte(fromDate).lt(toDate).and("username").is(username));
+			searchUserHistoryByDate.addCriteria(Criteria.where("date").gte(fromDate).lt(toDate).and("username").is(username)).skip((pageNumber-1)*size).limit(size);
 			userHistoryByDate =(ArrayList<HistoryModel>) mongoTemplate.find(searchUserHistoryByDate, HistoryModel.class);
 		}catch(Exception e){
 			logger.error("ERROR => HistoryDaoImpl => getHistoryByDate  for user "
