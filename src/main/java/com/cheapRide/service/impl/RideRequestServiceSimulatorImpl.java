@@ -1,17 +1,21 @@
 package com.cheapRide.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import org.springframework.stereotype.Service;
+
 import com.cheapRide.model.Car;
 import com.cheapRide.model.Driver;
 import com.cheapRide.model.RideResponseModel;
 import com.cheapRide.service.RideRequestSimulatorService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 /**
  * Created by pshayegh on 4/28/2017.
  */
+
+@Service
 public class RideRequestServiceSimulatorImpl implements RideRequestSimulatorService {
     @Override
     public RideResponseModel getLyftRide() {

@@ -35,7 +35,6 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 
 	private static ObjectMapper mapper = new ObjectMapper();
 	
-	
 
 	@Autowired
 	LyftEstimateService lyftEstimateService;
@@ -73,6 +72,8 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 				if("6_or_more_seats".equalsIgnoreCase(carType))
 					carTypeArr = seats6.split(":");
 				if("luxury_4_seats".equalsIgnoreCase(carType))
+					carTypeArr = lux4.split(":");
+				if("share".equalsIgnoreCase(carType))
 					carTypeArr = lux4.split(":");
 				uberCarType = carTypeArr[1];
 				lyftCarType = carTypeArr[0];

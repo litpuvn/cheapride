@@ -1,23 +1,23 @@
 
 package com.cheapRide.dao.impl;
-import java.sql.Date;
 /**
  * @author Agnes
  */
 import java.util.ArrayList;
 
-import org.junit.runner.RunWith;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import com.cheapRide.dao.HistoryDao;
 import com.cheapRide.model.HistoryModel;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import com.cheapRide.dao.HistoryDao;
+import com.cheapRide.model.HistoryModel;
+
 @Repository
 public class HistoryDaoImpl implements HistoryDao {
 	private final static org.slf4j.Logger logger = LoggerFactory

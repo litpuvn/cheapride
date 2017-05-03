@@ -1,6 +1,5 @@
 package com.cheapRide.dao;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
 import com.cheapRide.model.HistoryModel;
