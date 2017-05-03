@@ -24,7 +24,7 @@ import com.squareup.okhttp.Credentials;
 /**
  * 
  * @author Amit
- *
+ * 
  */
 @Service
 public class LyftRideBookingServiceImpl implements LyftRideBookingService {

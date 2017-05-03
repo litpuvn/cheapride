@@ -24,7 +24,7 @@ public class RideRequestSimulatorController {
     
     @Autowired
     private LyftRideBookingService liftRideBookingService;
-    
+     
     @RequestMapping(value = "/bookRide", method = RequestMethod.POST)
     public ResponseEntity<RideResponseModel> requestRide(@RequestBody RideRequestModel rideRequestModel) {
         ResponseEntity<RideResponseModel> responseEntity;
