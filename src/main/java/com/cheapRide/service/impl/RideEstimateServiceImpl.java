@@ -50,6 +50,9 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 
 	@Value("${luxury_4_seats}")
 	private String lux4;
+	
+	@Value("${share}")
+	private String share;
 
 
 	public String getEstimates(float originLat, float originLong, float destLat, float destLon, Map<String,String> options,String carType) {
