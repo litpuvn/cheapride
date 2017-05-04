@@ -173,8 +173,8 @@ public class LyftRideBookingServiceImpl implements LyftRideBookingService {
 			driverObj.setPhone_number(((Map)map.get("driver")).get("phone_number").toString());
 			driverObj.setRating(((Map)map.get("driver")).get("rating").toString());
 			rideResModel.setDriver(driverObj);
-			rideResModel.setRideId(map.get("status").toString());
-			rideResModel.setStatus(map.get("ride_id").toString());
+			rideResModel.setRideId(map.get("ride_id").toString());
+			rideResModel.setStatus(map.get("status").toString());
 		}catch(Exception e){
 			System.out.println(e.getMessage()); 
 			e.printStackTrace();
