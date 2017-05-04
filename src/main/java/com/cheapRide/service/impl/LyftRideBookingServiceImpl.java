@@ -49,6 +49,18 @@ public class LyftRideBookingServiceImpl implements LyftRideBookingService {
 	private String lyftBaseUrl;
 
 	private static String RIDE_URL = "/rides";
+	
+	@Value("${4_seats}")
+	private String seats4;
+
+	@Value("${6_or_more_seats}")
+	private String seats6;
+
+	@Value("${luxury_4_seats}")
+	private String lux4;
+	
+	@Value("${share}")
+	private String share;
 
 	public String getLyftAuthToken() {
 
@@ -89,6 +101,26 @@ public class LyftRideBookingServiceImpl implements LyftRideBookingService {
 		String rideId = "";
 		RideResponseModel rideResponseModel  = null;
 		try {
+			
+			String uberCarType = null;
+			String lyftCarType = null;
+			String carType = requestObj.getRide_type();
+			if(carType != null){
+				String[] carTypeArr = null;;
+				if("4_seats".equalsIgnoreCase(carType))
+					carTypeArr = seats4.split(":");
+				if("6_or_more_seats".equalsIgnoreCase(carType))
+					carTypeArr = seats6.split(":");
+				if("luxury_4_seats".equalsIgnoreCase(carType))
+					carTypeArr = lux4.split(":");
+				if("share".equalsIgnoreCase(carType))
+					carTypeArr = share.split(":");
+				uberCarType = carTypeArr[1];
+				lyftCarType = carTypeArr[0];
+			}
+			if("lyft".equalsIgnoreCase(requestObj.getProvider())){
+				requestObj.setRide_type(lyftCarType);
+			}
 			LyftRideRequestModel lyftRideRequestModel = convertToLyftRequestModel(requestObj);
 			requestJson = mapper.writeValueAsString(lyftRideRequestModel);
 			logger.debug("Start : LyftRideBookingServiceImpl => requestLyftRide for object " + requestJson);
