@@ -86,7 +86,7 @@ public class HistoryDaoImpl implements HistoryDao {
 	}
 	
 	@Override
-	public ArrayList<HistoryModel> getHistoryByDate(String username,String fromDate, String toDate, int pageNumber, int size){
+	public ArrayList<HistoryModel> getHistoryByDate(String username,String from, String to, int pageNumber, int size){
 		logger.debug("Start => HistoryDaoImpl => getHistoryByDate  for user "
 				+ username);
 		//HistoryModel userHistoryByDate = null;
@@ -94,7 +94,7 @@ public class HistoryDaoImpl implements HistoryDao {
 		try{
 			
 			Query searchUserHistoryByDate = new Query();
-			searchUserHistoryByDate.addCriteria(Criteria.where("date").gte(fromDate).lt(toDate).and("username").is(username)).skip((pageNumber-1)*size).limit(size);
+			searchUserHistoryByDate.addCriteria(Criteria.where("date").gte(from).lt(to).and("username").is(username)).skip((pageNumber-1)*size).limit(size);
 			userHistoryByDate =(ArrayList<HistoryModel>) mongoTemplate.find(searchUserHistoryByDate, HistoryModel.class);
 		}catch(Exception e){
 			logger.error("ERROR => HistoryDaoImpl => getHistoryByDate  for user "
