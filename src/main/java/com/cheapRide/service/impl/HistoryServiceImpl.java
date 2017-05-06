@@ -94,19 +94,15 @@ public class HistoryServiceImpl implements HistoryService {
 	}
 
 	@Override
-	public ArrayList<HistoryModel> checkDate(String username, String fromDate, String toDate, int pageNumber,int size) {
+	public ArrayList<HistoryModel> checkDate(String username, String from, String to, int pageNumber,int size) {
 		// TODO Auto-generated method stub
 		logger.debug("Start => HistoryServiceImpl => checkDate  for username "
 				+ username);
 		String result  = null;
 		ArrayList<HistoryModel> model = null;
 		try{
-			Query fDate = new Query(Criteria.where("username").is(
-					username).and("date").is(fromDate));
-			Query tDate = new Query(Criteria.where("username").is(
-					username).and("date").is(toDate));
-			if(fDate != null && tDate != null){
-				model = dao.getHistoryByDate(username, fromDate, toDate, pageNumber, size);
+			if(from != null && to != null){
+				model = dao.getHistoryByDate(username, from, to, pageNumber, size);
 				//result = mapper.writeValueAsString(model);
 			}
 		}catch(Exception e){
