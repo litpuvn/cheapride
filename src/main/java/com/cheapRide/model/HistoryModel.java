@@ -6,6 +6,7 @@ package com.cheapRide.model;
  */
 
 import java.awt.print.Pageable;
+import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,17 +15,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class HistoryModel {
 @Id
 private String Id;
-private String date;
+private Date date;
 private String provider;
 private String pickup;
 private String destination;
 private String fee;
 private String username;
 
-public String getDate(){
+public Date getDate(){
 	return date;
 }
-public void setDate(String date){
+public void setDate(Date date){
 		this.date = date;
 }
 public String getProvider(){
@@ -57,7 +58,7 @@ public String getUsername(){
 public void setUsername(String username){
 		this.username = username;
 }
-public HistoryModel(String username, String date,String pickup,String destination, String fee, String provider) {
+public HistoryModel(String username, Date date,String pickup,String destination, String fee, String provider) {
 	this.username = username;
 	this.date = date;
 	this.pickup = pickup;

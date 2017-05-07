@@ -29,7 +29,7 @@ import com.cheapRide.service.HistoryService;
 
 @RestController
 public class HistoryController {
-	private final static org.slf4j.Logger logger = LoggerFactory.getLogger(LoginController.class);
+	private final static org.slf4j.Logger logger = LoggerFactory.getLogger(HistoryController.class);
 	@Autowired
     public HistoryService historyService;
 	@RequestMapping(value = "/getHistoryByUsername", method = RequestMethod.GET)
