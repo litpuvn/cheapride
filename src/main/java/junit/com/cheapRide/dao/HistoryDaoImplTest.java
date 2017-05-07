@@ -25,16 +25,16 @@ public class HistoryDaoImplTest {
 	 private MongoTemplate mongoTemplate;
 	
 	private String username  = "a";
-	private String date  = "09/09/2017";
-	private String pickup  = "HSC";
-	private String destination  = "University";
+	private Date date  = new Date("1//2016");
+	private String pickup  = "home";
+	private String destination  = "court";
 	private String fee  = "$7";
-	private String provider  = "uber";
+	private String provider  = "lyft";
 	private Date from = new Date("1/1/2016");
 	private Date to = new Date("2/1/2018");
 	private int pageNumber = 1;
 	private int size = 3;
-//@Test
+@Test
 	public void addHistory() {
 		// TODO Auto-generated method stub
 		

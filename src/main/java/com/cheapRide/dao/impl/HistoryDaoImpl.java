@@ -28,7 +28,7 @@ public class HistoryDaoImpl implements HistoryDao {
 	@Autowired
 	 private MongoTemplate mongoTemplate;
 	@Override
-	public HistoryModel addHistory(String username,String date, String pickup,String destination,String fee, String provider) {
+	public HistoryModel addHistory(String username,Date date, String pickup,String destination,String fee, String provider) {
 		// TODO Auto-generated method stub
 		logger.debug("Start => HistoryDaoImpl => addHistory  for user "
 				+ username);
