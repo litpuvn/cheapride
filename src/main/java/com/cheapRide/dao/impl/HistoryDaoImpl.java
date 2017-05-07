@@ -88,7 +88,11 @@ public class HistoryDaoImpl implements HistoryDao {
 	}
 	
 	@Override
+<<<<<<< HEAD
 	public ArrayList<HistoryModel> getHistoryByDate(String username,Date from, Date to, int pageNumber, int size){
+=======
+	public ArrayList<HistoryModel> getHistoryByDate(String username,String from, String to, int pageNumber, int size){
+>>>>>>> 8bd28f8ee19a561d5439025f552a8b024540c2bd
 		logger.debug("Start => HistoryDaoImpl => getHistoryByDate  for user "
 				+ username);
 		ArrayList<HistoryModel> userHistoryByDate = null;
