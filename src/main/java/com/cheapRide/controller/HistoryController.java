@@ -64,11 +64,7 @@ public class HistoryController {
         return returnString;
     }
 	@RequestMapping(value = "/getHistoryByDate", method = RequestMethod.GET)
-<<<<<<< HEAD
 	public ArrayList<HistoryModel> getHistoryByDate(@RequestParam (value="username") String username, @RequestParam (value="from") Date from,  @RequestParam (value="to") Date to, @RequestParam (value="pageNumber") int pageNumber, @RequestParam (value="size") int size) {
-=======
-	public ArrayList<HistoryModel> getHistoryByDate(@RequestParam (value="username") String username, @RequestParam (value="from") String from,  @RequestParam (value="to") String to, @RequestParam (value="pageNumber") int pageNumber, @RequestParam (value="size") int size) {
->>>>>>> 8bd28f8ee19a561d5439025f552a8b024540c2bd
     	logger.debug("Start => HistoryController => getHistoryByDate  for user " + username);
         ArrayList<HistoryModel> returnString = null;
         try {

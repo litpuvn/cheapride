@@ -95,11 +95,7 @@ public class HistoryServiceImpl implements HistoryService {
 	}
 
 	@Override
-<<<<<<< HEAD
 	public ArrayList<HistoryModel> checkDate(String username, Date from, Date to, int pageNumber,int size) {
-=======
-	public ArrayList<HistoryModel> checkDate(String username, String from, String to, int pageNumber,int size) {
->>>>>>> 8bd28f8ee19a561d5439025f552a8b024540c2bd
 		// TODO Auto-generated method stub
 		logger.debug("Start => HistoryServiceImpl => checkDate  for username "
 				+ username);

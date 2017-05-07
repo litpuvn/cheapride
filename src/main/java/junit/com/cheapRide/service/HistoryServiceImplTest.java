@@ -28,13 +28,8 @@ public class HistoryServiceImplTest {
 	ObjectMapper mapper = new ObjectMapper();
 	private String username = "john";
 	private String provider = "uber";
-<<<<<<< HEAD
 	private Date from = new Date("1/1/2016");
 	private Date to = new Date("2/1/2018");
-=======
-	private String from = "09/09/2017";
-	private String to = "09/13/2017";
->>>>>>> 8bd28f8ee19a561d5439025f552a8b024540c2bd
 	private int pageNumber = 1;
 	private int size = 3;
 	//@Test
