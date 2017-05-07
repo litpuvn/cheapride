@@ -1,9 +1,11 @@
 
 package com.cheapRide.dao.impl;
+import java.text.SimpleDateFormat;
 /**
  * @author Agnes
  */
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,17 +88,18 @@ public class HistoryDaoImpl implements HistoryDao {
 	}
 	
 	@Override
-	public ArrayList<HistoryModel> getHistoryByDate(String username,String fromDate, String toDate, int pageNumber, int size){
+	public ArrayList<HistoryModel> getHistoryByDate(String username,Date from, Date to, int pageNumber, int size){
 		logger.debug("Start => HistoryDaoImpl => getHistoryByDate  for user "
 				+ username);
-		//HistoryModel userHistoryByDate = null;
 		ArrayList<HistoryModel> userHistoryByDate = null;
+		
 		try{
-			
+			//ArrayList<HistoryModel> userHistoryByDate = null;
 			Query searchUserHistoryByDate = new Query();
-			searchUserHistoryByDate.addCriteria(Criteria.where("date").gte(fromDate).lt(toDate).and("username").is(username)).skip((pageNumber-1)*size).limit(size);
+			searchUserHistoryByDate.addCriteria(Criteria.where("date").gte(from).lt(to).and("username").is(username)).skip((pageNumber-1)*size).limit(size);
 			userHistoryByDate =(ArrayList<HistoryModel>) mongoTemplate.find(searchUserHistoryByDate, HistoryModel.class);
-		}catch(Exception e){
+			//System.out.println(userHistoryByDate);		
+			}catch(Exception e){
 			logger.error("ERROR => HistoryDaoImpl => getHistoryByDate  for user "
 					+ username);
 		}

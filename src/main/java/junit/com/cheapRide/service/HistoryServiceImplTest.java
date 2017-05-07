@@ -5,6 +5,7 @@ package junit.com.cheapRide.service;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
@@ -27,8 +28,8 @@ public class HistoryServiceImplTest {
 	ObjectMapper mapper = new ObjectMapper();
 	private String username = "john";
 	private String provider = "uber";
-	private String fromDate = "09/09/2017";
-	private String toDate = "09/13/2017";
+	private Date from = new Date("1/1/2016");
+	private Date to = new Date("2/1/2018");
 	private int pageNumber = 1;
 	private int size = 3;
 	//@Test
@@ -72,12 +73,8 @@ public class HistoryServiceImplTest {
 		try{
 			ArrayList<HistoryModel> model = null;
 			String result = null;
-			Query fDate = new Query(Criteria.where("username").is(
-					username).and("date").is(fromDate));
-			Query tDate = new Query(Criteria.where("username").is(
-					username).and("date").is(toDate));
-			if(fDate != null && tDate != null){
-				model = dao.getHistoryByDate(username, fromDate, toDate,pageNumber,size);
+			if(from != null && to != null){
+				model = dao.getHistoryByDate(username, from, to,pageNumber,size);
 				result = mapper.writeValueAsString(model);
 				System.out.println("from - to date" +result);
 			}
