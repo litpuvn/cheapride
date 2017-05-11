@@ -118,7 +118,7 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 			uber.setRideRequestId(uberPriceMoel.getProduct_id());
 			uber.setTime((uberETAModel.getEstimate()/60)+"");
 			uber.setRideType(uberPriceMoel.getLocalized_display_name());
-		}
+		} 
 		
 		ResponseModel lyft = new ResponseModel();
 		//lyft.setMaxVal(lyftPriceModel.getEstimated_cost_cents_max());
