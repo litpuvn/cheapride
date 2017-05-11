@@ -4,6 +4,7 @@ import java.awt.print.Pageable;
  * @author Agnes
  */
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.runner.RunWith;
@@ -28,7 +29,7 @@ import com.cheapRide.service.HistoryService;
 
 @RestController
 public class HistoryController {
-	private final static org.slf4j.Logger logger = LoggerFactory.getLogger(LoginController.class);
+	private final static org.slf4j.Logger logger = LoggerFactory.getLogger(HistoryController.class);
 	@Autowired
     public HistoryService historyService;
 	@RequestMapping(value = "/getHistoryByUsername", method = RequestMethod.GET)
@@ -63,11 +64,11 @@ public class HistoryController {
         return returnString;
     }
 	@RequestMapping(value = "/getHistoryByDate", method = RequestMethod.GET)
-	public ArrayList<HistoryModel> getHistoryByDate(@RequestParam (value="username") String username, @RequestParam (value="fromDate") String fromDate,  @RequestParam (value="toDate") String toDate, @RequestParam (value="pageNumber") int pageNumber, @RequestParam (value="size") int size) {
+	public ArrayList<HistoryModel> getHistoryByDate(@RequestParam (value="username") String username, @RequestParam (value="from") Date from,  @RequestParam (value="to") Date to, @RequestParam (value="pageNumber") int pageNumber, @RequestParam (value="size") int size) {
     	logger.debug("Start => HistoryController => getHistoryByDate  for user " + username);
         ArrayList<HistoryModel> returnString = null;
         try {
-            returnString = historyService.checkDate(username,fromDate,toDate, pageNumber, size);
+            returnString = historyService.checkDate(username,from,to, pageNumber, size);
         } catch (Exception e) {
         	 logger.error("ERROR : HistoryController => getHistoryByDate  for user " + username);
         }
