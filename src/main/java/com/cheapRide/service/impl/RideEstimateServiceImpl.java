@@ -113,16 +113,16 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 		if(uberPriceMoel != null){
 			uber.setCost(uberPriceMoel.getLow_estimate());
 			uber.setRideRequestId(uberPriceMoel.getProduct_id());
-			uber.setTime(uberETAModel.getEstimate()+"");
+			uber.setTime((uberETAModel.getEstimate()/60)+"");
 			uber.setRideType(uberPriceMoel.getLocalized_display_name());
 		}
 		
 		ResponseModel lyft = new ResponseModel();
 		//lyft.setMaxVal(lyftPriceModel.getEstimated_cost_cents_max());
 		if(lyftPriceModel != null){
-			lyft.setCost(lyftPriceModel.getEstimated_cost_cents_min());
+			lyft.setCost(lyftPriceModel.getEstimated_cost_cents_min()/100);
 			lyft.setRideRequestId(lyftPriceModel.getRide_type());
-			lyft.setTime(lyftETAModel.getEta_seconds()+"");
+			lyft.setTime((lyftETAModel.getEta_seconds())/60+"");
 			lyft.setRideType(lyftPriceModel.getRide_type());
 		}
 		
