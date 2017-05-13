@@ -37,6 +37,7 @@
 	  <beans:bean id="mongo" class="org.springframework.data.mongodb.core.MongoFactoryBean">
 	    <beans:property name="host" value="localhost"/>
 	  </beans:bean>
+
 	<bean id="contentNegotiationManager"
              class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
     <property name="favorPathExtension" value="false" />
@@ -53,6 +54,5 @@
        </map>
     </property>
 </bean>
-	
 
 </beans>

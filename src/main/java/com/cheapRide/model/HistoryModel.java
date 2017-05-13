@@ -5,23 +5,27 @@ package com.cheapRide.model;
  *
  */
 
+import java.awt.print.Pageable;
+import java.util.Date;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "history")
 public class HistoryModel {
 @Id
-private String date;
+private String Id;
+private Date date;
 private String provider;
 private String pickup;
 private String destination;
 private String fee;
 private String username;
 
-public String getDate(){
+public Date getDate(){
 	return date;
 }
-public void setDate(String date){
+public void setDate(Date date){
 		this.date = date;
 }
 public String getProvider(){
@@ -54,8 +58,7 @@ public String getUsername(){
 public void setUsername(String username){
 		this.username = username;
 }
-public HistoryModel(String username, String date,String pickup,String destination, String fee, String provider) {
-	super();
+public HistoryModel(String username, Date date,String pickup,String destination, String fee, String provider) {
 	this.username = username;
 	this.date = date;
 	this.pickup = pickup;
@@ -63,10 +66,12 @@ public HistoryModel(String username, String date,String pickup,String destinatio
 	this.fee = fee;
 	this.provider = provider;
 }
-
+public HistoryModel(){
+	
+}
 @Override
 public String toString() {
-	return "History [username=" + username + ",date=" + date + ",pickup=" + pickup + ",destination=" + destination + ",fee=" + fee + ", provider=" + provider + "]";
+	return "History [id ="+Id+ " username=" + username + ",date=" + date + ",pickup=" + pickup + ",destination=" + destination + ",fee=" + fee + ", provider=" + provider + "]";
 }
 
 }

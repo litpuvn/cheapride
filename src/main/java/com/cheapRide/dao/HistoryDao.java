@@ -1,5 +1,8 @@
 package com.cheapRide.dao;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 import com.cheapRide.model.HistoryModel;
 
 /**
@@ -8,8 +11,8 @@ import com.cheapRide.model.HistoryModel;
  *
  */
 public interface HistoryDao {
-	public void addHistory(String username, String date,String pickup,String destination, String fee, String provider);
-	public HistoryModel getHistoryByUsername(String username);
-	public HistoryModel getHistoryByProvider(String username,String provider);
-	public HistoryModel getHistoryByDate(String username,String fromDate, String toDate);
+	public HistoryModel addHistory(String username,Date date, String pickup,String destination,String fee, String provider);
+	public ArrayList<HistoryModel> getHistoryByUsername(String username, int pageNumber, int size);
+	public ArrayList<HistoryModel> getHistoryByProvider(String username,String provider, int pageNumber, int size);
+	public ArrayList<HistoryModel> getHistoryByDate(String username,Date from, Date to, int pageNumber, int size);
 }
