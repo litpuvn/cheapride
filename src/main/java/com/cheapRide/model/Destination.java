@@ -4,23 +4,27 @@ package com.cheapRide.model;
  * Created by Parvaneh on 5/1/2017.
  */
 public class Destination {
-    private String lat;
-    private String lng;
+    private Double lat;
+    private Double lng;
 
-    public String getLat() {
+    public Double getLat() {
         return lat;
     }
 
-    public void setLat(String lat) {
+    public void setLat(Double lat) {
         this.lat = lat;
     }
 
-    public String getLng() {
+    public Double getLng() {
         return lng;
     }
 
-    public void setLng(String lng) {
+    public void setLng(Double lng) {
         this.lng = lng;
     }
-    public Destination(){}
+
+    public Destination(Double lat, Double lng) {
+        this.lat = lat;
+        this.lng = lng;
+    }
 }

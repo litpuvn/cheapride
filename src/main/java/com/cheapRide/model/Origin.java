@@ -6,6 +6,7 @@ package com.cheapRide.model;
 public class Origin {
     private String lat;
     private String lng;
+    private String name;
     public Origin(){}
     public String getLat() {
         return lat;
@@ -21,5 +22,13 @@ public class Origin {
 
     public void setLng(String lng) {
         this.lng = lng;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
