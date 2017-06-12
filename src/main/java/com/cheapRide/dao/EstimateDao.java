@@ -3,6 +3,7 @@ package com.cheapRide.dao;
 import com.cheapRide.model.PopularPlaceInfo;
 import com.cheapRide.model.PopularResponseModel;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public interface EstimateDao {
     String storeEstimateTimeAndCost(PopularPlaceInfo popularPlaceInfo);
-   List<PopularPlaceInfo> restorePopularPlaceInfo();
+   List<PopularPlaceInfo> restorePopularPlaceInfo(Date date);
    String dropTable();
 
 

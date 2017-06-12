@@ -109,11 +109,23 @@ public class RideEstimateServiceImpl implements RideEstimateService {
     }
 
     @Override
-    public List<PopularPlaceInfo> getEstimatePopularInfo() {
-
-        List<PopularPlaceInfo> newPopularPlaceInfoList = estimateDao.restorePopularPlaceInfo();
+    public List<PopularPlaceInfo> getEstimatePopularInfo(Date date) {
+        Date dateIn_X_MinAgo = getCorrectDate(date);
+        List<PopularPlaceInfo> newPopularPlaceInfoList = estimateDao.restorePopularPlaceInfo(dateIn_X_MinAgo);
         return newPopularPlaceInfoList;
 
+    }
+
+    private Date getCorrectDate(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.get(Calendar.MINUTE);
+        Integer minutesAgo = cal.get(Calendar.MINUTE)%15;
+
+        Date currentDate = new Date (date.getTime() - minutesAgo*60*1000);
+        currentDate.setSeconds(0);
+
+        return currentDate;
     }
 
 
@@ -283,10 +295,6 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 
     @Scheduled(fixedRate = 60000)
     public void storeEstimateCostScheduled() {
-//        estimateDao.dropTable();
-//		logger.debug("Start : RideEstimateServiceImpl => getEstimates  for origin lattitude" + originLat
-//				+ " origin longitude " + originLong + " destination lattitude " + destLat + " destination longitude "
-//				+ destLon);
         List<PopularPlaceInfo> popularPlaceInfoList = getPopularCities();
         String returnVal = null;
         try {
@@ -312,13 +320,13 @@ public class RideEstimateServiceImpl implements RideEstimateService {
                 String uberPrice = getCheapMinCostUber(listUberModel, uberCarType).getEstimate();
                 Double uberTime = getCheapMinETAUber(listUberETAModel, uberCarType).getEstimate() / 60;
                 PopularPlaceInfo northInfoUber = getResponseInfo(info, uberPrice, uberTime, "north", "uber");
-                northInfoUber.setStoreDate(new Date());
+                northInfoUber.setStoreDate(getCorrectDate(new Date()));
                 estimateDao.storeEstimateTimeAndCost(northInfoUber);
                 //////////Lyft/////////////////////////////////////////////////////////////////////////
                 String lyftPriceModel = String.valueOf(getCheapMinCostLyft(listLyftModel, lyftCarType).getEstimated_cost_cents_min() / 100);
                 Double lyftETAModel = Double.valueOf(getCheapMinETALyft(listLyftETAModel, lyftCarType).getEta_seconds() / 60);
                 PopularPlaceInfo northInfoLyft = getResponseInfo(info, lyftPriceModel, lyftETAModel, "north", "lyft");
-                northInfoLyft.setStoreDate(new Date());
+                northInfoLyft.setStoreDate(getCorrectDate(new Date()));
                 estimateDao.storeEstimateTimeAndCost(northInfoLyft);
                 //north----------------------------------------------------------------------------------------
                 //south----------------------------------------------------------------------------------------
@@ -330,13 +338,13 @@ public class RideEstimateServiceImpl implements RideEstimateService {
                 uberPrice = getCheapMinCostUber(listUberModel, uberCarType).getEstimate();
                 uberTime = getCheapMinETAUber(listUberETAModel, uberCarType).getEstimate() / 60;
                 PopularPlaceInfo southInfoUber = getResponseInfo(info, uberPrice, uberTime, "south", "uber");
-                southInfoUber.setStoreDate(new Date());
+                southInfoUber.setStoreDate(getCorrectDate(new Date()));
                 estimateDao.storeEstimateTimeAndCost(southInfoUber);
                 //////////Lyft/////////////////////////////////////////////////////////////////////////
                 lyftPriceModel = String.valueOf(getCheapMinCostLyft(listLyftModel, lyftCarType).getEstimated_cost_cents_min() / 100);
                 lyftETAModel = Double.valueOf(getCheapMinETALyft(listLyftETAModel, lyftCarType).getEta_seconds() / 60);
                 PopularPlaceInfo southInfoLyft = getResponseInfo(info, lyftPriceModel, lyftETAModel, "south", "lyft");
-                southInfoLyft.setStoreDate(new Date());
+                southInfoLyft.setStoreDate(getCorrectDate(new Date()));
                 estimateDao.storeEstimateTimeAndCost(southInfoLyft);
                 //south--------------------------------------------------------------------------------------
                 //East---------------------------------------------------------------------------------------
@@ -348,13 +356,13 @@ public class RideEstimateServiceImpl implements RideEstimateService {
                 uberPrice = getCheapMinCostUber(listUberModel, uberCarType).getEstimate();
                 uberTime = getCheapMinETAUber(listUberETAModel, uberCarType).getEstimate() / 60;
                 PopularPlaceInfo eastInfoUber = getResponseInfo(info, uberPrice, uberTime, "east", "uber");
-                eastInfoUber.setStoreDate(new Date());
+                eastInfoUber.setStoreDate(getCorrectDate(new Date()));
                 estimateDao.storeEstimateTimeAndCost(eastInfoUber);
                 //////////Lyft/////////////////////////////////////////////////////////////////////////
                 lyftPriceModel = String.valueOf(getCheapMinCostLyft(listLyftModel, lyftCarType).getEstimated_cost_cents_min() / 100);
                 lyftETAModel = Double.valueOf(getCheapMinETALyft(listLyftETAModel, lyftCarType).getEta_seconds() / 60);
                 PopularPlaceInfo eastInfoLyft = getResponseInfo(info, lyftPriceModel, lyftETAModel, "east", "lyft");
-                eastInfoLyft.setStoreDate(new Date());
+                eastInfoLyft.setStoreDate(getCorrectDate(new Date()));
                 estimateDao.storeEstimateTimeAndCost(eastInfoLyft);
                 //East--------------------------------------------------------------------------------
                 //West-------------------------------------------------------------------------------
@@ -365,13 +373,13 @@ public class RideEstimateServiceImpl implements RideEstimateService {
                 uberPrice = getCheapMinCostUber(listUberModel, uberCarType).getEstimate();
                 uberTime = getCheapMinETAUber(listUberETAModel, uberCarType).getEstimate() / 60;
                 PopularPlaceInfo westInfoUber = getResponseInfo(info, uberPrice, uberTime, "west", "uber");
-                westInfoUber.setStoreDate(new Date());
+                westInfoUber.setStoreDate(getCorrectDate(new Date()));
                 estimateDao.storeEstimateTimeAndCost(westInfoUber);
                 //////////Lyft/////////////////////////////////////////////////////////////////////////
                 lyftPriceModel = String.valueOf(getCheapMinCostLyft(listLyftModel, lyftCarType).getEstimated_cost_cents_min() / 100);
                 lyftETAModel = Double.valueOf(getCheapMinETALyft(listLyftETAModel, lyftCarType).getEta_seconds() / 60);
                 PopularPlaceInfo westInfoLyft = getResponseInfo(info, lyftPriceModel, lyftETAModel, "west", "lyft");
-                westInfoLyft.setStoreDate(new Date());
+                westInfoLyft.setStoreDate(getCorrectDate(new Date()));
                 estimateDao.storeEstimateTimeAndCost(westInfoLyft);
 
             }

@@ -2,6 +2,9 @@ package com.cheapRide.controller;
 
 import com.cheapRide.model.*;
 import com.cheapRide.service.RideEstimateService;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static java.lang.StrictMath.asin;
@@ -26,45 +30,16 @@ public class RidePopularPlacesEstimateController {
     private final static org.slf4j.Logger logger = LoggerFactory.getLogger(RideEstimateController.class);
     @Autowired
     public RideEstimateService rideService;
-    private double pi = 3.14;
 
-
-//    public String getEstimatedTime(float pickUpLat, float pickUpLong) {
-//        String resString = null;
-//        try {
-//            resString = rideService.getEstimateTime(pickUpLat, pickUpLong, null);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        return resString;
-//    }
-
-
-    @RequestMapping(value = "/bookRidePopular", method = RequestMethod.GET)
-    public ResponseEntity<List<PopularPlaceInfo>> requestRide() {
-        List<PopularPlaceInfo> popularPlaceInfoList = new ArrayList<>();
-//        List<PopularResponseModel> responseModels=new ArrayList<>();
-//
-//        for (PopularPlaceInfo info : popularPlaceInfoList) {
-//            PopularResponseModel model=new PopularResponseModel();
-//            model.setCost(rideService.getEstimateCost(info.getLat().floatValue(), info.getLon().floatValue(), getDesGeo(info.getLat(), info.getLon()).getLat().floatValue(), getDesGeo(info.getLat(), info.getLon()).getLng().floatValue(), null, "4_seats"));
-//            model.setTime(rideService.getEstimateTimeCorrect(info.getLat().floatValue(), info.getLon().floatValue(), getDesGeo(info.getLat(), info.getLon()).getLat().floatValue(), getDesGeo(info.getLat(), info.getLon()).getLng().floatValue(), null, "4_seats"));
-//            responseModels.add(model);
-//        }
-        popularPlaceInfoList = rideService.getEstimatePopularInfo();
-        ResponseEntity<List<PopularPlaceInfo>> responseEntity;
-        responseEntity = ResponseEntity.status(HttpStatus.OK).body(popularPlaceInfoList);
-        return responseEntity;
-
-    }
 
 
     @RequestMapping(value = "/popularEstimation", method = RequestMethod.GET)
-    public ResponseEntity<List<OriginPopular>> popularEstimation() {
+    public ResponseEntity<List<OriginPopular>> popularEstimation(@RequestParam String date) {
         List<OriginPopular> originPopulars = new ArrayList<>();
         List<PopularPlaceInfo> popularPlaceInfoList = new ArrayList<>();
-        popularPlaceInfoList = rideService.getEstimatePopularInfo();
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm:ss");
+        DateTime dt = formatter.parseDateTime(date);
+        popularPlaceInfoList = rideService.getEstimatePopularInfo(dt.toDate());
 
 
         for (String city : getPopularCities()) {

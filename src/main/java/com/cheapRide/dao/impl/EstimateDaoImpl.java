@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,10 +34,10 @@ public class EstimateDaoImpl implements EstimateDao {
     }
 
     @Override
-    public List<PopularPlaceInfo> restorePopularPlaceInfo() {
-
-//}
-        List<PopularPlaceInfo> popularPlaceInfos = mongoOperation.find(new Query().limit(32), PopularPlaceInfo.class);
+    public List<PopularPlaceInfo> restorePopularPlaceInfo(Date date) {
+        Query searchUserQuery = new Query(Criteria.where("storeDate").is(
+                date));
+        List<PopularPlaceInfo> popularPlaceInfos = mongoOperation.find(searchUserQuery, PopularPlaceInfo.class);
         return popularPlaceInfos;
 
     }
