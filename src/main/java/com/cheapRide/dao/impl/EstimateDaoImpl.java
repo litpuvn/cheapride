@@ -21,6 +21,7 @@ public class EstimateDaoImpl implements EstimateDao {
     private final static org.slf4j.Logger logger = LoggerFactory.getLogger(EstimateDaoImpl.class);
     @Autowired
     private MongoTemplate mongoOperation;
+
     @Override
     public String storeEstimateTimeAndCost(PopularPlaceInfo popularPlaceInfo) {
         logger.debug("Start => EstimateDaoImpl => registerNewUser  for name "
@@ -33,25 +34,9 @@ public class EstimateDaoImpl implements EstimateDao {
 
     @Override
     public List<PopularPlaceInfo> restorePopularPlaceInfo() {
-//        logger.debug("Start => LoginDaoImpl => getUserByUserAndPass  for  "
-//                + name);
-//        PopularPlaceInfo info = null;
-//        Query searchUserQuery = new Query(Criteria.where("name").is(
-//                name));
-//
-//        // find the saved user again.
-//        try {
-//            info = mongoOperation.findOne(searchUserQuery, PopularPlaceInfo.class);
-//        } catch (Exception e) {
-//            logger.error("ERROR => LoginDaoImpl => getUserByUserAndPass  for user "
-//                    + name);
-//        }
-//
-//        logger.debug("End => LoginDaoImpl => getUserByUserAndPass  for user "
-//                + name);
-//        return info;
+
 //}
-        List<PopularPlaceInfo> popularPlaceInfos = mongoOperation.findAll(PopularPlaceInfo.class);
+        List<PopularPlaceInfo> popularPlaceInfos = mongoOperation.find(new Query().limit(32), PopularPlaceInfo.class);
         return popularPlaceInfos;
 
     }

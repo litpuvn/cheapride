@@ -1,5 +1,7 @@
 package com.cheapRide.model;
 
+import java.util.Date;
+
 /**
  * Created by pshayegh on 6/8/2017.
  */
@@ -11,6 +13,7 @@ public class PopularPlaceInfo {
     private String cost;
     private String time;
     private String type;
+    private Date storeDate;
 
     public Double getLat() {
         return lat;
@@ -67,5 +70,13 @@ public class PopularPlaceInfo {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Date getStoreDate() {
+        return storeDate;
+    }
+
+    public void setStoreDate(Date storeDate) {
+        this.storeDate = storeDate;
     }
 }
