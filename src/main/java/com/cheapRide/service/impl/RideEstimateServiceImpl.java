@@ -113,13 +113,7 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 
     @Override
     public List<PopularPlaceInfo> getEstimatePopularInfo() {
-        List<PopularPlaceInfo> popularPlaceInfoList=getPopularCities();
-        List<PopularPlaceInfo> newPopularPlaceInfoList=new ArrayList<>();
-        for(PopularPlaceInfo info:popularPlaceInfoList){
-            PopularPlaceInfo placeInfo=new PopularPlaceInfo();
-            placeInfo= estimateDao.restorePopularPlaceInfo("i");
-            newPopularPlaceInfoList.add(placeInfo);
-        }
+        List<PopularPlaceInfo> newPopularPlaceInfoList=estimateDao.restorePopularPlaceInfo();
         return newPopularPlaceInfoList;
 
     }
@@ -291,59 +285,88 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 
     @Scheduled(fixedRate  = 60000)
     public void storeEstimateCostScheduled() {
+        estimateDao.dropTable();
 //		logger.debug("Start : RideEstimateServiceImpl => getEstimates  for origin lattitude" + originLat
 //				+ " origin longitude " + originLong + " destination lattitude " + destLat + " destination longitude "
 //				+ destLon);
         List<PopularPlaceInfo> popularPlaceInfoList = getPopularCities();
-        List<PopularPlaceInfo> newPopularList = new ArrayList<>();
         String returnVal = null;
-        int i = 0;
         try {
             for (PopularPlaceInfo info : popularPlaceInfoList) {
-                //north---------------------------------------------------------------------------------------------
-                PopularPlaceInfo northInfo = new PopularPlaceInfo();
-                ListUberPriceModel listUberModel = uberEstimateService.getPriceEstmiate("" + info.getLat(),
-                        "" + info.getLon(),
-                        "" + getNorthDes(info.getLat(),
-                                info.getLon()).getLat(), "" + getNorthDes(info.getLat(), info.getLon()).getLng());
-                ListLyftPriceModel listLyftModel = lyftEstimateService.getPriceEstmiate("" + info.getLat(),
-                        "" + info.getLon(),
-                        "" + getNorthDes(info.getLat(),
-                                info.getLon()).getLat(), "" + getNorthDes(info.getLat(), info.getLon()).getLng());
-                ;
                 ListUberETAModel listUberETAModel = uberEstimateService.getETA("" + info.getLat(),
                         "" + info.getLon());
                 ListLyftETAModel listLyftETAModel = lyftEstimateService.getETA("" + info.getLat(),
                         "" + info.getLon());
+
                 String uberCarType = null;
                 String lyftCarType = null;
                 String[] carTypeArr = null;
                 carTypeArr = seats4.split(":");
                 uberCarType = carTypeArr[1];
                 lyftCarType = carTypeArr[0];
+
+                //north---------------------------------------------------------------------------------------------
+                ListUberPriceModel listUberModel= getListUberModel(info.getLat(),info.getLon(),getNorthDes(info.getLat(),
+                        info.getLon()).getLat(),getNorthDes(info.getLat(), info.getLon()).getLng());
+                ListLyftPriceModel listLyftModel =getListLyftPriceModel(info.getLat(),info.getLon(),getNorthDes(info.getLat(),
+                        info.getLon()).getLat(),getNorthDes(info.getLat(), info.getLon()).getLng());
                 /////////////Uber////////////////////////////////////////////////////////////////
-                UberPriceModel uberPriceMoel = getCheapMinCostUber(listUberModel, uberCarType);
-                UberETAModel uberETAModel = getCheapMinETAUber(listUberETAModel, uberCarType);
-                northInfo.setLat(info.getLat());
-                northInfo.setLon(info.getLon());
-                northInfo.setCost(String.valueOf(getCheapMinCostUber(listUberModel, uberCarType)));
-
+                String uberPrice = getCheapMinCostUber(listUberModel, uberCarType).getEstimate();
+                Double uberTime = getCheapMinETAUber(listUberETAModel, uberCarType).getEstimate()/60;
+                PopularPlaceInfo northInfoUber=getResponseInfo(info, uberPrice, uberTime,"north","uber");
+                estimateDao.storeEstimateTimeAndCost(northInfoUber);
                 //////////Lyft/////////////////////////////////////////////////////////////////////////
-                LyftPriceModel lyftPriceModel = getCheapMinCostLyft(listLyftModel, lyftCarType);
-                LyftETAModel lyftETAModel = getCheapMinETALyft(listLyftETAModel, lyftCarType);
-
-
-//                String uberPriceMoelEstimate = uberPriceMoel.getEstimate();
-                String uberTime = String.valueOf(uberETAModel.getEstimate() / 60);
-                northInfo.setName(info.getName());
-                northInfo.setTime(String.valueOf(uberETAModel.getEstimate() / 60));
-                northInfo.setCost(uberPriceMoel.getEstimate());
-                northInfo.setLat(getDesGeo(info.getLat(),
-                        info.getLon()).getLat());
-                northInfo.setLon(getDesGeo(info.getLat(),
-                        info.getLon()).getLng());
-                i++;
-                estimateDao.storeEstimateTimeAndCost(northInfo);
+                String lyftPriceModel = String.valueOf(getCheapMinCostLyft(listLyftModel, lyftCarType).getEstimated_cost_cents_min()/100);
+                Double lyftETAModel = Double.valueOf(getCheapMinETALyft(listLyftETAModel, lyftCarType).getEta_seconds()/60);
+                PopularPlaceInfo northInfoLyft=getResponseInfo(info, lyftPriceModel, lyftETAModel,"north","lyft");
+                estimateDao.storeEstimateTimeAndCost(northInfoLyft);
+                //north----------------------------------------------------------------------------------------
+                //south----------------------------------------------------------------------------------------
+                 listUberModel= getListUberModel(info.getLat(),info.getLon(),getSouthDes(info.getLat(),
+                        info.getLon()).getLat(),getSouthDes(info.getLat(), info.getLon()).getLng());
+                 listLyftModel =getListLyftPriceModel(info.getLat(),info.getLon(),getSouthDes(info.getLat(),
+                        info.getLon()).getLat(),getSouthDes(info.getLat(), info.getLon()).getLng());
+                /////////////Uber////////////////////////////////////////////////////////////////
+                 uberPrice = getCheapMinCostUber(listUberModel, uberCarType).getEstimate();
+                 uberTime = getCheapMinETAUber(listUberETAModel, uberCarType).getEstimate()/60;
+                PopularPlaceInfo southInfoUber=getResponseInfo(info, uberPrice, uberTime,"south","uber");
+                estimateDao.storeEstimateTimeAndCost(southInfoUber);
+                //////////Lyft/////////////////////////////////////////////////////////////////////////
+                 lyftPriceModel = String.valueOf(getCheapMinCostLyft(listLyftModel, lyftCarType).getEstimated_cost_cents_min()/100);
+                 lyftETAModel = Double.valueOf(getCheapMinETALyft(listLyftETAModel, lyftCarType).getEta_seconds()/60);
+                PopularPlaceInfo southInfoLyft=getResponseInfo(info, lyftPriceModel, lyftETAModel,"south","lyft");
+                estimateDao.storeEstimateTimeAndCost(southInfoLyft);
+                //south--------------------------------------------------------------------------------------
+                //East---------------------------------------------------------------------------------------
+                listUberModel= getListUberModel(info.getLat(),info.getLon(),getEastDes(info.getLat(),
+                        info.getLon()).getLat(),getEastDes(info.getLat(), info.getLon()).getLng());
+                listLyftModel =getListLyftPriceModel(info.getLat(),info.getLon(),getEastDes(info.getLat(),
+                        info.getLon()).getLat(),getEastDes(info.getLat(), info.getLon()).getLng());
+                /////////////Uber////////////////////////////////////////////////////////////////
+                uberPrice = getCheapMinCostUber(listUberModel, uberCarType).getEstimate();
+                uberTime = getCheapMinETAUber(listUberETAModel, uberCarType).getEstimate()/60;
+                PopularPlaceInfo eastInfoUber=getResponseInfo(info, uberPrice, uberTime,"east","uber");
+                estimateDao.storeEstimateTimeAndCost(eastInfoUber);
+                //////////Lyft/////////////////////////////////////////////////////////////////////////
+                lyftPriceModel = String.valueOf(getCheapMinCostLyft(listLyftModel, lyftCarType).getEstimated_cost_cents_min()/100);
+                lyftETAModel = Double.valueOf(getCheapMinETALyft(listLyftETAModel, lyftCarType).getEta_seconds()/60);
+                PopularPlaceInfo eastInfoLyft=getResponseInfo(info, lyftPriceModel, lyftETAModel,"east","lyft");
+                estimateDao.storeEstimateTimeAndCost(eastInfoLyft);
+                //East--------------------------------------------------------------------------------
+                //West-------------------------------------------------------------------------------
+                listUberModel= getListUberModel(info.getLat(),info.getLon(),getWestDes(info.getLat(),
+                        info.getLon()).getLat(),getWestDes(info.getLat(), info.getLon()).getLng());
+                listLyftModel =getListLyftPriceModel(info.getLat(),info.getLon(),getWestDes(info.getLat(),
+                        info.getLon()).getLat(),getWestDes(info.getLat(), info.getLon()).getLng());
+                uberPrice = getCheapMinCostUber(listUberModel, uberCarType).getEstimate();
+                uberTime = getCheapMinETAUber(listUberETAModel, uberCarType).getEstimate()/60;
+                PopularPlaceInfo westInfoUber=getResponseInfo(info, uberPrice, uberTime,"west","uber");
+                estimateDao.storeEstimateTimeAndCost(westInfoUber);
+                //////////Lyft/////////////////////////////////////////////////////////////////////////
+                lyftPriceModel = String.valueOf(getCheapMinCostLyft(listLyftModel, lyftCarType).getEstimated_cost_cents_min()/100);
+                lyftETAModel = Double.valueOf(getCheapMinETALyft(listLyftETAModel, lyftCarType).getEta_seconds()/60);
+                PopularPlaceInfo westInfoLyft=getResponseInfo(info, lyftPriceModel, lyftETAModel,"west","lyft");
+                estimateDao.storeEstimateTimeAndCost(westInfoLyft);
 
             }
 
@@ -360,6 +383,31 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 //                + destLon);
             System.out.println(returnVal);
         }
+    }
+
+    private ListLyftPriceModel getListLyftPriceModel(Double lat, Double lon, Double desLat, Double desLng) {
+        return lyftEstimateService.getPriceEstmiate("" + lat,
+                "" + lon,
+                "" + desLat, "" + desLng);
+
+    }
+
+    private ListUberPriceModel getListUberModel(Double lat, Double lon, Double desLat, Double desLng) {
+       return uberEstimateService.getPriceEstmiate("" + lat,
+                "" + lon,
+                "" + desLat, "" + desLng);
+    }
+
+    private PopularPlaceInfo getResponseInfo(PopularPlaceInfo info, String uberPrice, Double uberTime,String direction,String type) {
+        PopularPlaceInfo northInfoUber=new PopularPlaceInfo();
+        northInfoUber.setLat(info.getLat());
+        northInfoUber.setLon(info.getLon());
+        northInfoUber.setCost(uberPrice);
+        northInfoUber.setTime(String.valueOf(uberTime));
+        northInfoUber.setType(type);
+        northInfoUber.setDirection(direction);
+        northInfoUber.setName(info.getName());
+        return northInfoUber;
     }
 
     public String getEstimateTimeCorrect(float originLat, float originLong, float destLat, float destLon, Map<String, String> options, String carType) {
@@ -424,13 +472,13 @@ public class RideEstimateServiceImpl implements RideEstimateService {
     }
 
     private Destination getNorthDes(Double lat, Double lon){
-        return new Destination(lat,lon+10);
+        return new Destination(lat,lon+0.000010);
     }private Destination getSouthDes(Double lat, Double lon){
-        return new Destination(lat,lon-10);
+        return new Destination(lat,lon-0.000010);
     }private Destination getEastDes(Double lat, Double lon){
-        return new Destination(lat+10,lon);
+        return new Destination(lat+0.000010,lon);
     }private Destination getWestDes(Double lat, Double lon){
-        return new Destination(lat-10,lon);
+        return new Destination(lat-0.000010,lon);
     }
 
 
