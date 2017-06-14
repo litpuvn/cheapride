@@ -322,7 +322,7 @@ public class RideEstimateServiceImpl implements RideEstimateService {
                 ListLyftPriceModel listLyftModel = getListLyftPriceModel(info.getLat(), info.getLon(), getNorthDes(info.getLat(),
                         info.getLon()).getLat(), getNorthDes(info.getLat(), info.getLon()).getLng());
                 /////////////Uber////////////////////////////////////////////////////////////////
-                String uberPrice = getCheapMinCostUber(listUberModel, uberCarType).getEstimate();
+                String uberPrice =  String.valueOf(getCheapMinCostUber(listUberModel, uberCarType).getLow_estimate());
                 Double uberTime = getCheapMinETAUber(listUberETAModel, uberCarType).getEstimate() / 60;
                 PopularPlaceInfo northInfoUber = getResponseInfo(info, uberPrice, uberTime, "north", "uber");
                 northInfoUber.setStoreDate(currentSystemTime);
@@ -340,7 +340,7 @@ public class RideEstimateServiceImpl implements RideEstimateService {
                 listLyftModel = getListLyftPriceModel(info.getLat(), info.getLon(), getSouthDes(info.getLat(),
                         info.getLon()).getLat(), getSouthDes(info.getLat(), info.getLon()).getLng());
                 /////////////Uber////////////////////////////////////////////////////////////////
-                uberPrice = getCheapMinCostUber(listUberModel, uberCarType).getEstimate();
+                uberPrice = String.valueOf(getCheapMinCostUber(listUberModel, uberCarType).getLow_estimate());
                 uberTime = getCheapMinETAUber(listUberETAModel, uberCarType).getEstimate() / 60;
                 PopularPlaceInfo southInfoUber = getResponseInfo(info, uberPrice, uberTime, "south", "uber");
                 southInfoUber.setStoreDate(currentSystemTime);
@@ -358,7 +358,7 @@ public class RideEstimateServiceImpl implements RideEstimateService {
                 listLyftModel = getListLyftPriceModel(info.getLat(), info.getLon(), getEastDes(info.getLat(),
                         info.getLon()).getLat(), getEastDes(info.getLat(), info.getLon()).getLng());
                 /////////////Uber////////////////////////////////////////////////////////////////
-                uberPrice = getCheapMinCostUber(listUberModel, uberCarType).getEstimate();
+                uberPrice = String.valueOf(getCheapMinCostUber(listUberModel, uberCarType).getLow_estimate());
                 uberTime = getCheapMinETAUber(listUberETAModel, uberCarType).getEstimate() / 60;
                 PopularPlaceInfo eastInfoUber = getResponseInfo(info, uberPrice, uberTime, "east", "uber");
                 eastInfoUber.setStoreDate(currentSystemTime);
@@ -375,7 +375,7 @@ public class RideEstimateServiceImpl implements RideEstimateService {
                         info.getLon()).getLat(), getWestDes(info.getLat(), info.getLon()).getLng());
                 listLyftModel = getListLyftPriceModel(info.getLat(), info.getLon(), getWestDes(info.getLat(),
                         info.getLon()).getLat(), getWestDes(info.getLat(), info.getLon()).getLng());
-                uberPrice = getCheapMinCostUber(listUberModel, uberCarType).getEstimate();
+                uberPrice =  String.valueOf(getCheapMinCostUber(listUberModel, uberCarType).getLow_estimate());
                 uberTime = getCheapMinETAUber(listUberETAModel, uberCarType).getEstimate() / 60;
                 PopularPlaceInfo westInfoUber = getResponseInfo(info, uberPrice, uberTime, "west", "uber");
                 westInfoUber.setStoreDate(currentSystemTime);
@@ -497,17 +497,51 @@ public class RideEstimateServiceImpl implements RideEstimateService {
 
     private List<PopularPlaceInfo> getPopularCities() {
         List<PopularPlaceInfo> popularPlaceInfoList = new ArrayList<>();
-        PopularPlaceInfo info_GoldenGate = new PopularPlaceInfo();
         PopularPlaceInfo info_Zoo = new PopularPlaceInfo();
-        info_GoldenGate.setName("Golden Gate Park");
-        info_GoldenGate.setLat(37.770164);
-        info_GoldenGate.setLon(-122.485324);
-        popularPlaceInfoList.add(info_GoldenGate);
+        info_Zoo.setName("Golden Gate Park");
+        info_Zoo.setLat(37.770164);
+        info_Zoo.setLon(-122.485324);
+        popularPlaceInfoList.add(info_Zoo);
+
+        info_Zoo = new PopularPlaceInfo();
         info_Zoo.setName("Zoo");
         info_Zoo.setLat(37.733789);
         info_Zoo.setLon(-122.512103);
-
         popularPlaceInfoList.add(info_Zoo);
+
+
+        info_Zoo = new PopularPlaceInfo();
+        info_Zoo.setName("church");
+        info_Zoo.setLat(37.760311);
+        info_Zoo.setLon(-122.415259);
+        popularPlaceInfoList.add(info_Zoo);
+
+        info_Zoo = new PopularPlaceInfo();
+        info_Zoo.setName("park");
+        info_Zoo.setLat(37.764501);
+        info_Zoo.setLon(-122.433941);
+        popularPlaceInfoList.add(info_Zoo);
+
+
+        info_Zoo = new PopularPlaceInfo();
+        info_Zoo.setName("college");
+        info_Zoo.setLat(37.769552);
+        info_Zoo.setLon(-122.408386);
+        popularPlaceInfoList.add(info_Zoo);
+
+
+        info_Zoo = new PopularPlaceInfo();
+        info_Zoo.setName("hospital");
+        info_Zoo.setLat(37.799775);
+        info_Zoo.setLon(-122.435128);
+        popularPlaceInfoList.add(info_Zoo);
+
+        info_Zoo = new PopularPlaceInfo();
+        info_Zoo.setName("airport");
+        info_Zoo.setLat(37.727220);
+        info_Zoo.setLon(-122.459684);
+        popularPlaceInfoList.add(info_Zoo);
+
         return popularPlaceInfoList;
     }
 

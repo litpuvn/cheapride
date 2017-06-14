@@ -130,6 +130,11 @@ public class RidePopularPlacesEstimateController {
         popularCities.add("Golden Gate Park");
 
         popularCities.add("Zoo");
+        popularCities.add("park");
+        popularCities.add("college");
+        popularCities.add("airport");
+        popularCities.add("hospital");
+        popularCities.add("church");
 
         return popularCities;
     }

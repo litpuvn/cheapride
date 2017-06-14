@@ -42,7 +42,7 @@ public class EstimateDaoImpl implements EstimateDao {
                 date));
 
         searchUserQuery.with(new Sort(new Sort.Order(Sort.Direction.DESC, "storeDate")));
-        searchUserQuery.limit(8);
+       // searchUserQuery.limit(8);
 
         List<PopularPlaceInfo> popularPlaceInfos = mongoOperation.find(searchUserQuery, PopularPlaceInfo.class);
         return popularPlaceInfos;
