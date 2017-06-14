@@ -297,7 +297,7 @@ public class RideEstimateServiceImpl implements RideEstimateService {
         return returnVal;
     }
 
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 900000)
     public void storeEstimateCostScheduled() {
         List<PopularPlaceInfo> popularPlaceInfoList = getPopularCities();
         String returnVal = null;
