@@ -12,8 +12,8 @@ public class UberPriceModel {
 	private String product_id;
 	private String estimate;
 	private String currency_code;
-	private Integer high_estimate; 
-	private Integer low_estimate;
+	private Double high_estimate;
+	private Double low_estimate;
 	private Integer duration;
 	public String getLocalized_display_name() {
 		return localized_display_name;
@@ -51,16 +51,16 @@ public class UberPriceModel {
 	public void setCurrency_code(String currency_code) {
 		this.currency_code = currency_code;
 	}
-	public int getHigh_estimate() {
+	public double getHigh_estimate() {
 		return high_estimate;
 	}
-	public void setHigh_estimate(int high_estimate) {
+	public void setHigh_estimate(double high_estimate) {
 		this.high_estimate = high_estimate;
 	}
-	public int getLow_estimate() {
+	public double getLow_estimate() {
 		return low_estimate;
 	}
-	public void setLow_estimate(int low_estimate) {
+	public void setLow_estimate(double low_estimate) {
 		this.low_estimate = low_estimate;
 	}
 	public int getDuration() {

@@ -7,7 +7,7 @@ package com.cheapRide.model;
 public class ResponseModel {
 
 	private String time;
-	private long cost;
+	private double cost;
 	private String rideRequestId;	
 	private String rideType;
 	
@@ -24,10 +24,10 @@ public class ResponseModel {
 		this.time = time;
 	}
 	
-	public long getCost() {
+	public double getCost() {
 		return cost;
 	}
-	public void setCost(long cost) {
+	public void setCost(double cost) {
 		this.cost = cost;
 	}
 	public String getRideRequestId() {

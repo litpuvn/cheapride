@@ -14,7 +14,7 @@ public class LyftPriceModel {
 	private String primetime_percentage;
 	private boolean is_valid_estimate;
 	private String currency;
-	private int estimated_cost_cents_min;
+	private double estimated_cost_cents_min;
 	private String display_name;
 	private String primetime_confirmation_token;
 	private boolean can_request_ride;
@@ -87,11 +87,11 @@ public class LyftPriceModel {
 		this.currency = currency;
 	}
 
-	public int getEstimated_cost_cents_min() {
+	public double getEstimated_cost_cents_min() {
 		return estimated_cost_cents_min;
 	}
 
-	public void setEstimated_cost_cents_min(int estimated_cost_cents_min) {
+	public void setEstimated_cost_cents_min(double estimated_cost_cents_min) {
 		this.estimated_cost_cents_min = estimated_cost_cents_min;
 	}
 
